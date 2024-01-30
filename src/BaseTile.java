@@ -3,18 +3,14 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public abstract class BaseTower {
-    protected int number = 1;
-    protected String imageLink = "src/Towers/Base/image.png";
+public abstract class BaseTile {
+    protected String imageLink = "src/Tiles/Base/image.png";
     protected BufferedImage image;
-    public void shoot(){
-        System.out.println("base tower shot");
-    }
     protected void setup(){
         try {
             image = ImageIO.read(new File(imageLink));
         } catch (IOException e) {
-            System.out.print("error loading tower image");
+            System.out.print("error loading tile image");
             throw new RuntimeException(e);
         }
     }
