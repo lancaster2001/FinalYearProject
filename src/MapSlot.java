@@ -1,13 +1,14 @@
 public class MapSlot {
+    int[] coordinates = {-1,-1};//{x,y}
     BaseTower tower1 = new TowerVariant1();
 
-   /* public static void main(String[] args) {
-        BaseTower tower1 = new TowerVariant1();
-        BaseTower tower2 = new TowerVariant2();
-        System.out.println("base tower = tower2\nvariant tower = tower1");
-        System.out.println(tower2.number);
-        System.out.println(tower1.number);
-        tower2.shoot();
-        tower1.shoot();
-    }*/
+    public MapSlot(int x,int y){
+        coordinates[0] = x;
+        coordinates[1] = y;
+
+    }
+
+    public int[] getCoordinates() {
+        return coordinates;
+    }
 }

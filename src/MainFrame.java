@@ -2,13 +2,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 
-public class MainFrame extends JFrame implements KeyListener {
+public class MainFrame extends JFrame implements KeyListener, MouseWheelListener {
 
-    private MainPanel PanelInstance = MainPanel.getInstance();
-    private JComponent draw = new JComponent(){};
+    private final MainPanel PanelInstance = MainPanel.getInstance();
+    private final JComponent draw = new JComponent(){};
     private static MainFrame instance;
     private MainFrame(){
+        setup();
     }
     public static MainFrame getInstance() {
         if (instance == null) {
@@ -20,7 +23,7 @@ public class MainFrame extends JFrame implements KeyListener {
         return PanelInstance;
     }
     private void setup() {
-        this.setTitle("Space Invaders Assignment 1");
+        this.setTitle("Resource Management and Tower Defence Game");
         this.setResizable(false);
         this.setSize(gameConstants.screenSize.width, gameConstants.screenSize.height);
         this.setMinimumSize(new Dimension(gameConstants.screenSize.width, gameConstants.screenSize.height));
@@ -29,10 +32,11 @@ public class MainFrame extends JFrame implements KeyListener {
         this.pack();
         this.setVisible(true);
         addKeyListener(this);
+        addMouseWheelListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
         this.add(PanelInstance);
-        PanelInstance.setBackground(Color.red);
+        //PanelInstance.setBackground(Color.red);
         this.setVisible(true);
     }
 
@@ -49,5 +53,9 @@ public class MainFrame extends JFrame implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
 
+    }
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        InputController.getInstance().userInput(e);
     }
 }
