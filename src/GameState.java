@@ -10,19 +10,14 @@ public class GameState {
         }
         return instance;
     }
-    private GameState(){
-        setup();
-    }
+    private GameState(){}
     //----------------------------------------------------------------------------------
 
-    private MainFrame frameInstance;
-    public MainPanel panelInstance;
-    private Map mapInstance = Map.getInstance();
-    private Camera cameraInstance = Camera.getInstance();
-    private void setup(){
-        frameInstance = MainFrame.getInstance();
-        panelInstance = frameInstance.getPanelInstance();
-    }
+    private final MainFrame frameInstance = MainFrame.getInstance();
+    public final MainPanel panelInstance = frameInstance.getPanelInstance();
+    private final Map mapInstance = Map.getInstance();
+    private final Camera cameraInstance = Camera.getInstance();
+    private final ResourceManager resourceManagerInstance = ResourceManager.getInstance();
     void gameLoop(){
         Timer gameTimer = new Timer();
         mapInstance.makeAllTowersAct();

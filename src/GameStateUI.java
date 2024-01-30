@@ -23,6 +23,7 @@ private final AssetManager assetManagerInstance = AssetManager.getInstance();
     public void drawUI(Graphics g){
         drawReasourcesMenu(g);
         drawTitle(g);
+
     }
     private void drawReasourcesMenu(Graphics g){
         g.setColor(gameConstants.resourceMenuBackgroundColour);
@@ -34,20 +35,11 @@ private final AssetManager assetManagerInstance = AssetManager.getInstance();
         g.drawString("Resources:", gameConstants.resourcesMenuX, gameConstants.resourcesMenuY +gameConstants.getResourcesMenuTitleSize);
     }
     private void drawResources(Graphics g){
-
-    }
-    private ArrayList<BufferedImage> loadAllImages(String dirLink){
-        ArrayList<BufferedImage> allImages = new ArrayList<BufferedImage>();
-        File file = new File(dirLink);
-        String[] directories = file.list(new FilenameFilter() {
-            @Override
-            public boolean accept(File current, String name) {
-                return new File(current, name).isDirectory();
-            }
-        });
-        for(String currentResource: Arrays.asList(directories)) {
-            allImages.add(assetManagerInstance.getImage("src/Resources/" + currentResource + "image.png"));
+        ArrayList<Resource> inventory = new ArrayList<Resource>();
+        inventory = ResourceManager.getInstance().getInventoryArray();
+        int index = 0;
+        for(Resource currentResource:inventory){
+            index+=1;
         }
-        return allImages;
     }
 }
