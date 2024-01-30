@@ -14,6 +14,7 @@ public class InputController {
     private InputController(){}
     //----------------------------------------------------------------------------------
     private final StateManager stateManagerInstance = StateManager.getInstance();
+    private final MainPanel panelInstance = MainPanel.getInstance();
     private final Camera cameraInstance = Camera.getInstance();
     public void userInput(KeyEvent e){
 
@@ -25,6 +26,7 @@ public class InputController {
             } else {
                 cameraInstance.increaseZoom();
             }
+            panelInstance.repaint();
         }
     }
 }

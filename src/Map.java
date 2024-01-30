@@ -62,14 +62,18 @@ public final class Map {
             for(int xIndex = x;xIndex <= x+numOslotsWide; xIndex++){
                  if (xIndex >= mapWidth){
                      directionOutOfBounds = gameConstants.DIRECTION.RIGHT;
+                     return directionOutOfBounds;
                  } else if (xIndex < 0) {
                      directionOutOfBounds = gameConstants.DIRECTION.LEFT;
+                     return directionOutOfBounds;
                  }
             }
             if (yIndex >= mapHeight){
                 directionOutOfBounds = gameConstants.DIRECTION.DOWN;
+                return directionOutOfBounds;
             } else if (yIndex<0) {
                 directionOutOfBounds = gameConstants.DIRECTION.UP;
+                return directionOutOfBounds;
             }
         }
         return directionOutOfBounds;

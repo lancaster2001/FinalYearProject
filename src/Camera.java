@@ -36,7 +36,7 @@ public class Camera {
         outOfBoundsCheck();
     }
     public void increaseZoom(){
-        if ((zoom < gameConstants.mapWidth) && (zoom < gameConstants.mapHeight)){
+        if ((zoom < gameConstants.mapWidth-1) && (zoom < gameConstants.mapHeight-1)){
             zoom += 1;
         }
     }
@@ -46,9 +46,9 @@ public class Camera {
         }
     }
     private void outOfBoundsCheck(){
-        gameConstants.DIRECTION directionOutOfBounds = mapInstance.sectionOutOfBoundsCheck(coordinates[0],coordinates[1],numOslotsWide,numOslotsTall);
         boolean outOfBounds = true;
         while(outOfBounds){
+            gameConstants.DIRECTION directionOutOfBounds = mapInstance.sectionOutOfBoundsCheck(coordinates[0],coordinates[1],numOslotsWide,numOslotsTall);
             if (directionOutOfBounds == gameConstants.DIRECTION.NULL){
                 outOfBounds=false;
             }else if (directionOutOfBounds == gameConstants.DIRECTION.RIGHT){
