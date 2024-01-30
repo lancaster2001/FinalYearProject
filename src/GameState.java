@@ -20,7 +20,7 @@ public class GameState {
     private final ResourceManager resourceManagerInstance = ResourceManager.getInstance();
     void gameLoop(){
         Timer gameTimer = new Timer();
-        mapInstance.makeAllTowersAct();
+        mapInstance.act();
         panelInstance.repaint();
         TimerTask task = new TimerTask() {
             public static int i = 0;

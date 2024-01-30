@@ -85,10 +85,10 @@ public final class Map {
         }
         return directionOutOfBounds;
     }
-    public void makeAllTowersAct(){
+    public void act(){
         for(MapSlot slot:mapArray){
             if (slot.getTower() != null){
-                slot.getTower().act();
+                slot.getTower().allAct(slot.getTile(), ResourceManager.getInstance());
             }
         }
     }

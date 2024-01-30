@@ -7,6 +7,11 @@ public abstract class BaseTower {
     public void shoot(){
         System.out.println("base tower shot");
     }
+    protected void allAct(BaseTile tile, ResourceManager resourceManagerInstance){
+        act();
+        act(tile,resourceManagerInstance);
+    }
+    protected void act(BaseTile tile, ResourceManager resourceManagerInstance){}
     protected void act(){}
     public void setImage(BufferedImage image){this.image = image;}
     public BufferedImage getImage() {return image;}

@@ -8,7 +8,7 @@ public class Resource {
 
     public Resource(String name){
         this.name = name;
-        imageLink+=name;
+        imageLink+=name+"/image.png";
         image = AssetManager.getInstance().getImage(imageLink);
     }
     public boolean add(){

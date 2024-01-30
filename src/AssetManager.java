@@ -49,7 +49,7 @@ public class AssetManager {
             try {
                 desiredImage = ImageIO.read(new File(imageLink));
                 ImagesArray.add(desiredImage);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 System.out.print("error loading image");
                 throw new RuntimeException(e);
             }
@@ -72,7 +72,7 @@ public class AssetManager {
         ArrayList<BufferedImage> allImages = new ArrayList<BufferedImage>();
         if (directories != null) {
             for(String currentResource: directories) {
-                String theLink = dirLink + currentResource + "image.png";
+                String theLink = dirLink + currentResource + "/image.png";
                 ImagesArray.add(getImage(theLink));
                 ImageLinksArray.add(theLink);
             }

@@ -1,11 +1,5 @@
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FilenameFilter;
 import java.util.ArrayList;
-import java.util.Arrays;
-
-
 public class GameStateUI {
     //singleton-------------------------------------------------------------------------
     private static GameStateUI instance;
@@ -23,7 +17,7 @@ private final AssetManager assetManagerInstance = AssetManager.getInstance();
     public void drawUI(Graphics g){
         drawReasourcesMenu(g);
         drawTitle(g);
-
+        drawResources(g);
     }
     private void drawReasourcesMenu(Graphics g){
         g.setColor(gameConstants.resourceMenuBackgroundColour);
@@ -40,6 +34,10 @@ private final AssetManager assetManagerInstance = AssetManager.getInstance();
         int index = 0;
         for(Resource currentResource:inventory){
             index+=1;
+            int y = gameConstants.resourcesMenuY +(gameConstants.getResourcesMenuTitleSize*(index+1));
+            g.setFont(new Font("Arial", Font.BOLD, gameConstants.getResourcesMenuTitleSize));
+            g.drawImage(currentResource.getImage(), gameConstants.resourcesMenuX, y, gameConstants.getResourcesMenuTitleSize, gameConstants.getResourcesMenuTitleSize, null);
+            g.drawString(currentResource.getName() + ": "+currentResource.getQuantity(), gameConstants.resourcesMenuX+gameConstants.getResourcesMenuTitleSize, y);
         }
     }
 }
