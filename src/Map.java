@@ -92,5 +92,8 @@ public final class Map {
             }
         }
     }
+    public void setTower(BaseTower newTower, int x, int y){
+        getSlotFromCoord(x,y).setTower(newTower);
+    }
 
 }

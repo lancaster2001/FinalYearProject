@@ -1,6 +1,4 @@
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
+import java.awt.event.*;
 
 public class InputController {
     //singleton------------------------------------------------------------------------
@@ -16,6 +14,7 @@ public class InputController {
     private final StateManager stateManagerInstance = StateManager.getInstance();
     private final MainPanel panelInstance = MainPanel.getInstance();
     private final Camera cameraInstance = Camera.getInstance();
+    private final Map mapInstance = Map.getInstance();
     public void userInput(KeyEvent e){
 
     }
@@ -28,5 +27,10 @@ public class InputController {
             }
             panelInstance.repaint();
         }
+    }
+    public void userInput(MouseEvent e){
+        int slotx = e.getX()/cameraInstance.getwidthOfSlot();
+        int sloty = e.getY()/cameraInstance.getheightOfslot();
+        mapInstance.setTower(new DrillTower(), slotx, sloty);
     }
 }

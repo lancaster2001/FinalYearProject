@@ -1,11 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
+import java.awt.event.*;
 
-public class MainFrame extends JFrame implements KeyListener, MouseWheelListener {
+public class MainFrame extends JFrame implements KeyListener, MouseWheelListener, MouseListener {
 
     private final MainPanel PanelInstance = MainPanel.getInstance();
     private final JComponent draw = new JComponent(){};
@@ -33,29 +30,46 @@ public class MainFrame extends JFrame implements KeyListener, MouseWheelListener
         this.setVisible(true);
         addKeyListener(this);
         addMouseWheelListener(this);
+        addMouseListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
         this.add(PanelInstance);
         //PanelInstance.setBackground(Color.red);
         this.setVisible(true);
     }
-
+    @Override
+    public void mouseClicked(MouseEvent e) {}
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        InputController.getInstance().userInput(e);
+    }
     @Override
     public void keyTyped(KeyEvent e) {
 
     }
-
     @Override
     public void keyPressed(KeyEvent e) {
 
     }
-
     @Override
     public void keyReleased(KeyEvent e) {
 
     }
     @Override
-    public void mouseWheelMoved(MouseWheelEvent e) {
+    public void mousePressed(MouseEvent e) {
         InputController.getInstance().userInput(e);
+
+    }
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 }

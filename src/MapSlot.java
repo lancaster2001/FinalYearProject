@@ -10,6 +10,9 @@ public class MapSlot {
         tile = new GrassTile();
     }
 
+    public void setTower(BaseTower newTower){
+        tower = newTower;
+    }
     public int[] getCoordinates() {
         return coordinates;
     }

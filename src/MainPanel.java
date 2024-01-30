@@ -1,9 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-public final class MainPanel extends JPanel {
+public final class MainPanel extends JPanel{
     //singleton-------------------------------------------------------------------------
     private static MainPanel instance;
     private MainPanel(){
