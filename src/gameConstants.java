@@ -16,10 +16,11 @@ public interface gameConstants {
     enum DIRECTION {UP, DOWN, LEFT, RIGHT, NULL};
     //view----------------------------------------------------------------------------------------------------
     //UI------------------------------------------------------------------------------------------------------
-    int reasourcesMenuWidth = screenWidth / 10;
-    int reasourcesMenuHeight = screenHeight / 5;
-    int reasourcesMenuX = screenWidth - reasourcesMenuWidth;
-    int reasourcesMenuY = 0;
-    Color reasourceMenuBackgroundColour = Color.WHITE;
-
+    int resourcesMenuWidth = screenWidth / 10;
+    int resourcesMenuHeight = screenHeight / 5;
+    int getResourcesMenuTitleSize = 13;
+    int resourcesMenuX = screenWidth - resourcesMenuWidth;
+    int resourcesMenuY = 0;
+    Color resourceMenuBackgroundColour = Color.WHITE;
+    Color resourceMenuTitleColour = Color.black;
 }

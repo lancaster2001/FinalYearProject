@@ -18,10 +18,15 @@ public class GameStateUI {
         drawTitle(g);
     }
     private void drawReasourcesMenu(Graphics g){
-        g.setColor(gameConstants.reasourceMenuBackgroundColour);
-        g.fill3DRect(gameConstants.reasourcesMenuX, gameConstants.reasourcesMenuY, gameConstants.reasourcesMenuWidth, gameConstants.reasourcesMenuHeight,true);
+        g.setColor(gameConstants.resourceMenuBackgroundColour);
+        g.fill3DRect(gameConstants.resourcesMenuX, gameConstants.resourcesMenuY, gameConstants.resourcesMenuWidth, gameConstants.resourcesMenuHeight,true);
     }
     private void drawTitle(Graphics g){
-        g.drawString("Hello Text!", gameConstants.reasourcesMenuX, gameConstants.reasourcesMenuY);
+        g.setColor(gameConstants.resourceMenuTitleColour);
+        g.setFont(new Font("Arial", Font.BOLD, gameConstants.getResourcesMenuTitleSize));
+        g.drawString("Resources:", gameConstants.resourcesMenuX, gameConstants.resourcesMenuY +gameConstants.getResourcesMenuTitleSize);
+    }
+    private void drawResources(Graphics g){
+
     }
 }
