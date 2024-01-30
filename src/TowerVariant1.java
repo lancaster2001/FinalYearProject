@@ -5,7 +5,7 @@ public class TowerVariant1 extends BaseTower {
         number = values.fixedNumber;
         image = null;
         imageLink ="src/Towers/Tower1/image.png";
-        setup();
+
     }
     @Override
     public void shoot(){

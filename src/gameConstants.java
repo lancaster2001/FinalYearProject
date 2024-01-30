@@ -7,8 +7,8 @@ public interface gameConstants {
     Dimension screenSize = new Dimension(screenWidth,screenHeight);
 
     //MAP-------------------------------------------------------------------------------------------------------
-    int mapWidth = 10;
-    int mapHeight = 10;
+    int mapWidth = 100;
+    int mapHeight = 100;
     int mapSize = mapWidth*mapHeight;// 5x5 map should be 5*5
     //ENUMS--------------------------------------------------------------------------------------------------
     enum STATE {GAME,STARTMENU,GAMEOVER};

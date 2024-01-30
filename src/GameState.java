@@ -25,6 +25,7 @@ public class GameState {
     }
     void gameLoop(){
         Timer gameTimer = new Timer();
+        mapInstance.makeAllTowersAct();
         panelInstance.repaint();
         TimerTask task = new TimerTask() {
             public static int i = 0;

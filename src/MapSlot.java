@@ -1,12 +1,13 @@
 public class MapSlot {
     int[] coordinates = {-1,-1};//{x,y}
-    private BaseTower tower = new TowerVariant1();
-    private BaseTile tile = new GrassTile();
+    private BaseTower tower;
+    private BaseTile tile;
 
     public MapSlot(int x,int y){
         coordinates[0] = x;
         coordinates[1] = y;
-
+        tower = new TowerVariant1();
+        tile = new GrassTile();
     }
 
     public int[] getCoordinates() {

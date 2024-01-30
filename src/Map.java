@@ -1,3 +1,9 @@
+import com.sun.source.tree.CatchTree;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public final class Map {
@@ -14,17 +20,24 @@ public final class Map {
     }
     //----------------------------------------------------------------------------------
     private ArrayList<MapSlot> mapArray = new ArrayList<MapSlot>();
+    private ArrayList<String> ImageLinksArray = new ArrayList<String>();
+    private ArrayList<BufferedImage> ImagesArray = new ArrayList<BufferedImage>();
     private int mapWidth = 0;
     private int mapHeight = 0;
     private void setup(){
-
         mapWidth = gameConstants.mapWidth;
         mapHeight = gameConstants.mapHeight;
         for(int slotNumber = 0; slotNumber < (gameConstants.mapSize); slotNumber++){
-            mapArray.add(new MapSlot(slotNumber%gameConstants.mapWidth,(int) slotNumber/gameConstants.mapWidth));
+            int x = slotNumber%gameConstants.mapWidth;
+            int y = slotNumber/gameConstants.mapWidth;
+            mapArray.add(new MapSlot(x, y));
+            BaseTower currentTower = getSlotFromCoord(x, y).getTower();
+            BaseTile currentTile = getSlotFromCoord(x, y).getTile();
+            currentTower.setImage(getImage(currentTower.getImageLink()));
+            currentTile.setImage(getImage(currentTile.getImageLink()));
         }
     }
-    private MapSlot getSlotInCoord(int x, int y){
+    private MapSlot getSlotFromCoord(int x, int y){
         int desitredSlotNum = 0;
         MapSlot desiredSlot;
         desitredSlotNum += (y-1)*mapWidth;
@@ -47,7 +60,7 @@ public final class Map {
                 currentYindex = yIndex;
                 for(int xIndex = x;xIndex <= x+numOslotsWide; xIndex++){
                     currentXindex = xIndex;
-                    mapSection.add(getSlotInCoord(xIndex,yIndex));
+                    mapSection.add(getSlotFromCoord(xIndex,yIndex));
                 }
             }
         }catch (Exception IndexOutOfBoundsException){
@@ -55,6 +68,45 @@ public final class Map {
             System.out.println(sectionOutOfBoundsCheck(x,y,numOslotsWide,numOslotsTall).name());//todo test this works
         }
         return mapSection;
+    }
+    public BufferedImage getImage(String imageLink){
+        BufferedImage desiredImage = null;
+        boolean add = false;
+        int index = 0;
+        if (ImageLinksArray.size()!=0) {
+            for (String currentLink : ImageLinksArray) {
+                if (currentLink != imageLink) {
+                    if (index == ImageLinksArray.size() - 1) {
+                        add=true;
+                        try {
+                            desiredImage = ImageIO.read(new File(imageLink));
+                            ImagesArray.add(desiredImage);
+                        } catch (IOException e) {
+                            System.out.print("error loading image");
+                            throw new RuntimeException(e);
+                        }
+                    } else {
+                        index += 1;
+                    }
+                } else {
+                    desiredImage = ImagesArray.get(index);
+                }
+            }
+        }else{
+            ImageLinksArray.add(imageLink);
+            try {
+                desiredImage = ImageIO.read(new File(imageLink));
+                ImagesArray.add(desiredImage);
+            } catch (IOException e) {
+                System.out.print("error loading image");
+                throw new RuntimeException(e);
+            }
+        }
+
+        if(add){
+            ImageLinksArray.add(imageLink);
+        }
+        return desiredImage;
     }
     public gameConstants.DIRECTION sectionOutOfBoundsCheck(int x, int y, int numOslotsWide, int numOslotsTall){
         gameConstants.DIRECTION directionOutOfBounds = gameConstants.DIRECTION.NULL;
@@ -77,6 +129,13 @@ public final class Map {
             }
         }
         return directionOutOfBounds;
+    }
+    public void makeAllTowersAct(){
+        for(MapSlot slot:mapArray){
+            if (slot.getTower() != null){
+                slot.getTower().act();
+            }
+        }
     }
 
 }

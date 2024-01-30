@@ -1,7 +1,4 @@
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 public abstract class BaseTower {
     protected int number = 1;
@@ -10,14 +7,8 @@ public abstract class BaseTower {
     public void shoot(){
         System.out.println("base tower shot");
     }
-    protected void setup(){
-        try {
-            image = ImageIO.read(new File(imageLink));
-        } catch (IOException e) {
-            System.out.print("error loading tower image");
-            throw new RuntimeException(e);
-        }
-    }
-
+    protected void act(){}
+    public void setImage(BufferedImage image){this.image = image;}
     public BufferedImage getImage() {return image;}
+    public String getImageLink(){return imageLink;}
 }

@@ -7,7 +7,6 @@ public final class MainPanel extends JPanel {
     //singleton-------------------------------------------------------------------------
     private static MainPanel instance;
     private MainPanel(){
-        System.out.println("make sure you only print this once for mainPanel");
         this.setSize(gameConstants.screenSize.width, gameConstants.screenSize.height);
         this.setMinimumSize(new Dimension(600, 600));
         this.setVisible(true);
@@ -43,8 +42,8 @@ public final class MainPanel extends JPanel {
     }
 
     private void drawTiles(Graphics g,ArrayList<MapSlot> map,int numOslotsWide, int numOslotsTall, int widthOfSlot, int heightOfslot){
-        for (int yIndex = 0;yIndex <= numOslotsTall; yIndex++){
-            for(int xIndex = 0;xIndex <= numOslotsWide; xIndex++){
+        for (int yIndex = 0;yIndex < numOslotsTall; yIndex++){
+            for(int xIndex = 0;xIndex < numOslotsWide; xIndex++){
                 int index = yIndex*numOslotsWide+xIndex;
                 int x = xIndex*widthOfSlot;
                 int y = yIndex*heightOfslot;
