@@ -21,6 +21,7 @@ public final class MainPanel extends JPanel {
 //----------------------------------------------------------------------------------------
     public ArrayList<MapSlot> mapArray = new ArrayList<MapSlot>();
     private final Camera cameraInstance = Camera.getInstance();
+    private final GameStateUI gameStateUIInstance = GameStateUI.getInstance();
     private gameConstants.STATE state;
 
     @Override
@@ -31,6 +32,7 @@ public final class MainPanel extends JPanel {
         int heightOfslot = cameraInstance.getheightOfslot();
         super.paintComponent(g);
         drawMap(g,cameraInstance.getViewableMap(),numOslotsWide,numOslotsTall,widthOfSlot,heightOfslot);
+        gameStateUIInstance.drawUI(g);
     }
 
     public void setMapArray(ArrayList<MapSlot> givenArray){
@@ -52,8 +54,8 @@ public final class MainPanel extends JPanel {
         }
     }
     private void drawTowers(Graphics g,ArrayList<MapSlot> map,int numOslotsWide, int numOslotsTall, int widthOfSlot, int heightOfslot){
-        for (int yIndex = 0;yIndex <= numOslotsTall; yIndex++){
-            for(int xIndex = 0;xIndex <= numOslotsWide; xIndex++){
+        for (int yIndex = 0;yIndex < numOslotsTall; yIndex++){
+            for(int xIndex = 0;xIndex < numOslotsWide; xIndex++){
                 int index = yIndex*numOslotsWide+xIndex;
                 int x = xIndex*widthOfSlot;
                 int y = yIndex*heightOfslot;

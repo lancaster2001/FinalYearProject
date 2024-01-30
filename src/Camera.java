@@ -17,7 +17,7 @@ public class Camera {
         return instance;
     }
     //------------------------------------------------------------------
-    private int zoom = 3;//number of tiles in width
+    private int zoom = gameConstants.defaultZoom;//number of tiles in width
     private int numOslotsWide = zoom;
     private int numOslotsTall = zoom;
     private int[] coordinates = {0,0};//{x,y}
