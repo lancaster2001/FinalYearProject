@@ -8,7 +8,7 @@ public abstract class BaseTile {
     protected BufferedImage image;
     protected String resource = "";
 
-    protected void setup(){}
+    protected void setup(){AssetManager.getInstance().getImage(imageLink);}
     public void setImage(BufferedImage image){this.image = image;}
     public BufferedImage getImage() {return image;}
     public String getImageLink(){return imageLink;}

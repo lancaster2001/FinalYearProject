@@ -7,8 +7,8 @@ public class Camera {
     //singleton------------------------------------------------------
     private static Camera instance;
     private Camera(){
-        coordinates[0] = 1;
-        coordinates[1] = 1;
+        zoom = gameConstants.defaultZoom;
+        coordinates = gameConstants.defaultCameraCoordinates;
     }
     public static Camera getInstance(){
         if (instance == null) {
@@ -38,11 +38,13 @@ public class Camera {
     public void increaseZoom(){
         if ((zoom < gameConstants.mapWidth-1) && (zoom < gameConstants.mapHeight-1)){
             zoom += 1;
+            calculateValues();
         }
     }
     public void decreaseZoom(){
         if (zoom > 1){
             zoom -= 1;
+            calculateValues();
         }
     }
     private void outOfBoundsCheck(){
@@ -69,6 +71,12 @@ public class Camera {
     public int getwidthOfSlot() {return widthOfSlot;}
     public int getNumOslotsWide(){return numOslotsWide;}
     public int getNumOslotsTall() {return numOslotsTall;}
+    public MapSlot getMapslot(int x, int y){
+        MapSlot desiredSlot;
+        int index = ((y-1)*numOslotsWide) + (x-1);
+        desiredSlot = viewableMap.get(index);
+        return desiredSlot;
+    }
 
     public ArrayList<MapSlot> getViewableMap() {
         calculateValues();

@@ -21,14 +21,15 @@ public final class Map {
         mapWidth = gameConstants.mapWidth;
         mapHeight = gameConstants.mapHeight;
         for(int slotNumber = 0; slotNumber < (gameConstants.mapSize); slotNumber++){
-            int x = slotNumber%gameConstants.mapWidth;
-            int y = slotNumber/gameConstants.mapWidth;
+            int x = (slotNumber%gameConstants.mapWidth)+1;
+            int y = (slotNumber/gameConstants.mapWidth)+1;
             mapArray.add(new MapSlot(x, y));
             BaseTower currentTower = getSlotFromCoord(x, y).getTower();
             BaseTile currentTile = getSlotFromCoord(x, y).getTile();
             currentTower.setImage(assetManagerInstance.getImage(currentTower.getImageLink()));
             currentTile.setImage(assetManagerInstance.getImage(currentTile.getImageLink()));
         }
+        System.out.println("");
     }
     private MapSlot getSlotFromCoord(int x, int y){
         int desitredSlotNum = 0;
@@ -49,13 +50,20 @@ public final class Map {
         int currentYindex = -1;
         int currentXindex = -1;
         try {
-            for (int yIndex = y;yIndex <= y+numOslotsTall; yIndex++){
+            for (int yIndex = y;yIndex <(y+numOslotsTall);yIndex ++){
+                currentYindex = yIndex;
+                for (int xIndex = x;xIndex <(x+numOslotsWide);xIndex ++){
+                    currentXindex = xIndex;
+                    mapSection.add(getSlotFromCoord(xIndex,yIndex));
+                }
+            }
+            /*for (int yIndex = y;yIndex <= y+numOslotsTall; yIndex++){
                 currentYindex = yIndex;
                 for(int xIndex = x;xIndex <= x+numOslotsWide; xIndex++){
                     currentXindex = xIndex;
                     mapSection.add(getSlotFromCoord(xIndex,yIndex));
                 }
-            }
+            }*/
         }catch (Exception IndexOutOfBoundsException){
             System.out.println("out of bounds error at get map section\nyIndex:"+currentYindex+"\nxIndex:"+currentXindex);
             System.out.println(sectionOutOfBoundsCheck(x,y,numOslotsWide,numOslotsTall).name());//todo test this works
@@ -65,7 +73,25 @@ public final class Map {
 
     public gameConstants.DIRECTION sectionOutOfBoundsCheck(int x, int y, int numOslotsWide, int numOslotsTall){
         gameConstants.DIRECTION directionOutOfBounds = gameConstants.DIRECTION.NULL;
-        for (int yIndex = y;yIndex <= y+numOslotsTall; yIndex++){
+        for (int yIndex = y;yIndex <(y+numOslotsTall-1);yIndex ++){
+            for (int xIndex = x;xIndex <(x+numOslotsWide-1);xIndex ++){
+                if (xIndex >= mapWidth){
+                    directionOutOfBounds = gameConstants.DIRECTION.RIGHT;
+                    return directionOutOfBounds;
+                } else if (xIndex < 0) {
+                    directionOutOfBounds = gameConstants.DIRECTION.LEFT;
+                    return directionOutOfBounds;
+                }
+            }
+            if (yIndex >= mapHeight){
+                directionOutOfBounds = gameConstants.DIRECTION.DOWN;
+                return directionOutOfBounds;
+            } else if (yIndex<0) {
+                directionOutOfBounds = gameConstants.DIRECTION.UP;
+                return directionOutOfBounds;
+            }
+        }
+        /*for (int yIndex = y;yIndex <= y+numOslotsTall; yIndex++){
             for(int xIndex = x;xIndex <= x+numOslotsWide; xIndex++){
                  if (xIndex >= mapWidth){
                      directionOutOfBounds = gameConstants.DIRECTION.RIGHT;
@@ -82,9 +108,10 @@ public final class Map {
                 directionOutOfBounds = gameConstants.DIRECTION.UP;
                 return directionOutOfBounds;
             }
-        }
+        }*/
         return directionOutOfBounds;
     }
+
     public void act(){
         for(MapSlot slot:mapArray){
             if (slot.getTower() != null){

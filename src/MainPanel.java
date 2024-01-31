@@ -49,6 +49,8 @@ public final class MainPanel extends JPanel{
                 int x = xIndex*widthOfSlot;
                 int y = yIndex*heightOfslot;
                 g.drawImage(map.get(index).getTile().getImage(), x, y, widthOfSlot, heightOfslot, null);
+                g.setColor(Color.BLACK);
+                g.drawRect(x, y, widthOfSlot, heightOfslot);
             }
         }
     }
@@ -58,7 +60,9 @@ public final class MainPanel extends JPanel{
                 int index = yIndex*numOslotsWide+xIndex;
                 int x = xIndex*widthOfSlot;
                 int y = yIndex*heightOfslot;
-                g.drawImage(map.get(index).getTower().image, x, y, widthOfSlot, heightOfslot, null);
+                g.drawImage(map.get(index).getTower().getImage(), x, y, widthOfSlot, heightOfslot, null);
+                g.setColor(Color.BLACK);
+                g.drawRect(x, y, widthOfSlot, heightOfslot);
             }
         }
     }

@@ -1,3 +1,5 @@
+import java.io.ObjectInputStream;
+
 public class MapSlot {
     int[] coordinates = {-1,-1};//{x,y}
     private BaseTower tower;

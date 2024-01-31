@@ -13,7 +13,11 @@ public abstract class BaseTower {
     }
     protected void act(BaseTile tile, ResourceManager resourceManagerInstance){}
     protected void act(){}
-    public void setImage(BufferedImage image){this.image = image;}
-    public BufferedImage getImage() {return image;}
-    public String getImageLink(){return imageLink;}
+    protected void setImage(BufferedImage image){this.image = image;}
+    protected String getImageLink(){return imageLink;}
+    protected BufferedImage getImage() {return image;}
+
+    protected int getNumber() {
+        return number;
+    }
 }

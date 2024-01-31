@@ -42,6 +42,7 @@ public class AssetManager {
                     }
                 } else {
                     desiredImage = ImagesArray.get(index);
+                    return desiredImage;
                 }
             }
         }else{

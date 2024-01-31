@@ -29,8 +29,11 @@ public class InputController {
         }
     }
     public void userInput(MouseEvent e){
-        int slotx = e.getX()/cameraInstance.getwidthOfSlot();
-        int sloty = e.getY()/cameraInstance.getheightOfslot();
-        mapInstance.setTower(new DrillTower(), slotx, sloty);
+        int titleHeight = MainFrame.getInstance().getHeight() - panelInstance.getHeight();
+        int slotx = e.getX()/cameraInstance.getwidthOfSlot()+1;
+        System.out.println(slotx);
+        int sloty = (e.getY()-titleHeight)/cameraInstance.getheightOfslot()+1;
+        MapSlot clickedSlot = cameraInstance.getMapslot(slotx, sloty);
+        mapInstance.setTower(new DrillTower(), clickedSlot.getCoordinates()[0], clickedSlot.getCoordinates()[1]);
     }
 }

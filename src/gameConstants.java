@@ -5,8 +5,9 @@ public interface gameConstants {
     int screenWidth = gd.getDisplayMode().getWidth();
     int screenHeight = gd.getDisplayMode().getHeight();
     Dimension screenSize = new Dimension(screenWidth, screenHeight);
+    //CAMERA-------------------------------------------------------------------------------------------------
     int defaultZoom = 20;
-
+    int[] defaultCameraCoordinates = {2,2};
     //MAP-------------------------------------------------------------------------------------------------------
     int mapWidth = 100;
     int mapHeight = 100;
