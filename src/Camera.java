@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Camera {
@@ -44,12 +45,16 @@ public class Camera {
     public void increaseZoom(){
         if ((zoom < gameConstants.mapWidth-1) && (zoom < gameConstants.mapHeight-1)){
             zoom += 1;
+            x-=1;
+            y-=1;
             calculateValues();
         }
     }
     public void decreaseZoom(){
         if (zoom > 1){
             zoom -= 1;
+            x+=1;
+            y+=1;
             calculateValues();
         }
     }
@@ -104,5 +109,9 @@ public class Camera {
                 break;
         }
         outOfBoundsCheck();
+    }
+    public boolean isOnCamera(int x,int y){
+        Rectangle checker = new Rectangle(this.x,this.y,numOslotsWide,numOslotsTall);
+        return checker.contains(x,y);
     }
 }

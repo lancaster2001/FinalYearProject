@@ -6,11 +6,11 @@ public abstract class BaseTower {
     public void shoot(){
         System.out.println("base tower shot");
     }
-    protected void allAct(BaseTile tile, ResourceManager resourceManagerInstance){
-        act();
-        act(tile,resourceManagerInstance);
+    protected void tick(BaseTile tile,double tickMultiplier){
+
     }
-    protected void act(BaseTile tile, ResourceManager resourceManagerInstance){}
-    protected void act(){}
+    protected void tick(double tickMultiplier){
+
+    }
     protected String getImageLink(){return imageLink;}
 }

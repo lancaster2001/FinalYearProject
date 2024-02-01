@@ -1,5 +1,7 @@
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -13,27 +15,30 @@ public class GameState {
         return instance;
     }
     private GameState(){
-        actloop();
+        actLoop();
         screenRefresher();
         tickLoop();
 
     }
     //----------------------------------------------------------------------------------
+    private int tickRate = gameConstants.gameTickRate;
     private final MainFrame frameInstance = MainFrame.getInstance();
     public final MainPanel panelInstance = frameInstance.getPanelInstance();
     private final Map mapInstance = Map.getInstance();
     private final Camera cameraInstance = Camera.getInstance();
+    private final EnemyManager enemyManagerInstance = EnemyManager.getInstance();
     private final ResourceManager resourceManagerInstance = ResourceManager.getInstance();
-    private final ArrayList<BaseEnemy> enemyList = new ArrayList<>();
-    void actloop(){
+
+    void actLoop(){
         Timer actTimer = new Timer();
-        mapInstance.act();
+        //mapInstance.act();
+        //enemyManagerInstance.randomEnemyChance();
         TimerTask task = new TimerTask() {
             public static int i = 0;
             @Override
             public void run() {
                 System.out.println("Timer ran " + ++i);
-                actloop();
+                actLoop();
             }
 
         };
@@ -52,16 +57,15 @@ public class GameState {
     }
     private void tickLoop(){
         Timer tickTimer = new Timer();
-        for(BaseEnemy enemy: enemyList){
-            enemy.act();
-        }
+        mapInstance.tick(tickRate/1000.0);
+        enemyManagerInstance.tick(tickRate/1000.0);
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 tickLoop();
             }
         };
-        tickTimer.schedule(task,1000/30 );
+        tickTimer.schedule(task,tickRate);
     }
     public void userInput(KeyEvent e){
         if(e.getKeyChar() == gameConstants.moveCameraUp){

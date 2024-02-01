@@ -27,6 +27,10 @@ public class GameStateDrawer {
                 int y = yIndex*heightOfslot;
                 if(map.get(index).getTile() != null){
                     g.drawImage(assetManagerInstance.getImage(map.get(index).getTile().getImageLink()), x, y, widthOfSlot, heightOfslot, null);
+
+                    g.setColor(gameConstants.resourceMenuTitleColour);
+                    g.setFont(new Font("Arial", Font.BOLD, 20));
+                    //g.drawString(map.get(index).getCoordinates()[0]+", "+map.get(index).getCoordinates()[1], x, y + gameConstants.ResourcesMenuTitleSize);
                 }
                 g.setColor(Color.BLACK);
                 g.drawRect(x, y, widthOfSlot, heightOfslot);

@@ -11,7 +11,11 @@ public class MapSlot {
         //tower = new TowerVariant1();
         tile = new GrassTile();
     }
-
+    public void tick(double tickMultiplier){
+        if(tower!=null){
+            tower.tick(tile,tickMultiplier);
+        }
+    }
     public void setTower(BaseTower newTower){
         tower = newTower;
     }

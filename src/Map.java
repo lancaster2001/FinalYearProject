@@ -87,11 +87,9 @@ public final class Map {
         return directionOutOfBounds;
     }
 
-    public void act(){
+    public void tick(double tickMultiplier){
         for(MapSlot slot:mapArray){
-            if (slot.getTower() != null){
-                slot.getTower().allAct(slot.getTile(), ResourceManager.getInstance());
-            }
+            slot.tick(tickMultiplier);
         }
     }
 
