@@ -1,4 +1,6 @@
+import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class InputController {
     //singleton------------------------------------------------------------------------
@@ -15,6 +17,7 @@ public class InputController {
     private final MainPanel panelInstance = MainPanel.getInstance();
     private final Camera cameraInstance = Camera.getInstance();
     private final Map mapInstance = Map.getInstance();
+    int titleHeight = MainFrame.getInstance().getHeight() - panelInstance.getHeight();
     public void userInput(KeyEvent e){
 
     }
@@ -29,11 +32,16 @@ public class InputController {
         }
     }
     public void userInput(MouseEvent e){
-        int titleHeight = MainFrame.getInstance().getHeight() - panelInstance.getHeight();
-        int slotx = e.getX()/cameraInstance.getwidthOfSlot()+1;
-        System.out.println(slotx);
-        int sloty = (e.getY()-titleHeight)/cameraInstance.getheightOfslot()+1;
-        MapSlot clickedSlot = cameraInstance.getMapslot(slotx, sloty);
-        mapInstance.setTower(new DrillTower(), clickedSlot.getCoordinates()[0], clickedSlot.getCoordinates()[1]);
+        titleHeight = MainFrame.getInstance().getHeight() - panelInstance.getHeight();
+        boolean check = false;
+        if(GameStateUI.getInstance().takeInput(e.getPoint())){
+            check = true;
+        }else {
+
+            int slotx = e.getX()/cameraInstance.getwidthOfSlot()+1;
+            int sloty = (e.getY()-titleHeight)/cameraInstance.getheightOfslot()+1;
+            MapSlot clickedSlot = cameraInstance.getMapslot(slotx, sloty);
+            mapInstance.setTower(new DrillTower(), clickedSlot.getCoordinates()[0], clickedSlot.getCoordinates()[1]);
+        }
     }
 }

@@ -5,6 +5,7 @@ public interface gameConstants {
     int screenWidth = gd.getDisplayMode().getWidth();
     int screenHeight = gd.getDisplayMode().getHeight();
     Dimension screenSize = new Dimension(screenWidth, screenHeight);
+
     //CAMERA-------------------------------------------------------------------------------------------------
     int defaultZoom = 20;
     int[] defaultCameraCoordinates = {2,2};
@@ -19,9 +20,18 @@ public interface gameConstants {
     //UI------------------------------------------------------------------------------------------------------
     int resourcesMenuWidth = screenWidth / 10;
     int resourcesMenuHeight = screenHeight / 5;
-    int getResourcesMenuTitleSize = 13;
+    int ResourcesMenuTitleSize = 13;
     int resourcesMenuX = screenWidth - resourcesMenuWidth;
     int resourcesMenuY = 0;
     Color resourceMenuBackgroundColour = Color.WHITE;
     Color resourceMenuTitleColour = Color.black;
+    int buildMenuWidth = screenWidth;
+    int buildMenuHeight = screenHeight / 7;
+    int buildMenux = 0;
+    int buildMenuy = screenHeight-buildMenuHeight;
+    Color buildMenuBackgroundColour = Color.white;
+    int numberOfElementsInBuildMenu = buildMenuWidth/((buildMenuHeight/10)*12);
+    int spaceBetweenBuildMenuElements = (buildMenuHeight/10);
+    int buildMenuElementWidth = ((buildMenuHeight/10)*8);
+    int buildMenuElementHeight = ((buildMenuHeight/10)*8);
 }

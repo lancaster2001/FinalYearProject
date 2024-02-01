@@ -6,7 +6,7 @@ public final class MainPanel extends JPanel{
     //singleton-------------------------------------------------------------------------
     private static MainPanel instance;
     private MainPanel(){
-        this.setSize(gameConstants.screenSize.width, gameConstants.screenSize.height);
+        this.setSize(gameConstants.screenSize.width, gameConstants.screenSize.height-200);
         this.setMinimumSize(new Dimension(600, 600));
         this.setVisible(true);
         this.setOpaque(false);
@@ -30,40 +30,8 @@ public final class MainPanel extends JPanel{
         int widthOfSlot = cameraInstance.getwidthOfSlot();
         int heightOfslot = cameraInstance.getheightOfslot();
         super.paintComponent(g);
-        drawMap(g,cameraInstance.getViewableMap(),numOslotsWide,numOslotsTall,widthOfSlot,heightOfslot);
+        GameStateDrawer.getInstance().drawMap(g,cameraInstance.getViewableMap(),numOslotsWide,numOslotsTall,widthOfSlot,heightOfslot);
         gameStateUIInstance.drawUI(g);
     }
 
-    public void setMapArray(ArrayList<MapSlot> givenArray){
-        mapArray = givenArray;
-    }
-    private void drawMap(Graphics g,ArrayList<MapSlot> map,int numOslotsWide, int numOslotsTall, int widthOfSlot, int heightOfslot){
-        drawTiles(g,map,numOslotsWide,numOslotsTall,widthOfSlot,heightOfslot);
-        drawTowers(g,map,numOslotsWide,numOslotsTall,widthOfSlot,heightOfslot);
-    }
-
-    private void drawTiles(Graphics g,ArrayList<MapSlot> map,int numOslotsWide, int numOslotsTall, int widthOfSlot, int heightOfslot){
-        for (int yIndex = 0;yIndex < numOslotsTall; yIndex++){
-            for(int xIndex = 0;xIndex < numOslotsWide; xIndex++){
-                int index = yIndex*numOslotsWide+xIndex;
-                int x = xIndex*widthOfSlot;
-                int y = yIndex*heightOfslot;
-                g.drawImage(map.get(index).getTile().getImage(), x, y, widthOfSlot, heightOfslot, null);
-                g.setColor(Color.BLACK);
-                g.drawRect(x, y, widthOfSlot, heightOfslot);
-            }
-        }
-    }
-    private void drawTowers(Graphics g,ArrayList<MapSlot> map,int numOslotsWide, int numOslotsTall, int widthOfSlot, int heightOfslot){
-        for (int yIndex = 0;yIndex < numOslotsTall; yIndex++){
-            for(int xIndex = 0;xIndex < numOslotsWide; xIndex++){
-                int index = yIndex*numOslotsWide+xIndex;
-                int x = xIndex*widthOfSlot;
-                int y = yIndex*heightOfslot;
-                g.drawImage(map.get(index).getTower().getImage(), x, y, widthOfSlot, heightOfslot, null);
-                g.setColor(Color.BLACK);
-                g.drawRect(x, y, widthOfSlot, heightOfslot);
-            }
-        }
-    }
 }
