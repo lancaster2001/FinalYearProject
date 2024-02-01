@@ -19,15 +19,15 @@ public class UIBuildMenu{
     }
     //----------------------------------------------------------------------------------------
     private final AssetManager assetManagerInstance = AssetManager.getInstance();
-    private Rectangle buildMenuBackground = new Rectangle(gameConstants.buildMenux, gameConstants.buildMenuy, gameConstants.buildMenuWidth, gameConstants.buildMenuHeight);
+    private final Rectangle buildMenuBackground = new Rectangle(gameConstants.buildMenux, gameConstants.buildMenuy, gameConstants.buildMenuWidth, gameConstants.buildMenuHeight);
     private ArrayList<BaseTower> buildMenu = new ArrayList<BaseTower>();
     private boolean buildMenuState = true;
     private final ArrayList<String> ImageLinksArray = new ArrayList<String>();
     private final ArrayList<BufferedImage> ImagesArray = new ArrayList<BufferedImage>();
-    private int numberOfElementsInBuildMenu = gameConstants.numberOfElementsInBuildMenu;
-    private int spaceBetweenBuildMenuElements = gameConstants.spaceBetweenBuildMenuElements;
-    private int buildMenuElementWidth = gameConstants.buildMenuElementWidth;
-    private int buildMenuElementHeight = gameConstants.buildMenuElementHeight;
+    private final int numberOfElementsInBuildMenu = gameConstants.numberOfElementsInBuildMenu;
+    private final int spaceBetweenBuildMenuElements = gameConstants.spaceBetweenBuildMenuElements;
+    private final int buildMenuElementWidth = gameConstants.buildMenuElementWidth;
+    private final int buildMenuElementHeight = gameConstants.buildMenuElementHeight;
     private ArrayList<Rectangle> buildMenuIconHitBox = new ArrayList<Rectangle>();
     private int selectedBuildMenuElement = -1;
     private void loadBuildMenu() {

@@ -39,9 +39,9 @@ public class InputController {
             int sloty = (e.getY()-titleHeight)/cameraInstance.getheightOfslot()+1;
             MapSlot clickedSlot = cameraInstance.getMapslot(slotx, sloty);
             if(UIBuildMenu.getInstance().getSelectedBuildMenuElement()==2){
-                mapInstance.setTower(new DrillTower(), clickedSlot.getCoordinates()[0], clickedSlot.getCoordinates()[1]);
+                mapInstance.setTower(new DrillTower(), clickedSlot.getX(), clickedSlot.getY());
             }else if(UIBuildMenu.getInstance().getSelectedBuildMenuElement()==3) {
-                mapInstance.setTower(new TowerVariant1(), clickedSlot.getCoordinates()[0], clickedSlot.getCoordinates()[1]);
+                mapInstance.setTower(new TowerVariant1(), clickedSlot.getX(), clickedSlot.getY());
             }
         }
 

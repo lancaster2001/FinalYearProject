@@ -24,11 +24,6 @@ public final class Map {
             int x = (slotNumber%gameConstants.mapWidth)+1;
             int y = (slotNumber/gameConstants.mapWidth)+1;
             mapArray.add(new MapSlot(x, y));
-            BaseTower currentTower = getSlotFromCoord(x, y).getTower();
-            BaseTile currentTile = getSlotFromCoord(x, y).getTile();
-
-            //currentTower.setImage(assetManagerInstance.getImage(currentTower.getImageLink()));
-            //currentTile.setImage(assetManagerInstance.getImage(currentTile.getImageLink()));
         }
     }
     private MapSlot getSlotFromCoord(int x, int y){

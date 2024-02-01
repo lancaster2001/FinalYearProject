@@ -28,12 +28,6 @@ public abstract class BaseEnemy {
     private void calculateDirection(){
         pose.setTheta(calculateDirectionToTarget());
     }
-    private double calculateDirectionToTarget(Point target){
-        double atan2_x =((double)target.x)-pose.getX();
-        double atan2_y =((double)target.y)-pose.getY();
-        double rot1 = Math.atan2(atan2_y,atan2_x)-pose.getTheta();
-        return rot1;
-    }
     private double calculateDirectionToTarget(){
         double atan2_x =((double)targetLocation.x)-pose.getX();
         double atan2_y =((double)targetLocation.y)-pose.getY();
@@ -110,5 +104,9 @@ public abstract class BaseEnemy {
     }
     public boolean getIsOnScreen(){
         return isOnScreen;
+    }
+
+    public Pose getPose() {
+        return pose;
     }
 }
