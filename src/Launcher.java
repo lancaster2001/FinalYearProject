@@ -10,7 +10,7 @@ public class Launcher {
         }
         return instance;
     }
-    private Launcher(){gameStateInstance.gameLoop();}
+    private Launcher(){}
     //----------------------------------------------------------------------------------
     GameState gameStateInstance = GameState.getInstance();
     public static void main(String[] args) {

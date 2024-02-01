@@ -1,6 +1,3 @@
-import com.sun.source.tree.ReturnTree;
-
-import java.nio.charset.CoderResult;
 import java.util.ArrayList;
 
 public class Camera {
@@ -8,7 +5,8 @@ public class Camera {
     private static Camera instance;
     private Camera(){
         zoom = gameConstants.defaultZoom;
-        coordinates = gameConstants.defaultCameraCoordinates;
+        x = gameConstants.defaultCameraCoordinates[0];
+        y = gameConstants.defaultCameraCoordinates[1];
     }
     public static Camera getInstance(){
         if (instance == null) {
@@ -20,19 +18,27 @@ public class Camera {
     private int zoom = gameConstants.defaultZoom;//number of tiles in width
     private int numOslotsWide = zoom;
     private int numOslotsTall = zoom;
-    private int[] coordinates = {0,0};//{x,y}
+    private int x;
+    private int y;
     private int widthOfSlot;
     private int heightOfslot;
     private ArrayList<MapSlot> viewableMap = new ArrayList<MapSlot>();
     private Map mapInstance = Map.getInstance();
-    public int[] getCoordinates(){return coordinates;}
+    public int getX(){
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
     public int getZoom(){return zoom;}
     private void calculateValues(){
         numOslotsWide = zoom;
         numOslotsTall = zoom;
         widthOfSlot = gameConstants.screenWidth/zoom;
         heightOfslot = gameConstants.screenHeight/zoom;
-        viewableMap = mapInstance.getMapSection(coordinates[0], coordinates[1],numOslotsWide,numOslotsTall);
+        viewableMap = mapInstance.getMapSection(x, y,numOslotsWide,numOslotsTall);
         outOfBoundsCheck();
     }
     public void increaseZoom(){
@@ -50,17 +56,17 @@ public class Camera {
     private void outOfBoundsCheck(){
         boolean outOfBounds = true;
         while(outOfBounds){
-            gameConstants.DIRECTION directionOutOfBounds = mapInstance.sectionOutOfBoundsCheck(coordinates[0],coordinates[1],numOslotsWide,numOslotsTall);
+            gameConstants.DIRECTION directionOutOfBounds = mapInstance.sectionOutOfBoundsCheck(x,y,numOslotsWide,numOslotsTall);
             if (directionOutOfBounds == gameConstants.DIRECTION.NULL){
                 outOfBounds=false;
             }else if (directionOutOfBounds == gameConstants.DIRECTION.RIGHT){
-                coordinates[0]-=1;
+                x-=1;
             }else if (directionOutOfBounds == gameConstants.DIRECTION.LEFT){
-                coordinates[0]+=1;
+                x+=1;
             }else if (directionOutOfBounds == gameConstants.DIRECTION.UP){
-                coordinates[1]+=1;
+                y+=1;
             }else if (directionOutOfBounds == gameConstants.DIRECTION.DOWN){
-                coordinates[1]-=1;
+                y-=1;
             }else{
                 System.out.println("error at out of bounds check in camera");
                 outOfBounds = false;
@@ -81,5 +87,22 @@ public class Camera {
     public ArrayList<MapSlot> getViewableMap() {
         calculateValues();
         return viewableMap;
+    }
+    public void move(gameConstants.DIRECTION direction){
+        switch(direction) {
+            case UP:
+                y-=1;
+                break;
+            case DOWN:
+                y+=1;
+                break;
+            case LEFT:
+                x-=1;
+                break;
+            case RIGHT:
+                x+=1;
+                break;
+        }
+        outOfBoundsCheck();
     }
 }

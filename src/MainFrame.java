@@ -46,7 +46,7 @@ public class MainFrame extends JFrame implements KeyListener, MouseWheelListener
     }
     @Override
     public void keyTyped(KeyEvent e) {
-
+        InputController.getInstance().userInput(e);
     }
     @Override
     public void keyPressed(KeyEvent e) {

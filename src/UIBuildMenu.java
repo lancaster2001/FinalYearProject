@@ -75,12 +75,6 @@ public class UIBuildMenu{
             }else{index += 1;}
         }
     }
-    public boolean getBuildMenuState() {
-        return buildMenuState;
-    }
-    public Rectangle getBuildMenuBackground() {
-        return buildMenuBackground;
-    }
     public boolean takeInput(Point p) {
         if (buildMenuState) {
             if (buildMenuBackground.contains(p)) {
@@ -98,5 +92,14 @@ public class UIBuildMenu{
             }
         }
         return false;
+    }
+    public boolean getBuildMenuState() {
+        return buildMenuState;
+    }
+    public Rectangle getBuildMenuBackground() {
+        return buildMenuBackground;
+    }
+    public int getSelectedBuildMenuElement() {
+        return selectedBuildMenuElement;
     }
 }

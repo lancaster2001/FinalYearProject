@@ -3,7 +3,6 @@ public class TowerVariant1 extends BaseTower {
 
     public TowerVariant1(){
         number = values.fixedNumber;
-        image = null;
         imageLink ="src/Towers/Tower1/image.png";
 
     }

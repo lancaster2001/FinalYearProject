@@ -16,7 +16,7 @@ public class InputController {
     private final Map mapInstance = Map.getInstance();
     int titleHeight = MainFrame.getInstance().getHeight() - panelInstance.getHeight();
     public void userInput(KeyEvent e){
-
+       GameState.getInstance().userInput(e);
     }
     public void userInput(MouseWheelEvent e){
         if (stateManagerInstance.getCurrentState() == gameConstants.STATE.GAME){
@@ -38,7 +38,12 @@ public class InputController {
             int slotx = e.getX()/cameraInstance.getwidthOfSlot()+1;
             int sloty = (e.getY()-titleHeight)/cameraInstance.getheightOfslot()+1;
             MapSlot clickedSlot = cameraInstance.getMapslot(slotx, sloty);
-            mapInstance.setTower(new DrillTower(), clickedSlot.getCoordinates()[0], clickedSlot.getCoordinates()[1]);
+            if(UIBuildMenu.getInstance().getSelectedBuildMenuElement()==2){
+                mapInstance.setTower(new DrillTower(), clickedSlot.getCoordinates()[0], clickedSlot.getCoordinates()[1]);
+            }else if(UIBuildMenu.getInstance().getSelectedBuildMenuElement()==3) {
+                mapInstance.setTower(new TowerVariant1(), clickedSlot.getCoordinates()[0], clickedSlot.getCoordinates()[1]);
+            }
         }
+
     }
 }

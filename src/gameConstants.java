@@ -5,7 +5,11 @@ public interface gameConstants {
     int screenWidth = gd.getDisplayMode().getWidth();
     int screenHeight = gd.getDisplayMode().getHeight();
     Dimension screenSize = new Dimension(screenWidth, screenHeight);
-
+    //CONTROLS----------------------------------------------------------------------------------------------
+    char moveCameraUp = 'w';
+    char moveCameraDown = 's';
+    char moveCameraLeft = 'a';
+    char moveCameraRight = 'd';
     //CAMERA-------------------------------------------------------------------------------------------------
     int defaultZoom = 20;
     int[] defaultCameraCoordinates = {2,2};

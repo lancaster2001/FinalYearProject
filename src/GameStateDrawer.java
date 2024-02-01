@@ -26,7 +26,6 @@ public class GameStateDrawer {
                 int x = xIndex*widthOfSlot;
                 int y = yIndex*heightOfslot;
                 if(map.get(index).getTile() != null){
-                    // g.drawImage(map.get(index).getTile().getImage(), x, y, widthOfSlot, heightOfslot, null);
                     g.drawImage(assetManagerInstance.getImage(map.get(index).getTile().getImageLink()), x, y, widthOfSlot, heightOfslot, null);
                 }
                 g.setColor(Color.BLACK);
@@ -41,7 +40,6 @@ public class GameStateDrawer {
                 int x = xIndex*widthOfSlot;
                 int y = yIndex*heightOfslot;
                 if(map.get(index).getTower() != null){
-                    //g.drawImage(map.get(index).getTower().getImage(), x, y, widthOfSlot, heightOfslot, null);
                     g.drawImage(assetManagerInstance.getImage(map.get(index).getTower().getImageLink()), x, y, widthOfSlot, heightOfslot, null);
                 }
                 g.setColor(Color.BLACK);
