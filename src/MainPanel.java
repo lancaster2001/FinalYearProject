@@ -6,7 +6,7 @@ public final class MainPanel extends JPanel{
     //singleton-------------------------------------------------------------------------
     private static MainPanel instance;
     private MainPanel(){
-        this.setSize(gameConstants.screenSize.width, gameConstants.screenSize.height-200);
+        this.setSize(gameConstants.screenSize.width, gameConstants.screenSize.height-500);
         this.setMinimumSize(new Dimension(600, 600));
         this.setVisible(true);
         this.setOpaque(false);

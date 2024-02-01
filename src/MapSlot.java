@@ -8,7 +8,7 @@ public class MapSlot {
     public MapSlot(int x,int y){
         coordinates[0] = x;
         coordinates[1] = y;
-        tower = new TowerVariant1();
+        //tower = new TowerVariant1();
         tile = new GrassTile();
     }
 

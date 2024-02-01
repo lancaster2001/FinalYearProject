@@ -13,6 +13,7 @@ public class GameStateDrawer {
         return instance;
     }
     //----------------------------------------------------------------------------------------
+    private final AssetManager assetManagerInstance = AssetManager.getInstance();
     public void drawMap(Graphics g, ArrayList<MapSlot> map, int numOslotsWide, int numOslotsTall, int widthOfSlot, int heightOfslot){
         drawTiles(g,map,numOslotsWide,numOslotsTall,widthOfSlot,heightOfslot);
         drawTowers(g,map,numOslotsWide,numOslotsTall,widthOfSlot,heightOfslot);
@@ -24,7 +25,10 @@ public class GameStateDrawer {
                 int index = yIndex*numOslotsWide+xIndex;
                 int x = xIndex*widthOfSlot;
                 int y = yIndex*heightOfslot;
-                g.drawImage(map.get(index).getTile().getImage(), x, y, widthOfSlot, heightOfslot, null);
+                if(map.get(index).getTile() != null){
+                    // g.drawImage(map.get(index).getTile().getImage(), x, y, widthOfSlot, heightOfslot, null);
+                    g.drawImage(assetManagerInstance.getImage(map.get(index).getTile().getImageLink()), x, y, widthOfSlot, heightOfslot, null);
+                }
                 g.setColor(Color.BLACK);
                 g.drawRect(x, y, widthOfSlot, heightOfslot);
             }
@@ -36,7 +40,10 @@ public class GameStateDrawer {
                 int index = yIndex*numOslotsWide+xIndex;
                 int x = xIndex*widthOfSlot;
                 int y = yIndex*heightOfslot;
-                g.drawImage(map.get(index).getTower().getImage(), x, y, widthOfSlot, heightOfslot, null);
+                if(map.get(index).getTower() != null){
+                    //g.drawImage(map.get(index).getTower().getImage(), x, y, widthOfSlot, heightOfslot, null);
+                    g.drawImage(assetManagerInstance.getImage(map.get(index).getTower().getImageLink()), x, y, widthOfSlot, heightOfslot, null);
+                }
                 g.setColor(Color.BLACK);
                 g.drawRect(x, y, widthOfSlot, heightOfslot);
             }

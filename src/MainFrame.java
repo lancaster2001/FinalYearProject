@@ -24,6 +24,7 @@ public class MainFrame extends JFrame implements KeyListener, MouseWheelListener
         this.setResizable(false);
         this.setSize(gameConstants.screenSize.width, gameConstants.screenSize.height);
         this.setMinimumSize(new Dimension(gameConstants.screenSize.width, gameConstants.screenSize.height));
+        this.setUndecorated(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.getContentPane().add(this.draw);
         this.pack();

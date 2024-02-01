@@ -1,7 +1,4 @@
-import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
-
 public class InputController {
     //singleton------------------------------------------------------------------------
     private static InputController instance;
