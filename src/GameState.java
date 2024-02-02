@@ -40,7 +40,6 @@ public class GameState {
                 System.out.println("Timer ran " + ++i);
                 actLoop();
             }
-
         };
         actTimer.schedule(task,1000 );
     }

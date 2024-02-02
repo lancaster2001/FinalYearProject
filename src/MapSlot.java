@@ -1,4 +1,4 @@
-import java.io.ObjectInputStream;
+import java.awt.*;
 
 public class MapSlot {
     private int x = -1;
@@ -17,6 +17,28 @@ public class MapSlot {
             tower.tick(tile,tickMultiplier);
             tower.tick(tickMultiplier);
         }
+    }
+    protected void draw(Graphics g,Camera cameraInstance,AssetManager assetManagerInstance){
+        int widthOfSlot = cameraInstance.getwidthOfSlot();
+        int heightOfSlot = cameraInstance.getheightOfslot();
+        int x = (this.x-cameraInstance.getX())*widthOfSlot;
+        int y =(this.y-cameraInstance.getY())*heightOfSlot;
+        int width = cameraInstance.getwidthOfSlot();
+        int height = cameraInstance.getheightOfslot();
+        if(tile!=null){
+            tile.draw(g,x,y,width,height,assetManagerInstance);
+        }
+        if (tower != null) {
+            tower.draw(g,x,y,width,height,assetManagerInstance);
+        }
+        g.setColor(Color.BLACK);
+        g.drawRect(x, y, widthOfSlot, heightOfSlot);
+        g.setColor(gameConstants.resourceMenuTitleColour);
+        g.setFont(new Font("Arial", Font.BOLD, 20));
+        g.drawString(this.x+", "+this.y, x, y + gameConstants.ResourcesMenuTitleSize);
+    }
+    public boolean onScreenCheck(Camera cameraInstance){
+        return cameraInstance.isOnCamera(x,y);
     }
     public void setTower(BaseTower newTower){
         tower = newTower;

@@ -1,5 +1,3 @@
-import java.awt.*;
-
 public class TowerVariant1 extends BaseTurretTower {
     private Tower1Properties values = new Tower1Properties();
 

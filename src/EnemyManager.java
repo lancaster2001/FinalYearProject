@@ -23,8 +23,7 @@ public class EnemyManager {
     }
     public void drawEnemies(Graphics g){
         for(BaseEnemy enemy: enemyList){
-            enemy.onScreenCheck();
-            if(enemy.getIsOnScreen()){
+            if(enemy.onScreenCheck()){
                 enemy.draw(g);
             }
         }

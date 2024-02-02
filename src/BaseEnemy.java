@@ -1,5 +1,6 @@
 import java.awt.*;
 public abstract class BaseEnemy {
+    private Camera cameraInstance = Camera.getInstance();
     protected Pose pose = new Pose();
     protected double width = 1;//relative to size of slot
     protected double height = 1;//relative to size of slot
@@ -9,21 +10,22 @@ public abstract class BaseEnemy {
     protected String imageLink = "src/Enemies/Base/image.png";
     private final Map mapInstance = Map.getInstance();
     private Point targetLocation = new Point(50,50);
-    private boolean isOnScreen = false;
 
     protected void draw(Graphics g){
         Camera cameraInstance = Camera.getInstance();
-        int x = (int)((pose.getX()-cameraInstance.getX())*cameraInstance.getwidthOfSlot());
-        int y =(int)((pose.getY()-cameraInstance.getY())*cameraInstance.getheightOfslot());
+        int widthOfSlot = cameraInstance.getwidthOfSlot();
+        int heightOfSlot = cameraInstance.getheightOfslot();
+        int x = (int)((pose.getX()-cameraInstance.getX())*widthOfSlot);
+        int y =(int)((pose.getY()-cameraInstance.getY())*heightOfSlot);
         int width =(int)(cameraInstance.getwidthOfSlot()*this.width);
         int height = (int)(cameraInstance.getheightOfslot()*this.height);
+
         g.drawImage(AssetManager.getInstance().getImage(imageLink), x, y, width, height, null);
     }
     protected void tick(double tickMultiplier){
         searchForTarget();
         calculateDirection();
         makeMovement(tickMultiplier);
-        onScreenCheck();
     }
     private void calculateDirection(){
         pose.setTheta(calculateDirectionToTarget());
@@ -34,7 +36,6 @@ public abstract class BaseEnemy {
         double rot1 = Math.atan2(atan2_y,atan2_x);
         return rot1;
     }
-
     private void searchForTarget(){
         targetLocation = new Point(50,50);
     }
@@ -46,22 +47,7 @@ public abstract class BaseEnemy {
         double targetY = (distanceToTravel * Math.sin(directionToTarget));
         pose.setX(pose.getX()+targetX);
         pose.setY(pose.getY()+targetY);
-        /*todo temporary idea likely wont use, this idea entails using a timer to make the enemy appear as though its sliding
-        int xDifference = Math.abs(pose.getX()-targetX);
-        int yDifference = Math.abs(pose.getY()- targetX);
-        Timer tickTimer = new Timer();
-        for(BaseEnemy enemy: enemyList){
-            enemy.act(1000/tickRate);
-        }
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                tickLoop();
-            }
-        };
-        tickTimer.schedule(task,tickRate );*/
-
-
+        onScreenCheck();
     }
     private void move(gameConstants.DIRECTION direction,int speed){
         switch(direction){
@@ -96,17 +82,26 @@ public abstract class BaseEnemy {
             }
         }
     }
-    public void onScreenCheck(){
-        isOnScreen = Camera.getInstance().isOnCamera((int)pose.getX(),(int)pose.getY());
+    public boolean onScreenCheck(){
+        return cameraInstance.isOnCamera((int)pose.getX(),(int)pose.getY());
     }
     public String getImageLink() {
         return imageLink;
     }
-    public boolean getIsOnScreen(){
-        return isOnScreen;
-    }
 
     public Pose getPose() {
         return pose;
+    }
+
+    public double getWidth() {
+        return width;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public double getMoveSpeed() {
+        return moveSpeed;
     }
 }

@@ -21,8 +21,6 @@ public final class MainPanel extends JPanel{
     public ArrayList<MapSlot> mapArray = new ArrayList<MapSlot>();
     private final Camera cameraInstance = Camera.getInstance();
     private final  GameStateDrawer gameStateDrawerInstance = GameStateDrawer.getInstance();
-    private final GameStateUI gameStateUIInstance = GameStateUI.getInstance();
-    private final EnemyManager enemyManagerInstance = EnemyManager.getInstance();
     private gameConstants.STATE state;
 
     @Override
@@ -32,9 +30,7 @@ public final class MainPanel extends JPanel{
         int widthOfSlot = cameraInstance.getwidthOfSlot();
         int heightOfslot = cameraInstance.getheightOfslot();
         super.paintComponent(g);
-        gameStateDrawerInstance.drawMap(g,cameraInstance.getViewableMap(),numOslotsWide,numOslotsTall,widthOfSlot,heightOfslot);
-        gameStateUIInstance.drawUI(g);
-        enemyManagerInstance.drawEnemies(g);
+        gameStateDrawerInstance.draw(g,cameraInstance.getViewableMap(),numOslotsWide,numOslotsTall,widthOfSlot,heightOfslot);
     }
 
 }

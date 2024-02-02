@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.ArrayList;
 
 public final class Map {
@@ -14,7 +15,6 @@ public final class Map {
     }
     //----------------------------------------------------------------------------------
     private final ArrayList<MapSlot> mapArray = new ArrayList<>();
-    private final AssetManager assetManagerInstance = AssetManager.getInstance();
     private int mapWidth = 0;
     private int mapHeight = 0;
     private void setup(){
@@ -66,7 +66,7 @@ public final class Map {
                 if (xIndex >= mapWidth){
                     directionOutOfBounds = gameConstants.DIRECTION.RIGHT;
                     return directionOutOfBounds;
-                } else if (xIndex < 0) {
+                } else if (xIndex < 1) {
                     directionOutOfBounds = gameConstants.DIRECTION.LEFT;
                     return directionOutOfBounds;
                 }
@@ -74,7 +74,7 @@ public final class Map {
             if (yIndex >= mapHeight){
                 directionOutOfBounds = gameConstants.DIRECTION.DOWN;
                 return directionOutOfBounds;
-            } else if (yIndex<0) {
+            } else if (yIndex<1) {
                 directionOutOfBounds = gameConstants.DIRECTION.UP;
                 return directionOutOfBounds;
             }
@@ -85,6 +85,15 @@ public final class Map {
     public void tick(double tickMultiplier){
         for(MapSlot slot:mapArray){
             slot.tick(tickMultiplier);
+        }
+    }
+    public void draw(Graphics g,Camera cameraInstance, AssetManager assetManagerInstance){
+        for(MapSlot slot: mapArray){
+            if(slot.onScreenCheck(cameraInstance)){
+                slot.draw(g,cameraInstance,assetManagerInstance);
+
+
+            }
         }
     }
 

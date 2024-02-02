@@ -1,13 +1,17 @@
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public abstract class BaseTurretTower extends BaseTower{
-    protected Pose pose;
     protected double range = 0.0;
     private double shootAccumulator = 0.0;
     private double shootAccumulatorLimit = 1.0;
-    private EnemyManager enemyManagerInstance = EnemyManager.getInstance();
+    private final EnemyManager enemyManagerInstance = EnemyManager.getInstance();
+
     private boolean checkForEnemies(){
-        for(BaseEnemy enemy: enemyManagerInstance.getEnemyList()){
+        ArrayList<BaseEnemy> enemyList = enemyManagerInstance.getEnemyList();
+        for(BaseEnemy enemy: enemyList){
             if (range>= calculateDistantToTarget(enemy.getPose().getX(),enemy.getPose().getY())){
                 calculateDirectionToTarget(enemy.getPose().getX(),enemy.getPose().getY());
                 return true;
@@ -16,25 +20,42 @@ public abstract class BaseTurretTower extends BaseTower{
         return false;
     }
     private void calculateDirectionToTarget(double x, double y){
+
         double atan2_x =x-pose.getX();
         double atan2_y =y-pose.getY();
         double rot1 = Math.atan2(atan2_y,atan2_x);
-        pose.setTheta(rot1);
+        pose.setTheta(rot1+(Math.PI/2));
     }
     private double calculateDistantToTarget(double x, double y){
         return (Math.sqrt((Math.pow(pose.getX() - x,2))+(Math.pow(pose.getY()-y,2))));
     }
     public void tick(double tickMultiplier){
-
         shootAccumulator+=tickMultiplier;
-        if (shootAccumulator>=shootAccumulatorLimit){
-            shootAccumulator=shootAccumulatorLimit;
-            if(checkForEnemies()){
-                shoot();
-            }
+        if (shootAccumulator >= shootAccumulatorLimit) {
+            shootAccumulator = shootAccumulatorLimit;
+        }
+        if(checkForEnemies()) {
+            shoot();
         }
     }
     public void setup(int x,int y){
         pose = new Pose(x,y,0.0);
+    }
+    public void shoot(){
+        shootAccumulator -= shootAccumulatorLimit;
+        System.out.println("base tower shot");
+    }
+    public void draw(Graphics g,int x, int y, int width ,int height,AssetManager assetManagerInstance){
+        // Rotation information
+        double rotationRequired = pose.getTheta();
+        BufferedImage image = AssetManager.getInstance().getImage(imageLink);
+
+        Graphics2D g2d = (Graphics2D) g;
+        AffineTransform backup = g2d.getTransform();
+        AffineTransform trans = new AffineTransform();
+        trans.rotate( rotationRequired, (x+(width/2)), (y+(height/2)) ); // the points to rotate around (the center in my example, your left side for your problem)
+        g2d.transform( trans );
+        g2d.drawImage( image, x, y ,width,height,null);  // the actual location of the sprite
+        g2d.setTransform( backup ); // restore previous transform
     }
 }

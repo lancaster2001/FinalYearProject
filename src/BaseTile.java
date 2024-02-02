@@ -1,4 +1,5 @@
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -9,6 +10,9 @@ public abstract class BaseTile {
     protected String resource = "";
 
     protected void setup(){AssetManager.getInstance().getImage(imageLink);}
+    protected void draw(Graphics g, int x, int y, int width , int height,AssetManager assetManagerInstance){
+        g.drawImage(AssetManager.getInstance().getImage(imageLink), x, y, width, height, null);
+    }
     public void setImage(BufferedImage image){this.image = image;}
     public BufferedImage getImage() {return image;}
     public String getImageLink(){return imageLink;}
