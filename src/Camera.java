@@ -8,6 +8,7 @@ public class Camera {
         zoom = gameConstants.defaultZoom;
         x = gameConstants.defaultCameraCoordinates[0];
         y = gameConstants.defaultCameraCoordinates[1];
+        screenWidthProportion = (double)gameConstants.screenWidth/ (double)gameConstants.screenHeight;
     }
     public static Camera getInstance(){
         if (instance == null) {
@@ -17,6 +18,7 @@ public class Camera {
     }
     //------------------------------------------------------------------
     private int zoom = gameConstants.defaultZoom;//number of tiles in width
+    double screenWidthProportion = 0.0;
     private int numOslotsWide = zoom;
     private int numOslotsTall = zoom;
     private int x;
@@ -35,10 +37,10 @@ public class Camera {
 
     public int getZoom(){return zoom;}
     private void calculateValues(){
-        numOslotsWide = zoom;
         numOslotsTall = zoom;
-        widthOfSlot = gameConstants.screenWidth/zoom;
-        heightOfslot = gameConstants.screenHeight/zoom;
+        numOslotsWide = (int)((double)numOslotsTall*screenWidthProportion);
+        widthOfSlot = gameConstants.screenWidth/numOslotsWide;
+        heightOfslot = gameConstants.screenHeight/numOslotsTall;
         viewableMap = mapInstance.getMapSection(x, y,numOslotsWide,numOslotsTall);
         outOfBoundsCheck();
     }

@@ -17,6 +17,15 @@ public class EnemyManager {
     //----------------------------------------------------------------------------------
     private final ArrayList<BaseEnemy> enemyList = new ArrayList<>();
     public void tick(double tickMultiplier){
+        ArrayList<Integer> enemiesToRemove = new ArrayList<Integer>();
+        for(Integer index = 0; index < enemyList.size();index++){
+            if(!enemyList.get(index).getAlive()){
+                enemiesToRemove.add(index);
+            }
+        }
+        if(!enemiesToRemove.isEmpty()){
+            removeListOfIndexes(enemiesToRemove);
+        }
         for(BaseEnemy enemy: enemyList){
             enemy.tick(tickMultiplier);
         }
@@ -49,6 +58,16 @@ public class EnemyManager {
                 }
             }
             enemyList.add(new Enemy1(xSpawn,ySpawn));
+        }
+    }
+    private void removeListOfIndexes(ArrayList<Integer> indexesToRemove){
+        for(int toRemoveIndex = indexesToRemove.size()-1;toRemoveIndex>=0;toRemoveIndex--){
+            for(int index = enemyList.size()-1;index>=0;index--){
+                if(indexesToRemove.get(toRemoveIndex)==index){
+                    enemyList.remove(index);
+                    break;
+                }
+            }
         }
     }
 

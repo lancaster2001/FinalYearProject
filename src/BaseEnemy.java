@@ -1,31 +1,43 @@
 import java.awt.*;
 public abstract class BaseEnemy {
     private Camera cameraInstance = Camera.getInstance();
+    private boolean alive = true;
     protected Pose pose = new Pose();
     protected double width = 1;//relative to size of slot
     protected double height = 1;//relative to size of slot
-    protected int damage = 1;
-    protected int health = 5;
+    protected double damage = 1;
+    protected double maxHealth = 5;
+    protected double health = maxHealth;
     protected double moveSpeed = 2.5;
     protected String imageLink = "src/Enemies/Base/image.png";
     private final Map mapInstance = Map.getInstance();
     private Point targetLocation = new Point(50,50);
 
     protected void draw(Graphics g){
-        Camera cameraInstance = Camera.getInstance();
         int widthOfSlot = cameraInstance.getwidthOfSlot();
         int heightOfSlot = cameraInstance.getheightOfslot();
         int x = (int)((pose.getX()-cameraInstance.getX())*widthOfSlot);
         int y =(int)((pose.getY()-cameraInstance.getY())*heightOfSlot);
         int width =(int)(cameraInstance.getwidthOfSlot()*this.width);
         int height = (int)(cameraInstance.getheightOfslot()*this.height);
-
         g.drawImage(AssetManager.getInstance().getImage(imageLink), x, y, width, height, null);
+        drawHealthBar(g,new Rectangle(x,y,width,height));
+    }
+    private void drawHealthBar(Graphics g, Rectangle hitbox){
+        if(maxHealth > health){
+            int height = hitbox.height/10;
+            g.setColor(Color.white);
+            g.drawRect(hitbox.x,hitbox.y-height,hitbox.width,height);
+            g.setColor(Color.red);
+            g.drawRect(hitbox.x,hitbox.y-height,(int)((health/maxHealth)*hitbox.width),height);
+        }
     }
     protected void tick(double tickMultiplier){
-        searchForTarget();
-        calculateDirection();
-        makeMovement(tickMultiplier);
+        if(alive) {
+            searchForTarget();
+            calculateDirection();
+            makeMovement(tickMultiplier);
+        }
     }
     private void calculateDirection(){
         pose.setTheta(calculateDirectionToTarget());
@@ -85,10 +97,12 @@ public abstract class BaseEnemy {
     public boolean onScreenCheck(){
         return cameraInstance.isOnCamera((int)pose.getX(),(int)pose.getY());
     }
-    public String getImageLink() {
-        return imageLink;
+    public void takeDamage(double damage){
+        health-=damage;
+        if(health<=0){
+            alive = false;
+        }
     }
-
     public Pose getPose() {
         return pose;
     }
@@ -100,8 +114,5 @@ public abstract class BaseEnemy {
     public double getHeight() {
         return height;
     }
-
-    public double getMoveSpeed() {
-        return moveSpeed;
-    }
+    public boolean getAlive(){return alive;}
 }

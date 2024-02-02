@@ -27,7 +27,7 @@ public class GameState {
     private final Map mapInstance = Map.getInstance();
     private final Camera cameraInstance = Camera.getInstance();
     private final EnemyManager enemyManagerInstance = EnemyManager.getInstance();
-    private final ResourceManager resourceManagerInstance = ResourceManager.getInstance();
+    private final ProjectileManager projectileManagerInstance = ProjectileManager.getInstance();
 
     void actLoop(){
         Timer actTimer = new Timer();
@@ -56,8 +56,10 @@ public class GameState {
     }
     private void tickLoop(){
         Timer tickTimer = new Timer();
-        mapInstance.tick(tickRate/1000.0);
-        enemyManagerInstance.tick(tickRate/1000.0);
+        double tickMultiplier = tickRate/1000.0;
+        mapInstance.tick(tickMultiplier);
+        enemyManagerInstance.tick(tickMultiplier);
+        projectileManagerInstance.tick(tickMultiplier);
         TimerTask task = new TimerTask() {
             @Override
             public void run() {

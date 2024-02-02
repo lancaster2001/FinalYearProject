@@ -2,25 +2,32 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Collection;
 
 public abstract class BaseTurretTower extends BaseTower{
+    private final EnemyManager enemyManagerInstance = EnemyManager.getInstance();
+    private final ProjectileManager projectileManagerInstance = ProjectileManager.getInstance();
     protected double range = 0.0;
     private double shootAccumulator = 0.0;
     private double shootAccumulatorLimit = 1.0;
-    private final EnemyManager enemyManagerInstance = EnemyManager.getInstance();
+    private double targetX;
+    private double targetY;
 
     private boolean checkForEnemies(){
         ArrayList<BaseEnemy> enemyList = enemyManagerInstance.getEnemyList();
         for(BaseEnemy enemy: enemyList){
             if (range>= calculateDistantToTarget(enemy.getPose().getX(),enemy.getPose().getY())){
-                calculateDirectionToTarget(enemy.getPose().getX(),enemy.getPose().getY());
+                double x = enemy.getPose().getX()+(enemy.getWidth()/2);
+                double y = enemy.getPose().getY()+(enemy.getHeight()/2);
+                calculateDirectionToTarget(x,y);
+                shoot();
                 return true;
             }
         }
+        pose.setTheta(0);
         return false;
     }
     private void calculateDirectionToTarget(double x, double y){
-
         double atan2_x =x-pose.getX();
         double atan2_y =y-pose.getY();
         double rot1 = Math.atan2(atan2_y,atan2_x);
@@ -42,8 +49,11 @@ public abstract class BaseTurretTower extends BaseTower{
         pose = new Pose(x,y,0.0);
     }
     public void shoot(){
-        shootAccumulator -= shootAccumulatorLimit;
-        System.out.println("base tower shot");
+        if(shootAccumulator==shootAccumulatorLimit) {
+            shootAccumulator -= shootAccumulatorLimit;
+            System.out.println("base tower shot");
+            projectileManagerInstance.addBullet(pose.getX(), pose.getY(),pose.getTheta(), 10, 1, 0.6, 0.6);
+        }
     }
     public void draw(Graphics g,int x, int y, int width ,int height,AssetManager assetManagerInstance){
         // Rotation information

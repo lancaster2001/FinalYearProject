@@ -21,11 +21,14 @@ public class GameStateDrawer {
     private final GameStateUI gameStateUIInstance = GameStateUI.getInstance();
     private final EnemyManager enemyManagerInstance = EnemyManager.getInstance();
     private final Map mapInstance = Map.getInstance();
+    private final ProjectileManager projectileManagerInstance = ProjectileManager.getInstance();
     public void draw(Graphics g, ArrayList<MapSlot> map, int numOslotsWide, int numOslotsTall, int widthOfSlot, int heightOfslot){
         drawMap(g,map,numOslotsWide,numOslotsTall,widthOfSlot,heightOfslot);
         mapInstance.draw(g,cameraInstance,assetManagerInstance);
-        gameStateUIInstance.drawUI(g);
         enemyManagerInstance.drawEnemies(g);
+        projectileManagerInstance.draw(g,cameraInstance, assetManagerInstance);
+        gameStateUIInstance.drawUI(g);
+
     }
     public void drawMap(Graphics g, ArrayList<MapSlot> map, int numOslotsWide, int numOslotsTall, int widthOfSlot, int heightOfslot){
         //drawTiles(g,map,numOslotsWide,numOslotsTall,widthOfSlot,heightOfslot);

@@ -3,12 +3,6 @@ public class TowerVariant1 extends BaseTurretTower {
 
     public TowerVariant1(){
         imageLink = "src/Towers/Tower1/image.png";
-        range = 10;
-    }
-
-
-    @Override
-    public void shoot(){
-        System.out.println("tower variant1 shot");
+        range = 100;
     }
 }
