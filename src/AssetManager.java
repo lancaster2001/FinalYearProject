@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 public class AssetManager {
     //singleton-------------------------------------------------------------------------
-    private static AssetManager instance;
+    private static AssetManager instance = new AssetManager();
     private AssetManager(){
         loadAllImages("src/Resources/");
         loadAllImages("src/Towers/");

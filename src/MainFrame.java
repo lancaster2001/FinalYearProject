@@ -3,10 +3,8 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class MainFrame extends JFrame implements KeyListener, MouseWheelListener, MouseListener {
-
-    private final MainPanel PanelInstance = MainPanel.getInstance();
-    private final JComponent draw = new JComponent(){};
-    private static MainFrame instance;
+    //singleton-------------------------------------------------------------------------
+    private static MainFrame instance = new MainFrame();
     private MainFrame(){
         setup();
     }
@@ -16,6 +14,9 @@ public class MainFrame extends JFrame implements KeyListener, MouseWheelListener
         }
         return instance;
     }
+    //----------------------------------------------------------------------------------------
+    private final MainPanel PanelInstance = MainPanel.getInstance();
+    private final JComponent draw = new JComponent(){};
     public MainPanel getPanelInstance(){
         return PanelInstance;
     }

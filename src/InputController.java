@@ -1,7 +1,7 @@
 import java.awt.event.*;
 public class InputController {
     //singleton------------------------------------------------------------------------
-    private static InputController instance;
+    private static InputController instance = new InputController();
     public static InputController getInstance(){
         if (instance == null) {
             instance = new InputController();
@@ -13,7 +13,6 @@ public class InputController {
     private final StateManager stateManagerInstance = StateManager.getInstance();
     private final MainPanel panelInstance = MainPanel.getInstance();
     private final Camera cameraInstance = Camera.getInstance();
-    private final Map mapInstance = Map.getInstance();
     int titleHeight = MainFrame.getInstance().getHeight() - panelInstance.getHeight();
     public void userInput(KeyEvent e){
        GameState.getInstance().userInput(e);
@@ -38,10 +37,10 @@ public class InputController {
             int slotx = e.getX()/cameraInstance.getwidthOfSlot()+1;
             int sloty = (e.getY()-titleHeight)/cameraInstance.getheightOfslot()+1;
             MapSlot clickedSlot = cameraInstance.getMapslot(slotx, sloty);
-            if(UIBuildMenu.getInstance().getSelectedBuildMenuElement()==2){
-                mapInstance.setTower(new DrillTower(), clickedSlot.getX(), clickedSlot.getY());
-            }else if(UIBuildMenu.getInstance().getSelectedBuildMenuElement()==3) {
-                mapInstance.setTower(new TowerVariant1(), clickedSlot.getX(), clickedSlot.getY());
+            if(GameUIBuildMenu.getInstance().getSelectedBuildMenuElement()==2){
+                GameState.getInstance().getMapInstance().setTower(new DrillTower(), clickedSlot.getX(), clickedSlot.getY());
+            }else if(GameUIBuildMenu.getInstance().getSelectedBuildMenuElement()==3) {
+                GameState.getInstance().getMapInstance().setTower(new TowerVariant1(), clickedSlot.getX(), clickedSlot.getY());
             }
         }
 

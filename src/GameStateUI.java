@@ -1,11 +1,8 @@
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FilenameFilter;
 import java.util.ArrayList;
 public class GameStateUI {
     //singleton-------------------------------------------------------------------------
-    private static GameStateUI instance;
+    private static GameStateUI instance = new GameStateUI();
 
     private GameStateUI() {}
 
@@ -17,21 +14,19 @@ public class GameStateUI {
     }
 
     //----------------------------------------------------------------------------------------
-    private final UIBuildMenu UIBuildMenuInstance = UIBuildMenu.getInstance();
+    private final GameUIBuildMenu GameUIBuildMenuInstance = GameUIBuildMenu.getInstance();
     private boolean resourceMenuState = true;
     private Rectangle resourceMenuBackground = new Rectangle(gameConstants.resourcesMenuX, gameConstants.resourcesMenuY, gameConstants.resourcesMenuWidth, gameConstants.resourcesMenuHeight);
 
     public void drawUI(Graphics g) {
         drawResourcesMenu(g, resourceMenuState);
-        UIBuildMenuInstance.drawBuildMenu(g, UIBuildMenuInstance.getBuildMenuState());
+        GameUIBuildMenuInstance.drawBuildMenu(g);
     }
 
     private void drawResourcesMenu(Graphics g, boolean open) {
-        if (open) {
-            drawResourcesMenuBackground(g);
-            drawResourcesMenuTitle(g);
-            drawResourcesMenuResources(g);
-        }
+        drawResourcesMenuBackground(g);
+        drawResourcesMenuTitle(g);
+        drawResourcesMenuResources(g);
     }
 
     private void drawResourcesMenuBackground(Graphics g) {
@@ -58,16 +53,9 @@ public class GameStateUI {
         }
     }
 
-    public boolean getresourceMenuState() {
-        return resourceMenuState;
-    }
-
-    public Rectangle getResourceMenuBackground() {
-        return resourceMenuBackground;
-    }
 
     public boolean takeInput(Point p) {
-        return UIBuildMenuInstance.takeInput(p);
+        return GameUIBuildMenuInstance.takeInput(p);
     }
 
 

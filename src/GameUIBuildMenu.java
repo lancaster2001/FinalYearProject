@@ -4,16 +4,16 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 
-public class UIBuildMenu{
+public class GameUIBuildMenu {
     //singleton-------------------------------------------------------------------------
-    private static UIBuildMenu instance;
-    private UIBuildMenu() {
+    private static GameUIBuildMenu instance = new GameUIBuildMenu();
+    private GameUIBuildMenu() {
         loadBuildMenu();
     }
 
-    public static UIBuildMenu getInstance() {
+    public static GameUIBuildMenu getInstance() {
         if (instance == null) {
-            instance = new UIBuildMenu();
+            instance = new GameUIBuildMenu();
         }
         return instance;
     }
@@ -22,6 +22,7 @@ public class UIBuildMenu{
     private final Rectangle buildMenuBackground = new Rectangle(gameConstants.buildMenux, gameConstants.buildMenuy, gameConstants.buildMenuWidth, gameConstants.buildMenuHeight);
     private ArrayList<BaseTower> buildMenu = new ArrayList<BaseTower>();
     private boolean buildMenuState = true;
+    private Rectangle buildMenuButton = new Rectangle(buildMenuBackground.width-(buildMenuBackground.width/20), buildMenuBackground.y-(buildMenuBackground.height/7), buildMenuBackground.width/20, buildMenuBackground.height/7);
     private final ArrayList<String> ImageLinksArray = new ArrayList<String>();
     private final ArrayList<BufferedImage> ImagesArray = new ArrayList<BufferedImage>();
     private final int numberOfElementsInBuildMenu = gameConstants.numberOfElementsInBuildMenu;
@@ -47,11 +48,17 @@ public class UIBuildMenu{
             }
         }
     }
-    public void drawBuildMenu(Graphics g, boolean open) {
-        if (open) {
+    public void drawBuildMenu(Graphics g) {
+        if(buildMenuState) {
             drawBuildMenuBackground(g);
             drawBuildMenuIcons(g);
         }
+        drawBuildMenuButton(g);
+
+    }
+    private void drawBuildMenuButton(Graphics g){
+        g.setColor(gameConstants.buildMenuBackgroundColour);
+        g.fill3DRect(buildMenuButton.x, buildMenuButton.y, buildMenuButton.width, buildMenuButton.height, true);
     }
     private void drawBuildMenuBackground(Graphics g) {
         g.setColor(gameConstants.buildMenuBackgroundColour);
@@ -76,6 +83,15 @@ public class UIBuildMenu{
         }
     }
     public boolean takeInput(Point p) {
+        if(buildMenuButton.contains(p.x,p.y)) {
+            buildMenuState = !buildMenuState;
+            if(buildMenuState){
+                buildMenuButton.setLocation(buildMenuButton.x,buildMenuButton.y-buildMenuBackground.height);
+            }else{
+                buildMenuButton.setLocation(buildMenuButton.x,buildMenuButton.y+buildMenuBackground.height);
+            }
+            return true;
+        }
         if (buildMenuState) {
             if (buildMenuBackground.contains(p)) {
                 int index = 1;
@@ -84,7 +100,7 @@ public class UIBuildMenu{
                     if (currentElement.contains(p.x,p.y)){
                         selectedBuildMenuElement = index;
                         break;
-                    }else {index+=1;}
+                    } else {index+=1;}
                 }
                 return true;
             } else {

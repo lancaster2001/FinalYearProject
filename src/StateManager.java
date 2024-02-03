@@ -1,6 +1,6 @@
 public class StateManager {
     //singleton------------------------------------------------------------------------
-    private static StateManager instance;
+    private static StateManager instance = new StateManager();
     public static StateManager getInstance(){
         if (instance == null) {
             instance = new StateManager();

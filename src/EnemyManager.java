@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class EnemyManager {
     //singleton------------------------------------------------------------------------
-    private static EnemyManager instance;
+    private static EnemyManager instance = new EnemyManager();
     public static EnemyManager getInstance(){
         if (instance == null) {
             instance = new EnemyManager();
@@ -12,7 +12,6 @@ public class EnemyManager {
         return instance;
     }
     private EnemyManager(){
-        enemyList.add(new Enemy1(1,1));
     }
     //----------------------------------------------------------------------------------
     private final ArrayList<BaseEnemy> enemyList = new ArrayList<>();
@@ -26,9 +25,10 @@ public class EnemyManager {
         if(!enemiesToRemove.isEmpty()){
             removeListOfIndexes(enemiesToRemove);
         }
-        for(BaseEnemy enemy: enemyList){
-            enemy.tick(tickMultiplier);
+        for(Integer index = 0; index < enemyList.size();index++){
+            enemyList.get(index).tick(tickMultiplier);
         }
+        randomEnemyChance();
     }
     public void drawEnemies(Graphics g){
         for(BaseEnemy enemy: enemyList){
@@ -39,7 +39,7 @@ public class EnemyManager {
     }
     public void randomEnemyChance(){
         Random rnd = new Random();
-        if(rnd.nextInt(1,10)<11){
+        if(rnd.nextInt(1,10)==11){
             int xSpawn;
             int ySpawn;
             if(rnd.nextInt(1,2)==1){
@@ -58,6 +58,9 @@ public class EnemyManager {
                 }
             }
             enemyList.add(new Enemy1(xSpawn,ySpawn));
+        }
+        if(rnd.nextInt(1,100)==50){
+            enemyList.add(new Enemy1(1,1));
         }
     }
     private void removeListOfIndexes(ArrayList<Integer> indexesToRemove){

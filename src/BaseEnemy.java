@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
+
 public abstract class BaseEnemy {
     private Camera cameraInstance = Camera.getInstance();
     private boolean alive = true;
@@ -10,7 +12,7 @@ public abstract class BaseEnemy {
     protected double health = maxHealth;
     protected double moveSpeed = 2.5;
     protected String imageLink = "src/Enemies/Base/image.png";
-    private final Map mapInstance = Map.getInstance();
+    //private final Map mapInstance = Map.getInstance();
     private Point targetLocation = new Point(50,50);
 
     protected void draw(Graphics g){
@@ -52,7 +54,6 @@ public abstract class BaseEnemy {
         targetLocation = new Point(50,50);
     }
     private void makeMovement(double tickMultiplier){
-        //int distanceToTarget = (int)Math.sqrt((((pose.getX()-targetLocation.x)^2)+((pose.getY()-targetLocation.y)^2)));
         double distanceToTravel = moveSpeed*tickMultiplier;
         double directionToTarget = calculateDirectionToTarget();
         double targetX = (distanceToTravel * Math.sin(directionToTarget));
@@ -60,39 +61,14 @@ public abstract class BaseEnemy {
         pose.setX(pose.getX()+targetX);
         pose.setY(pose.getY()+targetY);
         onScreenCheck();
-    }
-    private void move(gameConstants.DIRECTION direction,int speed){
-        switch(direction){
-            case UP:
-                pose.setY(pose.getY()-speed);
-            case DOWN:
-                pose.setY(pose.getY()+speed);
-            case LEFT:
-                pose.setX(pose.getX()-speed);
-            case RIGHT:
-                pose.setX(pose.getX()+speed);
-        }
         outOfBoundsCheck();
     }
     private void outOfBoundsCheck(){
-        boolean outOfBounds = true;
-        while(outOfBounds){
-            gameConstants.DIRECTION directionOutOfBounds = mapInstance.sectionOutOfBoundsCheck((int)pose.getX(), (int)pose.getY(), 1,1);
-            if (directionOutOfBounds == gameConstants.DIRECTION.NULL){
-                outOfBounds=false;
-            }else if (directionOutOfBounds == gameConstants.DIRECTION.RIGHT){
-                pose.setX(pose.getX()-1);
-            }else if (directionOutOfBounds == gameConstants.DIRECTION.LEFT){
-                pose.setX(pose.getX()+1);
-            }else if (directionOutOfBounds == gameConstants.DIRECTION.UP){
-                pose.setY(pose.getY()+1);
-            }else if (directionOutOfBounds == gameConstants.DIRECTION.DOWN){
-                pose.setY(pose.getY()-1);
-            }else{
-                System.out.println("error at out of bounds check in camera");
-                outOfBounds = false;
-            }
-        }
+            Rectangle2D.Double placement =GameState.getInstance().getMapInstance().sectionOutOfBoundsCheck(new Rectangle2D.Double(pose.getX(), pose.getY(), 1,1),true);
+            pose.setX(placement.x);
+            pose.setY(placement.y);
+            width = placement.width;
+            height = placement.height;
     }
     public boolean onScreenCheck(){
         return cameraInstance.isOnCamera((int)pose.getX(),(int)pose.getY());
@@ -102,6 +78,14 @@ public abstract class BaseEnemy {
         if(health<=0){
             alive = false;
         }
+    }
+    public void setPosition(double x, double y){
+        pose.setX(x);
+        pose.setX(y);
+
+    }
+    public Rectangle2D.Double getMapPlacement(){
+        return new Rectangle2D.Double(pose.getX(),pose.getY(),width,height);
     }
     public Pose getPose() {
         return pose;

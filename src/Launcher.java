@@ -3,7 +3,7 @@ import java.util.TimerTask;
 
 public class Launcher {
     //singleton------------------------------------------------------------------------
-    private static Launcher instance;
+    private static Launcher instance = new Launcher();
     public static Launcher getInstance(){
         if (instance == null) {
             instance = new Launcher();
@@ -12,9 +12,11 @@ public class Launcher {
     }
     private Launcher(){}
     //----------------------------------------------------------------------------------
-    GameState gameStateInstance = GameState.getInstance();
+
     public static void main(String[] args) {
         Launcher theLauncher = Launcher.getInstance();
+        GameState gameStateInstance = GameState.getInstance();
+        gameStateInstance.startup();
     }
 
 }

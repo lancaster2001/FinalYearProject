@@ -51,7 +51,6 @@ public abstract class BaseTurretTower extends BaseTower{
     public void shoot(){
         if(shootAccumulator==shootAccumulatorLimit) {
             shootAccumulator -= shootAccumulatorLimit;
-            System.out.println("base tower shot");
             projectileManagerInstance.addBullet(pose.getX(), pose.getY(),pose.getTheta(), 10, 1, 0.6, 0.6);
         }
     }

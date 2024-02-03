@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class GameStateDrawer {
     //singleton-------------------------------------------------------------------------
-    private static GameStateDrawer instance;
+    private static GameStateDrawer instance = new GameStateDrawer();
 
     private GameStateDrawer() {}
     public static GameStateDrawer getInstance() {
@@ -20,11 +20,11 @@ public class GameStateDrawer {
     private final Camera cameraInstance = Camera.getInstance();
     private final GameStateUI gameStateUIInstance = GameStateUI.getInstance();
     private final EnemyManager enemyManagerInstance = EnemyManager.getInstance();
-    private final Map mapInstance = Map.getInstance();
     private final ProjectileManager projectileManagerInstance = ProjectileManager.getInstance();
+    //private final Map mapInstance = GameState.getInstance().getMapInstance();
     public void draw(Graphics g, ArrayList<MapSlot> map, int numOslotsWide, int numOslotsTall, int widthOfSlot, int heightOfslot){
         drawMap(g,map,numOslotsWide,numOslotsTall,widthOfSlot,heightOfslot);
-        mapInstance.draw(g,cameraInstance,assetManagerInstance);
+        GameState.getInstance().getMapInstance().draw(g,cameraInstance,assetManagerInstance);
         enemyManagerInstance.drawEnemies(g);
         projectileManagerInstance.draw(g,cameraInstance, assetManagerInstance);
         gameStateUIInstance.drawUI(g);

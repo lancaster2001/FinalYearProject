@@ -21,7 +21,7 @@ public interface gameConstants {
     enum STATE {GAME, STARTMENU, GAMEOVER};
     enum DIRECTION {UP, DOWN, LEFT, RIGHT, NULL};
     //Game Settings-------------------------------------------------------------------------------------------
-    int gameTickRate = 50;//number of milliseconds per tick
+    int gameTickRate = 25;//number of milliseconds per tick
     //UI------------------------------------------------------------------------------------------------------
     int resourcesMenuWidth = screenWidth / 10;
     int resourcesMenuHeight = screenHeight / 5;

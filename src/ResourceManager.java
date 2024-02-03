@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public class ResourceManager {
     //singleton------------------------------------------------------------------------
-    private static ResourceManager instance;
+    private static ResourceManager instance = new ResourceManager();
     public static ResourceManager getInstance(){
         if (instance == null) {
             instance = new ResourceManager();

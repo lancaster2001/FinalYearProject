@@ -1,6 +1,6 @@
 public class StartMenu {
     //singleton------------------------------------------------------------------------
-    private static StartMenu instance;
+    private static StartMenu instance = new StartMenu();
     public static StartMenu getInstance(){
         if (instance == null) {
             instance = new StartMenu();

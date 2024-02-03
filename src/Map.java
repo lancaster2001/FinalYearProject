@@ -1,31 +1,16 @@
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 public final class Map {
-    //singleton------------------------------------------------------------------------
-    private static Map instance;
-    public static Map getInstance(){
-        if (instance == null) {
-            instance = new Map();
-        }
-        return instance;
+    public Map(ArrayList<MapSlot> mapArray,int width, int height){
+        mapWidth = width;
+        mapHeight =height;
+        this.mapArray = mapArray;
     }
-    private Map(){
-        setup();
-    }
-    //----------------------------------------------------------------------------------
-    private final ArrayList<MapSlot> mapArray = new ArrayList<>();
+    private ArrayList<MapSlot> mapArray = new ArrayList<>();
     private int mapWidth = 0;
     private int mapHeight = 0;
-    private void setup(){
-        mapWidth = gameConstants.mapWidth;
-        mapHeight = gameConstants.mapHeight;
-        for(int slotNumber = 0; slotNumber < (gameConstants.mapSize); slotNumber++){
-            int x = (slotNumber%gameConstants.mapWidth)+1;
-            int y = (slotNumber/gameConstants.mapWidth)+1;
-            mapArray.add(new MapSlot(x, y));
-        }
-    }
     private MapSlot getSlotFromCoord(int x, int y){
         int desiredSlotNum = 0;
         MapSlot desiredSlot;
@@ -40,29 +25,50 @@ public final class Map {
     }
 
 
-    public ArrayList<MapSlot> getMapSection(int x, int y, int numOslotsWide, int numOslotsTall){
+    public ArrayList<MapSlot> getMapSection(Rectangle2D.Double section){
         ArrayList<MapSlot> mapSection = new ArrayList<>();
         int currentYindex = -1;
         int currentXindex = -1;
         try {
-            for (int yIndex = y;yIndex <(y+numOslotsTall);yIndex ++){
+            for (int yIndex = (int)section.y;yIndex <(section.y+section.height);yIndex ++){
                 currentYindex = yIndex;
-                for (int xIndex = x;xIndex <(x+numOslotsWide);xIndex ++){
+                for (int xIndex = (int)section.x;xIndex <(section.x+section.width);xIndex ++){
                     currentXindex = xIndex;
                     mapSection.add(getSlotFromCoord(xIndex,yIndex));
                 }
             }
         }catch (Exception IndexOutOfBoundsException){
             System.out.println("out of bounds error at get map section\nyIndex:"+currentYindex+"\nxIndex:"+currentXindex);
-            System.out.println(sectionOutOfBoundsCheck(x,y,numOslotsWide,numOslotsTall).name());//todo test this works
+            System.out.println(sectionOutOfBoundsCheck(section,false));//todo test this works
         }
         return mapSection;
     }
+    public boolean intersects(Rectangle section){
+        return section.intersects(1,1,mapWidth,mapHeight);
+    }
+    public Rectangle2D.Double sectionOutOfBoundsCheck(Rectangle2D.Double section,boolean canClipOutOfBound){
+        if(section.intersects(1,1,mapWidth,mapHeight)&&canClipOutOfBound){
+            return section;
+        }else{
+            if(section.x<1){
+                section.setRect(1,section.y,section.width,section.height);
+            }
+            if(section.x+section.width>mapWidth+1){
+                section.setRect((mapWidth+1)-section.width,section.y,section.width,section.height);
+            }
+            if(section.y<1){
+                section.setRect(section.x,1,section.width,section.height);
+            }
+            if(section.y+section.height>mapHeight+1){
+                section.setRect(section.x,(mapHeight+1)-section.height,section.width,section.height);
+            }
+            return section;
+        }
 
-    public gameConstants.DIRECTION sectionOutOfBoundsCheck(int x, int y, int numOslotsWide, int numOslotsTall){
+        /*
         gameConstants.DIRECTION directionOutOfBounds = gameConstants.DIRECTION.NULL;
-        for (int yIndex = y;yIndex <(y+numOslotsTall-1);yIndex ++){
-            for (int xIndex = x;xIndex <(x+numOslotsWide-1);xIndex ++){
+        for (int yIndex = section.y;yIndex <(section.y+section.height-1);yIndex ++){
+            for (int xIndex = section.x;xIndex <(section.x+section.width-1);xIndex ++){
                 if (xIndex >= mapWidth){
                     directionOutOfBounds = gameConstants.DIRECTION.RIGHT;
                     return directionOutOfBounds;
@@ -79,7 +85,7 @@ public final class Map {
                 return directionOutOfBounds;
             }
         }
-        return directionOutOfBounds;
+        return directionOutOfBounds;*/
     }
 
     public void tick(double tickMultiplier){
