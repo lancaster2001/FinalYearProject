@@ -2,16 +2,22 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Collection;
 
-public abstract class BaseTurretTower extends BaseTower{
+public class BaseTurretTower extends BaseTower{
     private final EnemyManager enemyManagerInstance = EnemyManager.getInstance();
     private final ProjectileManager projectileManagerInstance = ProjectileManager.getInstance();
     protected double range = 0.0;
     private double shootAccumulator = 0.0;
-    private double shootAccumulatorLimit = 1.0;
+    private double cooldown = 1.0;
+    private BulletTemplate bullet;
     private double targetX;
     private double targetY;
+    public BaseTurretTower(int x, int y,TowerTemplate template){
+        super(x,y,template);
+        this.range = template.getRange();
+        this.cooldown = template.getCooldown();
+        this.bullet = template.getBulletTemplate();
+    }
 
     private boolean checkForEnemies(){
         ArrayList<BaseEnemy> enemyList = enemyManagerInstance.getEnemyList();
@@ -38,8 +44,8 @@ public abstract class BaseTurretTower extends BaseTower{
     }
     public void tick(double tickMultiplier){
         shootAccumulator+=tickMultiplier;
-        if (shootAccumulator >= shootAccumulatorLimit) {
-            shootAccumulator = shootAccumulatorLimit;
+        if (shootAccumulator >= cooldown) {
+            shootAccumulator = cooldown;
         }
         if(checkForEnemies()) {
             shoot();
@@ -49,9 +55,9 @@ public abstract class BaseTurretTower extends BaseTower{
         pose = new Pose(x,y,0.0);
     }
     public void shoot(){
-        if(shootAccumulator==shootAccumulatorLimit) {
-            shootAccumulator -= shootAccumulatorLimit;
-            projectileManagerInstance.addBullet(pose.getX(), pose.getY(),pose.getTheta(), 10, 1, 0.6, 0.6);
+        if(shootAccumulator== cooldown) {
+            shootAccumulator -= cooldown;
+            projectileManagerInstance.addBullet(pose.getX(), pose.getY(),pose.getTheta(), bullet);
         }
     }
     public void draw(Graphics g,int x, int y, int width ,int height,AssetManager assetManagerInstance){

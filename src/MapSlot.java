@@ -35,14 +35,17 @@ public class MapSlot {
         g.drawRect(x, y, widthOfSlot, heightOfSlot);
         g.setColor(gameConstants.resourceMenuTitleColour);
         g.setFont(new Font("Arial", Font.BOLD, 20));
-        g.drawString(this.x+", "+this.y, x, y + gameConstants.ResourcesMenuTitleSize);
+        //g.drawString(this.x+", "+this.y, x, y + gameConstants.ResourcesMenuTitleSize);
     }
     public boolean onScreenCheck(Camera cameraInstance){
         return cameraInstance.isOnCamera(x,y);
     }
-    public void setTower(BaseTower newTower){
-        tower = newTower;
-        tower.setup(x,y);
+    public void setTower(TowerTemplate newTower){
+        if(newTower.getType().equals("Turret")){
+            tower = new BaseTurretTower(x,y,newTower);
+        }else if(newTower.getType().equals("Driller")){
+            tower = new DrillTower(x,y,newTower);
+        }
     }
 
     public int getX(){return x;}

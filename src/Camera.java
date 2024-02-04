@@ -18,7 +18,7 @@ public class Camera {
         }
         return instance;
     }
-    //------------------------------------------------------------------
+    //-----------------------------------------------------------------
     private int zoom = gameConstants.defaultZoom;//number of tiles in width
     double screenWidthProportion = 0.0;
     private int numOslotsWide = zoom;

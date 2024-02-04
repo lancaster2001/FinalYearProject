@@ -1,0 +1,68 @@
+import java.awt.*;
+import java.util.ArrayList;
+
+public class GameUIResourceMenu {
+    //singleton-------------------------------------------------------------------------
+    private static GameUIResourceMenu instance = new GameUIResourceMenu();
+    private GameUIResourceMenu() {
+        //loadBuildMenu();
+    }
+
+    public static GameUIResourceMenu getInstance() {
+        if (instance == null) {
+            instance = new GameUIResourceMenu();
+        }
+        return instance;
+    }
+    //----------------------------------------------------------------------------------------
+    private boolean resourceMenuState = true;
+    private Rectangle resourceMenuBackground = new Rectangle(gameConstants.resourcesMenuX, gameConstants.resourcesMenuY, gameConstants.resourcesMenuWidth, gameConstants.resourcesMenuHeight);
+    private Rectangle resourceMenuButton = new Rectangle(gameConstants.resourcesMenuX-(gameConstants.resourcesMenuWidth/10), gameConstants.resourcesMenuY+(gameConstants.resourcesMenuHeight/10), gameConstants.resourcesMenuWidth/10, gameConstants.resourcesMenuHeight/10);
+    public void drawResourcesMenu(Graphics g) {
+        if(resourceMenuState) {
+            drawResourcesMenuBackground(g);
+            drawResourcesMenuTitle(g);
+            drawResourcesMenuResources(g);
+        }
+        drawResourceMenuButton(g);
+    }
+    private void drawResourcesMenuBackground(Graphics g) {
+        g.setColor(gameConstants.resourceMenuBackgroundColour);
+        g.fill3DRect(resourceMenuBackground.x, resourceMenuBackground.y, resourceMenuBackground.width, resourceMenuBackground.height, true);
+    }
+    private void drawResourcesMenuTitle(Graphics g) {
+        g.setColor(gameConstants.resourceMenuTitleColour);
+        g.setFont(new Font("Arial", Font.BOLD, gameConstants.ResourcesMenuTitleSize));
+        g.drawString("Resources:", gameConstants.resourcesMenuX, gameConstants.resourcesMenuY + gameConstants.ResourcesMenuTitleSize);
+    }
+
+    private void drawResourcesMenuResources(Graphics g) {
+        ArrayList<Resource> inventory = new ArrayList<Resource>();
+        inventory = ResourceManager.getInstance().getInventoryArray();
+        int index = 0;
+        for (Resource currentResource : inventory) {
+            index += 1;
+            int y = gameConstants.resourcesMenuY + (gameConstants.ResourcesMenuTitleSize * (index + 1));
+            g.setFont(new Font("Arial", Font.BOLD, gameConstants.ResourcesMenuTitleSize));
+            g.drawImage(currentResource.getImage(), gameConstants.resourcesMenuX, y, gameConstants.ResourcesMenuTitleSize, gameConstants.ResourcesMenuTitleSize, null);
+            g.drawString(currentResource.getName() + ": " + currentResource.getQuantity(), gameConstants.resourcesMenuX + gameConstants.ResourcesMenuTitleSize, y);
+        }
+    }
+    private void drawResourceMenuButton(Graphics g){
+        g.setColor(gameConstants.buildMenuBackgroundColour);
+        g.fill3DRect(resourceMenuButton.x, resourceMenuButton.y, resourceMenuButton.width, resourceMenuButton.height, true);
+    }
+    public boolean takeInput(Point p) {
+        if (resourceMenuButton.contains(p.x, p.y)) {
+            resourceMenuState= !resourceMenuState;
+            if (resourceMenuState) {
+                resourceMenuButton.setLocation(resourceMenuButton.x - resourceMenuBackground.width, resourceMenuButton.y);
+            } else {
+                resourceMenuButton.setLocation(resourceMenuButton.x + resourceMenuBackground.width, resourceMenuButton.y);
+            }
+            return true;
+        }
+        return false;
+    }
+
+}

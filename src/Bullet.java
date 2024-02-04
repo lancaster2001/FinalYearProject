@@ -11,12 +11,13 @@ public class Bullet {
     double width;
     double height;
     String imageLink = "src/Towers/Tower1/image.png";
-    Bullet(double x, double y, double theta, double moveSpeed, double damage,double width, double height) {
+    Bullet(double x, double y, double theta, BulletTemplate template) {
         pose = new Pose(x,y,theta);
-        this.moveSpeed = moveSpeed;
-        this.damage = damage;
-        this.width = width;
-        this.height = height;
+        this.moveSpeed = template.moveSpeed;
+        this.damage = template.damage;
+        this.width = template.width;
+        this.height = template.height;
+        this.imageLink =template.imageLink;
     }
     protected boolean tick(double tickMultiplier){
         makeMovement(tickMultiplier);

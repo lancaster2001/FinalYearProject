@@ -36,7 +36,6 @@ public class MainFrame extends JFrame implements KeyListener, MouseWheelListener
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
         this.add(PanelInstance);
-        //PanelInstance.setBackground(Color.red);
         this.setVisible(true);
     }
     @Override

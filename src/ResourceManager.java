@@ -15,7 +15,6 @@ public class ResourceManager {
     }
     private ResourceManager(){setup();}
     //----------------------------------------------------------------------------------
-
     private HashMap<String, Resource> inventory = new HashMap<String, Resource>();
     private void setup(){
         File file = new File("src/Resources/");

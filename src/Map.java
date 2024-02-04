@@ -64,28 +64,6 @@ public final class Map {
             }
             return section;
         }
-
-        /*
-        gameConstants.DIRECTION directionOutOfBounds = gameConstants.DIRECTION.NULL;
-        for (int yIndex = section.y;yIndex <(section.y+section.height-1);yIndex ++){
-            for (int xIndex = section.x;xIndex <(section.x+section.width-1);xIndex ++){
-                if (xIndex >= mapWidth){
-                    directionOutOfBounds = gameConstants.DIRECTION.RIGHT;
-                    return directionOutOfBounds;
-                } else if (xIndex < 1) {
-                    directionOutOfBounds = gameConstants.DIRECTION.LEFT;
-                    return directionOutOfBounds;
-                }
-            }
-            if (yIndex >= mapHeight){
-                directionOutOfBounds = gameConstants.DIRECTION.DOWN;
-                return directionOutOfBounds;
-            } else if (yIndex<1) {
-                directionOutOfBounds = gameConstants.DIRECTION.UP;
-                return directionOutOfBounds;
-            }
-        }
-        return directionOutOfBounds;*/
     }
 
     public void tick(double tickMultiplier){
@@ -103,7 +81,7 @@ public final class Map {
         }
     }
 
-    public void setTower(BaseTower newTower, int x, int y){
+    public void setTower(TowerTemplate newTower, int x, int y){
         getSlotFromCoord(x,y).setTower(newTower);
     }
 

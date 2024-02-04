@@ -17,18 +17,20 @@ public class GameState {
         return instance;
     }
     private GameState(){
+        TowerManager.getInstance();
         mapInstance = mapGeneratorInstance.createNewMap(gameConstants.mapWidth,gameConstants.mapHeight);
-
+        resourceManagerInstance.queryInventory("Rock").add(20);
     }
     //----------------------------------------------------------------------------------
     private int tickRate = gameConstants.gameTickRate;
     private final MainFrame frameInstance = MainFrame.getInstance();
     public final MainPanel panelInstance = frameInstance.getPanelInstance();
-    private Map mapInstance;
     private final MapGenerator mapGeneratorInstance = MapGenerator.getInstance();
     private final Camera cameraInstance = Camera.getInstance();
     private final EnemyManager enemyManagerInstance = EnemyManager.getInstance();
     private final ProjectileManager projectileManagerInstance = ProjectileManager.getInstance();
+    private  final  ResourceManager resourceManagerInstance = ResourceManager.getInstance();
+    private Map mapInstance;
 
     int fps = 0;
     int fpsCounter =0;

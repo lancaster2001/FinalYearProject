@@ -1,0 +1,8 @@
+{
+  "Type": "Base",
+  "Name": "Base Tower",
+  "Width": 1.0,
+  "Height": 1.0,
+  "CostResource": "Rock",
+  "CostQuantity": 5
+}
