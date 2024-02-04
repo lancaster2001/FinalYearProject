@@ -60,7 +60,9 @@ public class BaseTurretTower extends BaseTower{
             projectileManagerInstance.addBullet(pose.getX(), pose.getY(),pose.getTheta(), bullet);
         }
     }
-    public void draw(Graphics g,int x, int y, int width ,int height,AssetManager assetManagerInstance){
+    public void draw(Graphics g,int x, int y, int slotWidth ,int slotHeight,AssetManager assetManagerInstance){
+        int width = (int)(this.width * slotWidth);
+        int height = (int)(this.height * slotHeight);
         // Rotation information
         double rotationRequired = pose.getTheta();
         BufferedImage image = AssetManager.getInstance().getImage(imageLink);

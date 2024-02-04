@@ -1,5 +1,6 @@
 public class TowerTemplate {
     private String name;
+    private double maxHealth;
     private String type;
     private String costResource;
     private int costQuantity;
@@ -12,7 +13,7 @@ public class TowerTemplate {
     private BulletTemplate bulletTemplate;
 
     public TowerTemplate(){}
-    public TowerTemplate(String name,double width, double height, String costResource, int costQuantity, String imageLink,String type){
+    public TowerTemplate(String name,double width, double height, String costResource, int costQuantity, String imageLink,String type, double maxHealth){
         this.name = name;
         this.costQuantity = costQuantity;
         this.costResource = costResource;
@@ -20,6 +21,7 @@ public class TowerTemplate {
         this.width = width;
         this.height = height;
         this.type = type;
+        this.maxHealth = maxHealth;
     }
     public void setupTurret(double range, double cooldown, BulletTemplate bulletTemplate){
         this.range = range;

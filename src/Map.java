@@ -84,5 +84,8 @@ public final class Map {
     public void setTower(TowerTemplate newTower, int x, int y){
         getSlotFromCoord(x,y).setTower(newTower);
     }
+    public void setTower(BaseTower newTower, int x, int y){
+        getSlotFromCoord(x,y).setTower(newTower);
+    }
 
 }

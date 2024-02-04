@@ -48,7 +48,9 @@ public class MapSlot {
             }
         }
     }
-
+    public void setTower(BaseTower newTower){
+       tower = newTower;
+    }
     public int getX(){return x;}
     public int getY(){return y;}
     public BaseTile getTile() {return tile;}

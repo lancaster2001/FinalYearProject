@@ -19,6 +19,8 @@ public class GameState {
     private GameState(){
         TowerManager.getInstance();
         mapInstance = mapGeneratorInstance.createNewMap(gameConstants.mapWidth,gameConstants.mapHeight);
+        BaseTower playerTower = BaseBaseTower.getInstance();
+        mapInstance.setTower(playerTower,(int)playerTower.getPose().getX(),(int)playerTower.getPose().getY());
         resourceManagerInstance.queryInventory("Rock").add(20);
     }
     //----------------------------------------------------------------------------------

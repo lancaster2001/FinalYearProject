@@ -36,7 +36,7 @@ public class TowerManager {
         if (directories != null) {
             for (String currentTowerType : directories) {
 
-                File towerFolders = new File(towersFolder+"/"+currentTowerType);
+                File towerFolders = new File(towersFolder+currentTowerType);
                 String[] files = towerFolders.list(new FilenameFilter() {
                     @Override
                     public boolean accept(File current, String name) {
@@ -45,7 +45,7 @@ public class TowerManager {
                 });
                 //get the towers of each type e.g. turret1, turret1, turret3, etc
                 for (String currentTower : files) {
-                    towerArrayList.add(readTowerTemplate(towersFolder+"/"+currentTowerType+"/"+currentTower));
+                    towerArrayList.add(readTowerTemplate(towersFolder+currentTowerType+"/"+currentTower));
                 }
             }
         }
@@ -68,7 +68,8 @@ public class TowerManager {
             int costQuantity = jsonObject.getInt("CostQuantity");
             double width = jsonObject.getDouble("Width");
             double height = jsonObject.getDouble("Height");
-            template = new TowerTemplate(name, width,height, costResource, costQuantity, link+"/image.png",type);
+            double maxhealth = jsonObject.getDouble("MaxHealth");
+            template = new TowerTemplate(name, width,height, costResource, costQuantity, link+"/"+AssetManager.getInstance().getImagesInFolder(link)[0],type,maxhealth);
             if (type.equals("Turret")){
                 double range = jsonObject.getDouble("Range");
                 double cooldown = jsonObject.getDouble("Cooldown");
@@ -110,5 +111,13 @@ public class TowerManager {
 
     public ArrayList<TowerTemplate> getTowerArrayList() {
         return towerArrayList;
+    }
+    public TowerTemplate getTemplate(String name){
+        for(TowerTemplate template: towerArrayList){
+            if (template.getName().equals(name)){
+                return  template;
+            }
+        }
+        return new TowerTemplate();
     }
 }

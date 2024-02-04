@@ -5,6 +5,8 @@ public abstract class BaseTower {
     protected Pose pose = new Pose();
     protected String name;
     protected String imageLink = "src/Towers/Base/image.png";
+    protected double width = 1.0;
+    protected double height = 1.0;
     protected String costResource = "Rock";
     protected int costQuantity = 5;
     public void tick(BaseTile tile,double tickMultiplier){
