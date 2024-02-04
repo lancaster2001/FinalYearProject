@@ -1,0 +1,8 @@
+{
+  "Type": "Drill",
+  "Name": "Base Turret",
+  "Width": 1.0,
+  "Height": 1.0,
+  "CostResource": "Rock",
+  "CostQuantity": 5
+}

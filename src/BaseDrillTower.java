@@ -1,9 +1,9 @@
-public class DrillTower extends BaseTower{
+public class BaseDrillTower extends BaseTower{
     private double actAccumulator = 0.0;
     private final double actAccumulatorLimit = 1.0;
-    public DrillTower(int x, int y,TowerTemplate template){
+    public BaseDrillTower(int x, int y, TowerTemplate template){
         super(x,y,template);
-        imageLink = "src/Towers/Driller/image.png";
+        imageLink = template.getImageLink();
     }
     public void act(BaseTile tile, ResourceManager resourceManagerInstance){
         resourceManagerInstance.queryInventory(tile.getResource()).add();

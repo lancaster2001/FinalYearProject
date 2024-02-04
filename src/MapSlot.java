@@ -43,8 +43,8 @@ public class MapSlot {
     public void setTower(TowerTemplate newTower){
         if(newTower.getType().equals("Turret")){
             tower = new BaseTurretTower(x,y,newTower);
-        }else if(newTower.getType().equals("Driller")){
-            tower = new DrillTower(x,y,newTower);
+        }else if(newTower.getType().equals("Drill")){
+            tower = new BaseDrillTower(x,y,newTower);
         }
     }
 
