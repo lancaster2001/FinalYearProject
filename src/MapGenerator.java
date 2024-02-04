@@ -13,6 +13,7 @@ public class MapGenerator {
 
     }
     //----------------------------------------------------------------------------------
+    private final TileManager tileManagerInstance = TileManager.getInstance();
     public Map createNewMap(int mapWidth, int mapHeight){
         return generateBasicMap(mapWidth,mapHeight);
     }
@@ -21,7 +22,7 @@ public class MapGenerator {
         for(int slotNumber = 0; slotNumber < (gameConstants.mapSize); slotNumber++){
             int x = (slotNumber%gameConstants.mapWidth)+1;
             int y = (slotNumber/gameConstants.mapWidth)+1;
-            mapArray.add(new MapSlot(x, y));
+            mapArray.add(new MapSlot(x, y,tileManagerInstance.getTile("Grass")));
         }
         return new Map(mapArray, mapWidth, mapHeight);
     }

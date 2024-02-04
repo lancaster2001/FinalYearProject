@@ -6,11 +6,10 @@ public class MapSlot {
     private BaseTower tower;
     private BaseTile tile;
 
-    public MapSlot(int x,int y){
+    public MapSlot(int x,int y, TileTemplate tile){
         this.x = x;
         this.y = y;
-        //tower = new TowerVariant1();
-        tile = new GrassTile();
+        this.tile = new BaseTile(tile);
     }
     public void tick(double tickMultiplier){
         if(tower!=null){

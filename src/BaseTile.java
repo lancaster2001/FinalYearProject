@@ -4,18 +4,21 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public abstract class BaseTile {
+public class BaseTile {
     protected String imageLink = "src/Tiles/Base/image.png";
-    protected BufferedImage image;
     protected String resource = "";
+    public BaseTile(TileTemplate template){
+        imageLink = template.getImageLink();
+        resource = template.getResource();
+    }
 
     protected void setup(){AssetManager.getInstance().getImage(imageLink);}
     protected void draw(Graphics g, int x, int y, int width , int height,AssetManager assetManagerInstance){
         g.drawImage(AssetManager.getInstance().getImage(imageLink), x, y, width, height, null);
     }
-    public void setImage(BufferedImage image){this.image = image;}
-    public BufferedImage getImage() {return image;}
-    public String getImageLink(){return imageLink;}
+    public String getImageLink(){
+        return imageLink;
+    }
 
     public String getResource() {
         return resource;

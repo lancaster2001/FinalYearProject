@@ -41,6 +41,8 @@ public class AssetManager {
                         } catch (IOException e) {
                             System.out.print("error loading image");
                             throw new RuntimeException(e);
+                        }catch (Exception e){
+                            throw new RuntimeException(e);
                         }
                     } else {
                         index += 1;
@@ -81,12 +83,12 @@ public class AssetManager {
                 String theLink = dirLink + currenFolder;
                 for(String currentImage: getImagesInFolder(theLink)) {
                     ImagesArray.add(getImage(theLink+"/"+currentImage));
-                    ImageLinksArray.add(theLink+currentImage);
+                    ImageLinksArray.add(theLink+"/"+currentImage);
                 }
             }
         }
     }
-    private String[] getImagesInFolder(String theLink) {
+    public String[] getImagesInFolder(String theLink) {
         File dir = new File(theLink);
         String[] files = dir.list(new FilenameFilter() {
             public boolean accept(File dir, String name) {
