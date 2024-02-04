@@ -43,9 +43,10 @@ public class GameUIResourceMenu {
         for (Resource currentResource : inventory) {
             index += 1;
             int y = gameConstants.resourcesMenuY + (gameConstants.ResourcesMenuTitleSize * (index + 1));
+            int width = gameConstants.ResourcesMenuTitleSize;
             g.setFont(new Font("Arial", Font.BOLD, gameConstants.ResourcesMenuTitleSize));
-            g.drawImage(currentResource.getImage(), gameConstants.resourcesMenuX, y, gameConstants.ResourcesMenuTitleSize, gameConstants.ResourcesMenuTitleSize, null);
-            g.drawString(currentResource.getName() + ": " + currentResource.getQuantity(), gameConstants.resourcesMenuX + gameConstants.ResourcesMenuTitleSize, y);
+            g.drawImage(currentResource.getImage(), gameConstants.resourcesMenuX, y, width, width, null);
+            g.drawString(currentResource.getName() + ": " + currentResource.getQuantity(), gameConstants.resourcesMenuX + width, y+width);
         }
     }
     private void drawResourceMenuButton(Graphics g){

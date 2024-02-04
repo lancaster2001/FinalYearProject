@@ -40,10 +40,12 @@ public class MapSlot {
         return cameraInstance.isOnCamera(x,y);
     }
     public void setTower(TowerTemplate newTower){
-        if(newTower.getType().equals("Turret")){
-            tower = new BaseTurretTower(x,y,newTower);
-        }else if(newTower.getType().equals("Drill")){
-            tower = new BaseDrillTower(x,y,newTower);
+        if (ResourceManager.getInstance().queryInventory(newTower.getCostResource()).remove(newTower.getCostQuantity())) {
+            if (newTower.getType().equals("Turret")) {
+                tower = new BaseTurretTower(x, y, newTower);
+            } else if (newTower.getType().equals("Drill")) {
+                tower = new BaseDrillTower(x, y, newTower);
+            }
         }
     }
 

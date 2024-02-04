@@ -1,9 +1,9 @@
 {
   "Type": "Drill",
-  "Name": "Base Drill",
+  "Name": "Iron Drill",
   "Width": 1.0,
   "Height": 1.0,
   "CostResource": "Rock",
   "CostQuantity": 5,
-  "Speed": 1.0
+  "Speed": 1.5
 }

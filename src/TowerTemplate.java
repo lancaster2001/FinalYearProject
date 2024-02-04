@@ -7,6 +7,7 @@ public class TowerTemplate {
     private double width;
     private double height;
     private double range;
+    private double speed;
     private double cooldown;
     private BulletTemplate bulletTemplate;
 
@@ -24,6 +25,9 @@ public class TowerTemplate {
         this.range = range;
         this.cooldown = cooldown;
         this.bulletTemplate = bulletTemplate;
+    }
+    public void setupDrill(double speed){
+        this.speed = speed;
     }
 
     public String getName() {
@@ -64,5 +68,9 @@ public class TowerTemplate {
 
     public String getType() {
         return type;
+    }
+
+    public double getSpeed() {
+        return speed;
     }
 }

@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 public class MapGenerator {
     //singleton------------------------------------------------------------------------
@@ -22,7 +23,13 @@ public class MapGenerator {
         for(int slotNumber = 0; slotNumber < (gameConstants.mapSize); slotNumber++){
             int x = (slotNumber%gameConstants.mapWidth)+1;
             int y = (slotNumber/gameConstants.mapWidth)+1;
-            mapArray.add(new MapSlot(x, y,tileManagerInstance.getTile("Grass")));
+            Random rnd = new Random();
+            if(rnd.nextInt(1,10)==5){
+                mapArray.add(new MapSlot(x, y,tileManagerInstance.getTile("Rock-Iron")));
+            }else{
+                mapArray.add(new MapSlot(x, y,tileManagerInstance.getTile("Grass")));
+            }
+
         }
         return new Map(mapArray, mapWidth, mapHeight);
     }

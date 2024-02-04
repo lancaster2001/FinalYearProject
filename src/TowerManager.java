@@ -74,7 +74,8 @@ public class TowerManager {
                 double cooldown = jsonObject.getDouble("Cooldown");
                 template.setupTurret(range,cooldown,readBulletTemplate(link+"/bullet.json"));
             } else if (type.equals("Drill")){
-
+                double speed = jsonObject.getDouble("Speed");
+                template.setupDrill(speed);
             }
         } catch (IOException | JSONException e) {
             e.printStackTrace();
