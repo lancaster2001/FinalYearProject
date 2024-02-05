@@ -7,6 +7,7 @@ public class TileTemplate {
         this.name = name;
         this.resource = resource;
         this.imageLink = imageLink;
+
     }
 
     public String getImageLink() {

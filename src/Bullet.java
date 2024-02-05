@@ -10,7 +10,7 @@ public class Bullet {
     double damage;
     double width;
     double height;
-    String imageLink = "src/Towers/Tower1/image.png";
+    String imageLink = "src/Towers/Tower1/irondrill.png";
     Bullet(double x, double y, double theta, BulletTemplate template) {
         pose = new Pose(x,y,theta);
         this.moveSpeed = template.moveSpeed;
@@ -61,7 +61,7 @@ public class Bullet {
         int height = (int)(this.height*heightOfSlot);
         //g.drawImage(assetManagerInstance.getImage(imageLink),x, y, width, height,null);
         double rotationRequired = pose.getTheta();
-        BufferedImage image = AssetManager.getInstance().getImage(imageLink);
+        BufferedImage image = AssetManager.getInstance().getImage("Projectiles",imageLink);
 
         Graphics2D g2d = (Graphics2D) g;
         AffineTransform backup = g2d.getTransform();

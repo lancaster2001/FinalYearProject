@@ -86,7 +86,7 @@ public class GameUIBuildMenu {
         for (TowerTemplate tower : displayTowerArrayList) {
             int x = index * ((2 * spaceBetweenBuildMenuElements) + buildMenuElementWidth);
             int y = buildMenuBackground.y + spaceBetweenBuildMenuElements;
-            g.drawImage(assetManagerInstance.getImage(tower.getImageLink()), x, y, buildMenuElementWidth, buildMenuElementHeight, null);
+            g.drawImage(assetManagerInstance.getImage("Towers",tower.getImageLink()), x, y, buildMenuElementWidth, buildMenuElementHeight, null);
             buildMenuIconHitBox.add(new Rectangle(x, y, buildMenuElementWidth, buildMenuElementHeight));
             if(selectedMenuElement == (index)){
                 g.setColor(Color.BLACK);

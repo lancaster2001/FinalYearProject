@@ -1,19 +1,29 @@
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
-public abstract class BaseEnemy {
+public class BaseEnemy {
     private Camera cameraInstance = Camera.getInstance();
     private boolean alive = true;
     protected Pose pose = new Pose();
-    protected double width = 1;//relative to size of slot
-    protected double height = 1;//relative to size of slot
-    protected double damage = 1;
-    protected double maxHealth = 5;
-    protected double health = maxHealth;
-    protected double moveSpeed = 2.5;
-    protected String imageLink = "src/Enemies/Base/image.png";
+    protected double width;//relative to size of slot
+    protected double height;//relative to size of slot
+    protected double damage ;
+    protected double maxHealth;
+    protected double health;
+    protected double moveSpeed;
+    protected String imageLink = "src/Assets/Units/enemy1.png";
     //private final Map mapInstance = Map.getInstance();
     private Point targetLocation = new Point(50,50);
+    public BaseEnemy(double x, double y,EnemyTemplate template){
+        pose = new Pose(x,y, 0.0);
+        width = template.getWidth();
+        height = template.getHeight();
+        damage = template.getDamage();
+        maxHealth = template.getMaxHealth();
+        health = maxHealth;
+        moveSpeed = template.getMoveSpeed();
+        imageLink = template.getImageLink();
+    }
 
     protected void draw(Graphics g){
         int widthOfSlot = cameraInstance.getwidthOfSlot();
@@ -22,7 +32,7 @@ public abstract class BaseEnemy {
         int y =(int)((pose.getY()-cameraInstance.getY())*heightOfSlot);
         int width =(int)(cameraInstance.getwidthOfSlot()*this.width);
         int height = (int)(cameraInstance.getheightOfslot()*this.height);
-        g.drawImage(AssetManager.getInstance().getImage(imageLink), x, y, width, height, null);
+        g.drawImage(AssetManager.getInstance().getImage("Units",imageLink), x, y, width, height, null);
         drawHealthBar(g,new Rectangle(x,y,width,height));
     }
     private void drawHealthBar(Graphics g, Rectangle hitbox){

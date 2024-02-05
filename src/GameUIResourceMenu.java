@@ -15,6 +15,7 @@ public class GameUIResourceMenu {
         return instance;
     }
     //----------------------------------------------------------------------------------------
+    private final AssetManager assetManagerInstance = AssetManager.getInstance();
     private boolean resourceMenuState = true;
     private Rectangle resourceMenuBackground = new Rectangle(gameConstants.resourcesMenuX, gameConstants.resourcesMenuY, gameConstants.resourcesMenuWidth, gameConstants.resourcesMenuHeight);
     private Rectangle resourceMenuButton = new Rectangle(gameConstants.resourcesMenuX-(gameConstants.resourcesMenuWidth/10), gameConstants.resourcesMenuY+(gameConstants.resourcesMenuHeight/10), gameConstants.resourcesMenuWidth/10, gameConstants.resourcesMenuHeight/10);
@@ -45,7 +46,7 @@ public class GameUIResourceMenu {
             int y = gameConstants.resourcesMenuY + (gameConstants.ResourcesMenuTitleSize * (index + 1));
             int width = gameConstants.ResourcesMenuTitleSize;
             g.setFont(new Font("Arial", Font.BOLD, gameConstants.ResourcesMenuTitleSize));
-            g.drawImage(currentResource.getImage(), gameConstants.resourcesMenuX, y, width, width, null);
+            g.drawImage(assetManagerInstance.getImage("Icons",currentResource.getIconImageLink()), gameConstants.resourcesMenuX, y, width, width, null);
             g.drawString(currentResource.getName() + ": " + currentResource.getQuantity(), gameConstants.resourcesMenuX + width, y+width);
         }
     }

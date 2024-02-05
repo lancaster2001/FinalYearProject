@@ -12,7 +12,7 @@ public class TileManager {
     //singleton-------------------------------------------------------------------------
     private static TileManager instance = new TileManager();
     private TileManager(){
-        loadTiles();
+        //loadTiles();
     }
     public static TileManager getInstance() {
         if (instance == null) {
@@ -22,16 +22,10 @@ public class TileManager {
     }
     //----------------------------------------------------------------------------------------
     private final ArrayList<TileTemplate> tileArrayList = new ArrayList<TileTemplate>();
-    private final String tileLink = "src/Tiles/";
-    private void loadTiles() {loadListOfTiles(tileLink);}
+    private final String tileLink = "src/Assets/Tiles/";
+    /*private void loadTiles() {loadListOfTiles(tileLink);}
     private void loadListOfTiles(String tilesFolder){
-        File towerTypesFolders = new File(tilesFolder);
-        String[] directories = towerTypesFolders.list(new FilenameFilter() {
-            @Override
-            public boolean accept(File current, String name) {
-                return new File(current, name).isDirectory();
-            }
-        });
+        String[] directories = AssetManager.getInstance().getJsonsInFolder(tilesFolder);
         //get the directory of each tower type e.g. turret, driller, etc
         if (directories != null) {
             for (String currentTileType : directories) {
@@ -59,11 +53,18 @@ public class TileManager {
             e.printStackTrace();
         }
         return template;
+    }*/
+    public TileTemplate creatNewTileTemplate(String tile, String resource){
+        if(resource!=null) {
+            return new TileTemplate(tile, resource, tile + ".png");
+        }else{
+            return new TileTemplate(tile, "rock",tile + ".png");
+        }
     }
 
     public TileTemplate getTile(String tileName){
         for(TileTemplate tile: tileArrayList){
-            if(tileName.equals(tile.getName())){
+            if(tileName.toLowerCase().equals(tile.getName().toLowerCase())){
                 return tile;
             }
         }

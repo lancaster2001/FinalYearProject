@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import  org.json.*;
 
@@ -35,16 +36,11 @@ public class TowerManager {
         //get the directory of each tower type e.g. turret, driller, etc
         if (directories != null) {
             for (String currentTowerType : directories) {
+                String[] jsonsInFolder = AssetManager.getInstance().getJsonsInFolder(towersFolder+currentTowerType);
 
-                File towerFolders = new File(towersFolder+currentTowerType);
-                String[] files = towerFolders.list(new FilenameFilter() {
-                    @Override
-                    public boolean accept(File current, String name) {
-                        return new File(current, name).isDirectory();
-                    }
-                });
+
                 //get the towers of each type e.g. turret1, turret1, turret3, etc
-                for (String currentTower : files) {
+                for (String currentTower : jsonsInFolder) {
                     towerArrayList.add(readTowerTemplate(towersFolder+currentTowerType+"/"+currentTower));
                 }
             }
@@ -53,7 +49,7 @@ public class TowerManager {
 
     private TowerTemplate readTowerTemplate(String link) {
         // Replace "path/to/your/file.json" with the actual path to your JSON file
-        String filePath = link+ "/tower.json";
+        String filePath = link ;
         TowerTemplate template = new TowerTemplate();
 
         try (FileReader reader = new FileReader(filePath)) {
@@ -69,11 +65,13 @@ public class TowerManager {
             double width = jsonObject.getDouble("Width");
             double height = jsonObject.getDouble("Height");
             double maxhealth = jsonObject.getDouble("MaxHealth");
-            template = new TowerTemplate(name, width,height, costResource, costQuantity, link+"/"+AssetManager.getInstance().getImagesInFolder(link)[0],type,maxhealth);
+            String imageLink = jsonObject.getString("ImageLink");
+            template = new TowerTemplate(name, width,height, costResource, costQuantity, imageLink,type,maxhealth);
             if (type.equals("Turret")){
                 double range = jsonObject.getDouble("Range");
                 double cooldown = jsonObject.getDouble("Cooldown");
-                template.setupTurret(range,cooldown,readBulletTemplate(link+"/bullet.json"));
+                JSONArray bullet = jsonObject.getJSONArray("Bullet");
+                template.setupTurret(range,cooldown,readBulletTemplate(bullet));
             } else if (type.equals("Drill")){
                 double speed = jsonObject.getDouble("Speed");
                 template.setupDrill(speed);
@@ -84,27 +82,20 @@ public class TowerManager {
         return template;
     }
 
-    private BulletTemplate readBulletTemplate(String link) {
+    private BulletTemplate readBulletTemplate(JSONArray bullet) {
         // Replace "path/to/your/file.json" with the actual path to your JSON file
-        String filePath = link;
         BulletTemplate template = new BulletTemplate();
 
-        try (FileReader reader = new FileReader(filePath)) {
-            // Using JSONTokener to parse the JSON file
-            JSONTokener tokener = new JSONTokener(reader);
-            JSONObject jsonObject = new JSONObject(tokener);
-
-            // Accessing values from the JSON object
-            double movespeed = jsonObject.getDouble("MoveSpeed");
-            double damage = jsonObject.getDouble("Damage");
-            double width = jsonObject.getDouble("Width");
-            double height = jsonObject.getDouble("Height");
-            String imageLink = bulletsImagesLink+jsonObject.getString("ImageLink");
+        Iterator<Object> iterator = bullet.iterator();
+        while(iterator.hasNext()) {
+            JSONObject object = (JSONObject) iterator.next();
+            double movespeed = object.getDouble("MoveSpeed");
+            double damage = object.getDouble("Damage");
+            double width = object.getDouble("Width");
+            double height = object.getDouble("Height");
+            String imageLink = object.getString("ImageLink");
             template = new BulletTemplate(movespeed, damage ,width,height, imageLink);
 
-            return template;
-        } catch (IOException | JSONException e) {
-            e.printStackTrace();
         }
         return template;
     }

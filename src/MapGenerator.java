@@ -14,6 +14,7 @@ public class MapGenerator {
 
     }
     //----------------------------------------------------------------------------------
+    private Map latestMap;
     private final TileManager tileManagerInstance = TileManager.getInstance();
     public Map createNewMap(int mapWidth, int mapHeight){
         return generateBasicMap(mapWidth,mapHeight);
@@ -25,12 +26,23 @@ public class MapGenerator {
             int y = (slotNumber/gameConstants.mapWidth)+1;
             Random rnd = new Random();
             if(rnd.nextInt(1,10)==5){
-                mapArray.add(new MapSlot(x, y,tileManagerInstance.getTile("Rock-Iron")));
+                mapArray.add(new MapSlot(x, y,tileManagerInstance.creatNewTileTemplate("stone", "copper")));
+            }else if(rnd.nextInt(1,10)==4){
+                mapArray.add(new MapSlot(x, y,tileManagerInstance.creatNewTileTemplate("basalt", null)));
             }else{
-                mapArray.add(new MapSlot(x, y,tileManagerInstance.getTile("Grass")));
+                    mapArray.add(new MapSlot(x, y,tileManagerInstance.creatNewTileTemplate("Grass",null)));
             }
 
         }
-        return new Map(mapArray, mapWidth, mapHeight);
+        latestMap =new Map(mapArray, mapWidth, mapHeight);
+        return latestMap;
+    }
+    public Map getMap(){
+        if(latestMap!=null) {
+            return latestMap;
+        }else{
+            latestMap = generateBasicMap(100,100);
+        }
+        return latestMap;
     }
 }

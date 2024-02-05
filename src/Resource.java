@@ -3,13 +3,13 @@ import java.awt.image.BufferedImage;
 public class Resource {
     private int quantity = 0;
     private String name;
-    private String imageLink = "src/Resources/";
-    private BufferedImage image;
+    private String tileImageLink;
+    private String iconImageLink;
 
-    public Resource(String name){
+    public Resource(String name,String tileImageLink,String iconImageLink){
         this.name = name;
-        imageLink+=name+"/image.png";
-        image = AssetManager.getInstance().getImage(imageLink);
+        this.tileImageLink = tileImageLink;
+        this.iconImageLink = iconImageLink;
     }
     public boolean add(){
         quantity+=1;
@@ -36,15 +36,19 @@ public class Resource {
         }
     }
 
-    public BufferedImage getImage() {
-        return image;
-    }
-
     public int getQuantity() {
         return quantity;
     }
 
     public String getName() {
         return name;
+    }
+
+    public String getIconImageLink() {
+        return iconImageLink;
+    }
+
+    public String getTileImageLink() {
+        return tileImageLink;
     }
 }

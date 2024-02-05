@@ -9,10 +9,8 @@ public class AssetManager {
     private static AssetManager instance = new AssetManager();
 
     private AssetManager() {
-        loadAllImages("src/Resources/");
-        loadAllImages("src/Towers/Drill/");
-        loadAllImages("src/Towers/Turret/");
-        loadAllImages("src/Tiles/");
+        loadAllImages("src/Assets/");
+
     }
 
     public static AssetManager getInstance() {
@@ -23,19 +21,23 @@ public class AssetManager {
     }
 
     //----------------------------------------------------------------------------------------
+
     private final ArrayList<String> ImageLinksArray = new ArrayList<String>();
     private final ArrayList<BufferedImage> ImagesArray = new ArrayList<BufferedImage>();
-
-    public BufferedImage getImage(String imageLink) {
+    private final String assetsPath = "src/Assets/";
+    public BufferedImage getImage(String type, String image){
+        return getImage(assetsPath+type+"/"+image);
+    }
+    private BufferedImage getImage(String imageLink) {
         BufferedImage desiredImage = null;
-        boolean add = false;
+        String add = "";
         int index = 0;
         if (!ImageLinksArray.isEmpty()) {
             for (String currentLink : ImageLinksArray) {
-                if (!currentLink.equals(imageLink)) {
+                if (!currentLink.equalsIgnoreCase(imageLink)) {
                     if (index == ImageLinksArray.size() - 1) {
-                        add = true;
                         try {
+                            add = imageLink;
                             desiredImage = ImageIO.read(new File(imageLink));
                             ImagesArray.add(desiredImage);
                         } catch (IOException e) {
@@ -62,9 +64,8 @@ public class AssetManager {
                 throw new RuntimeException(e);
             }
         }
-
-        if (add) {
-            ImageLinksArray.add(imageLink);
+        if(!add.isEmpty()){
+            ImageLinksArray.add(add);
         }
         return desiredImage;
     }
@@ -82,8 +83,7 @@ public class AssetManager {
             for (String currenFolder : directories) {
                 String theLink = dirLink + currenFolder;
                 for(String currentImage: getImagesInFolder(theLink)) {
-                    ImagesArray.add(getImage(theLink+"/"+currentImage));
-                    ImageLinksArray.add(theLink+"/"+currentImage);
+                    getImage(theLink+"/"+currentImage);
                 }
             }
         }
@@ -97,4 +97,14 @@ public class AssetManager {
         });
         return files;
     }
+    public String[] getJsonsInFolder(String theLink) {
+        File dir = new File(theLink);
+        String[] files = dir.list(new FilenameFilter() {
+            public boolean accept(File dir, String name) {
+                return new File(dir, name).getName().endsWith(".json");
+            }
+        });
+        return files;
+    }
+
 }

@@ -65,7 +65,7 @@ public class BaseTurretTower extends BaseTower{
         int height = (int)(this.height * slotHeight);
         // Rotation information
         double rotationRequired = pose.getTheta();
-        BufferedImage image = AssetManager.getInstance().getImage(imageLink);
+        BufferedImage image = AssetManager.getInstance().getImage("Towers",imageLink);
 
         Graphics2D g2d = (Graphics2D) g;
         AffineTransform backup = g2d.getTransform();

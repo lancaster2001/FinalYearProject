@@ -5,16 +5,17 @@ import java.io.File;
 import java.io.IOException;
 
 public class BaseTile {
-    protected String imageLink = "src/Tiles/Base/image.png";
-    protected String resource = "";
+    protected String imageLink;
+    protected String resource;
     public BaseTile(TileTemplate template){
         imageLink = template.getImageLink();
         resource = template.getResource();
     }
-
-    protected void setup(){AssetManager.getInstance().getImage(imageLink);}
     protected void draw(Graphics g, int x, int y, int width , int height,AssetManager assetManagerInstance){
-        g.drawImage(AssetManager.getInstance().getImage(imageLink), x, y, width, height, null);
+        g.drawImage(AssetManager.getInstance().getImage("Tiles",imageLink), x, y, width, height, null);
+        if(!resource.equalsIgnoreCase("Rock")) {
+            g.drawImage(AssetManager.getInstance().getImage("Tiles", "ore-"+resource+".png"), x, y, width, height, null);
+        }
     }
     public String getImageLink(){
         return imageLink;

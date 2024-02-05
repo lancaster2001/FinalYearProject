@@ -4,16 +4,14 @@ import java.awt.*;
 public abstract class BaseTower {
     protected Pose pose = new Pose();
     protected String name;
-    protected String imageLink = "src/Towers/Base/image.png";
+    protected String imageLink = "src/Towers/Base/irondrill.png";
     protected double width = 1.0;
     protected double height = 1.0;
     protected String costResource = "Rock";
     protected int costQuantity = 5;
     public void tick(BaseTile tile,double tickMultiplier){
     }
-    public void tick(double tickMultiplier){
-        System.out.println("");
-    }
+    public void tick(double tickMultiplier){}
     public BaseTower(int x, int y,TowerTemplate template){
         this.pose.setX(x);
         this.pose.setY(y);
@@ -28,7 +26,7 @@ public abstract class BaseTower {
         return pose;
     }
     protected void draw(Graphics g,int x, int y, int width ,int height,AssetManager assetManagerInstance){
-        g.drawImage(AssetManager.getInstance().getImage(imageLink), x, y, width, height, null);
+        g.drawImage(AssetManager.getInstance().getImage("Towers",imageLink), x, y, width, height, null);
     }
     protected String getCostResource(){
         return costResource;

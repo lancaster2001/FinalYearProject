@@ -1,10 +1,11 @@
 {
   "Type": "Drill",
-  "Name": "Iron Drill",
+  "Name": "Basic Drill",
   "MaxHealth": 100.0,
   "Width": 1.0,
   "Height": 1.0,
   "CostResource": "Rock",
   "CostQuantity": 5,
-  "Speed": 1.5
+  "Speed": 1.0,
+  "ImageLink": "basicdrill.png"
 }

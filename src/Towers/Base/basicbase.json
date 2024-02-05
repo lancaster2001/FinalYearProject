@@ -1,0 +1,10 @@
+{
+  "Name": "BasicBase",
+  "Type": "Base",
+  "MaxHealth": 500.0,
+  "CostResource": "Rock",
+  "CostQuantity": 5,
+  "Width": 2,
+  "Height": 2,
+  "ImageLink": "basicbase.png"
+}
