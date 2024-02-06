@@ -1,7 +1,7 @@
 {
   "Type": "Drill",
   "Name": "Basic Drill",
-  "MaxHealth": 100.0,
+  "MaxHealth": 10.0,
   "Width": 1.0,
   "Height": 1.0,
   "CostResource": "Rock",

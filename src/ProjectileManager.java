@@ -16,8 +16,8 @@ public class ProjectileManager {
     //----------------------------------------------------------------------------------
     private final AssetManager assetManagerInstance = AssetManager.getInstance();
     protected ArrayList<Bullet> bullets = new ArrayList<>();
-    public void addBullet(double x, double y, double theta, BulletTemplate bulletTemplate) {
-        bullets.add(new Bullet(x, y,theta, bulletTemplate));
+    public void addBullet(double x, double y, double theta, String type, BulletTemplate bulletTemplate) {
+        bullets.add(new Bullet(x, y,theta, type, bulletTemplate));
     }
     public void tick(double tickMultiplier){
         ArrayList<Integer> bulletsToRemove = new ArrayList<Integer>();

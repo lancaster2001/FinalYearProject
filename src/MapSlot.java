@@ -17,6 +17,14 @@ public class MapSlot {
             tower.tick(tickMultiplier);
         }
     }
+    public void damageTower(double damage){
+        if(tower!=null){
+            tower.takeDamage(damage);
+        }
+        if(tower.getHealth()<=0){
+            tower = null;
+        }
+    }
     protected void draw(Graphics g,Camera cameraInstance,AssetManager assetManagerInstance){
         int widthOfSlot = cameraInstance.getwidthOfSlot();
         int heightOfSlot = cameraInstance.getheightOfslot();

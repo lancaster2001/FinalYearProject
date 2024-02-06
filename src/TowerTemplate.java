@@ -1,7 +1,6 @@
 public class TowerTemplate {
     private String name;
     private double maxHealth;
-    private double damage;
     private String type;
     private String costResource;
     private int costQuantity;
@@ -76,4 +75,9 @@ public class TowerTemplate {
     public double getSpeed() {
         return speed;
     }
+
+    public double getMaxHealth() {
+        return maxHealth;
+    }
+
 }

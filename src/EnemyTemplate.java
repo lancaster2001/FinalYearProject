@@ -6,8 +6,12 @@ public class EnemyTemplate {
     private double maxHealth;
     private double moveSpeed;
     private String imageLink;
+    private double range;
+    private double cooldown;
+    private BulletTemplate bullet;
 
-    EnemyTemplate(String name,double width, double height, double damage, double maxHealth, double moveSpeed, String imageLink){
+
+    EnemyTemplate(String name,double width, double height, double damage, double maxHealth, double moveSpeed, String imageLink,double range, double cooldown, BulletTemplate bullet){
         this.name = name;
         this.width = width;
         this.height = height;
@@ -15,6 +19,9 @@ public class EnemyTemplate {
         this.maxHealth = maxHealth;
         this.moveSpeed = moveSpeed;
         this.imageLink = imageLink;
+        this.range = range;
+        this.cooldown = cooldown;
+        this.bullet = bullet;
     }
 
     public String getName() {
@@ -43,5 +50,17 @@ public class EnemyTemplate {
 
     public double getMaxHealth() {
         return maxHealth;
+    }
+
+    public double getRange() {
+        return range;
+    }
+
+    public double getCooldown() {
+        return cooldown;
+    }
+
+    public BulletTemplate getBullet() {
+        return bullet;
     }
 }

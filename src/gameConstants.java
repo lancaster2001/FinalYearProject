@@ -10,6 +10,7 @@ public interface gameConstants {
     char moveCameraDown = 's';
     char moveCameraLeft = 'a';
     char moveCameraRight = 'd';
+    char pauseButton = ' ';
     //CAMERA-------------------------------------------------------------------------------------------------
     int defaultZoom = 20;
     int[] defaultCameraCoordinates = {2,2};
@@ -39,4 +40,6 @@ public interface gameConstants {
     int spaceBetweenBuildMenuElements = (buildMenuHeight/10);
     int buildMenuElementWidth = ((buildMenuHeight/10)*8);
     int buildMenuElementHeight = ((buildMenuHeight/10)*8);
+    //MAIN MENU----------------------------------------------------------------------------------------------
+    Color mainMenuBackgroundColor = Color.white;
 }

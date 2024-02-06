@@ -57,12 +57,13 @@ public class BaseTurretTower extends BaseTower{
     public void shoot(){
         if(shootAccumulator== cooldown) {
             shootAccumulator -= cooldown;
-            projectileManagerInstance.addBullet(pose.getX(), pose.getY(),pose.getTheta(), bullet);
+            projectileManagerInstance.addBullet(pose.getX(), pose.getY(),pose.getTheta(), "player" ,bullet);
         }
     }
     public void draw(Graphics g,int x, int y, int slotWidth ,int slotHeight,AssetManager assetManagerInstance){
         int width = (int)(this.width * slotWidth);
         int height = (int)(this.height * slotHeight);
+        Rectangle towerBox = new Rectangle(x, y, width, height);
         // Rotation information
         double rotationRequired = pose.getTheta();
         BufferedImage image = AssetManager.getInstance().getImage("Towers",imageLink);
@@ -74,5 +75,6 @@ public class BaseTurretTower extends BaseTower{
         g2d.transform( trans );
         g2d.drawImage( image, x, y ,width,height,null);  // the actual location of the sprite
         g2d.setTransform( backup ); // restore previous transform
+        drawHealthBar(g, towerBox);
     }
 }

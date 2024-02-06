@@ -1,7 +1,7 @@
 {
   "Type": "Turret",
   "Name": "Base Turret",
-  "MaxHealth": 100.0,
+  "MaxHealth": 10.0,
   "Width": 1.0,
   "Height": 1.0,
   "Range": 100.0,

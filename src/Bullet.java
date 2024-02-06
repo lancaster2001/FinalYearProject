@@ -1,27 +1,34 @@
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class Bullet {
     private final EnemyManager enemyManagerInstance = EnemyManager.getInstance();
-    Pose pose;
+    private String type;
+    private Pose pose;
     double moveSpeed;
     double damage;
     double width;
     double height;
     String imageLink = "src/Towers/Tower1/irondrill.png";
-    Bullet(double x, double y, double theta, BulletTemplate template) {
+    Bullet(double x, double y, double theta, String type, BulletTemplate template) {
         pose = new Pose(x,y,theta);
         this.moveSpeed = template.moveSpeed;
         this.damage = template.damage;
         this.width = template.width;
         this.height = template.height;
         this.imageLink =template.imageLink;
+        this.type = type;
     }
     protected boolean tick(double tickMultiplier){
         makeMovement(tickMultiplier);
-        return checkForCollision();
+        if(type.equalsIgnoreCase("enemy")){
+            return checkForTowerCollision();
+        }else{
+            return checkForEnemyCollision();
+        }
     }
     private void makeMovement(double tickMultiplier){
         //int distanceToTarget = (int)Math.sqrt((((pose.getX()-targetLocation.x)^2)+((pose.getY()-targetLocation.y)^2)));
@@ -31,7 +38,7 @@ public class Bullet {
         pose.setX(pose.getX()+targetX);
         pose.setY(pose.getY()+targetY);
     }
-    private boolean checkForCollision(){
+    private boolean checkForEnemyCollision(){
         ArrayList<BaseEnemy> enemyList =enemyManagerInstance.getEnemyList();
         for(BaseEnemy enemy: enemyList){
             int numberOfSigFigs = 5;
@@ -48,7 +55,17 @@ public class Bullet {
                 enemy.takeDamage(damage);
                 return true;
             }
-
+        }
+        return false;
+    }
+    private boolean checkForTowerCollision(){
+        Rectangle2D.Double slotToCheck = new Rectangle2D.Double(pose.getX(),pose.getY(),width,height);
+        ArrayList<MapSlot> intersectedSlots = GameState.getInstance().getMapInstance().getMapSection(slotToCheck);
+        for(MapSlot slot: intersectedSlots) {
+            if (slot.getTower()!=null) {
+                slot.damageTower(damage);
+                return true;
+            }
         }
         return false;
     }

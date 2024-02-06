@@ -7,6 +7,7 @@ import java.awt.*;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 public class EnemyManager {
@@ -41,6 +42,11 @@ public class EnemyManager {
         randomEnemyChance();
     }
     public void drawEnemies(Graphics g){
+        for(int index =0;index< enemyList.size();index++){
+            if(enemyList.get(index).onScreenCheck()){
+                enemyList.get(index).draw(g);
+            }
+        }
         for(BaseEnemy enemy: enemyList){
             if(enemy.onScreenCheck()){
                 enemy.draw(g);
@@ -112,11 +118,31 @@ public class EnemyManager {
                 double damage = jsonObject.getDouble("Damage");
                 double movespeed = jsonObject.getDouble("MoveSpeed");
                 String imageLink = jsonObject.getString("ImageLink");
-                enemyTemplates.add(new EnemyTemplate(name, width, height, damage, maxhealth, movespeed, imageLink));
+                double range = jsonObject.getDouble("Range");
+                double cooldown = jsonObject.getDouble("Cooldown");
+                JSONArray bullet = jsonObject.getJSONArray("Bullet");
+                enemyTemplates.add(new EnemyTemplate(name, width, height, damage, maxhealth, movespeed, imageLink,range,cooldown,readBulletTemplate(bullet)));
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
         }
+    }
+    private BulletTemplate readBulletTemplate(JSONArray bullet) {
+        // Replace "path/to/your/file.json" with the actual path to your JSON file
+        BulletTemplate template = new BulletTemplate();
+
+        Iterator<Object> iterator = bullet.iterator();
+        while(iterator.hasNext()) {
+            JSONObject object = (JSONObject) iterator.next();
+            double movespeed = object.getDouble("MoveSpeed");
+            double damage = object.getDouble("Damage");
+            double width = object.getDouble("Width");
+            double height = object.getDouble("Height");
+            String imageLink = object.getString("ImageLink");
+            template = new BulletTemplate(movespeed, damage ,width,height, imageLink);
+
+        }
+        return template;
     }
     public ArrayList<BaseEnemy> getEnemyList() {
         return enemyList;
