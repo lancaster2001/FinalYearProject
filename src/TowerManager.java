@@ -59,6 +59,12 @@ public class TowerManager {
 
             // Accessing values from the JSON object
             String type = jsonObject.getString("Type");
+            String BuildMenuList;
+            try{
+                BuildMenuList = jsonObject.getString("BuildMenuList");
+            }catch (Exception e){
+                BuildMenuList = type;
+            }
             String name = jsonObject.getString("Name");
             String costResource = jsonObject.getString("CostResource");
             int costQuantity = jsonObject.getInt("CostQuantity");
@@ -66,7 +72,7 @@ public class TowerManager {
             double height = jsonObject.getDouble("Height");
             double maxhealth = jsonObject.getDouble("MaxHealth");
             String imageLink = jsonObject.getString("ImageLink");
-            template = new TowerTemplate(name, width,height, costResource, costQuantity, imageLink,type,maxhealth);
+            template = new TowerTemplate(name, width,height, costResource, costQuantity, imageLink,type,maxhealth,BuildMenuList);
             if (type.equals("Turret")){
                 double range = jsonObject.getDouble("Range");
                 double cooldown = jsonObject.getDouble("Cooldown");

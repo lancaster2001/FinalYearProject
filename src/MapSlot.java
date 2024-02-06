@@ -28,8 +28,8 @@ public class MapSlot {
     protected void draw(Graphics g,Camera cameraInstance,AssetManager assetManagerInstance){
         int widthOfSlot = cameraInstance.getwidthOfSlot();
         int heightOfSlot = cameraInstance.getheightOfslot();
-        int x = (this.x-cameraInstance.getX())*widthOfSlot;
-        int y =(this.y-cameraInstance.getY())*heightOfSlot;
+        int x = (int)((this.x-cameraInstance.getX())*widthOfSlot);
+        int y =(int)((this.y-cameraInstance.getY())*heightOfSlot);
         int width = cameraInstance.getwidthOfSlot();
         int height = cameraInstance.getheightOfslot();
         if(tile!=null){
@@ -42,7 +42,7 @@ public class MapSlot {
         g.drawRect(x, y, widthOfSlot, heightOfSlot);
         g.setColor(gameConstants.resourceMenuTitleColour);
         g.setFont(new Font("Arial", Font.BOLD, 20));
-        //g.drawString(this.x+", "+this.y, x, y + gameConstants.ResourcesMenuTitleSize);
+        g.drawString(this.x+", "+this.y, x, y + gameConstants.ResourcesMenuTitleSize);
     }
     public boolean onScreenCheck(Camera cameraInstance){
         return cameraInstance.isOnCamera(x,y);

@@ -26,11 +26,13 @@ public class MapGenerator {
             int y = (slotNumber/gameConstants.mapWidth)+1;
             Random rnd = new Random();
             if(rnd.nextInt(1,10)==5){
-                mapArray.add(new MapSlot(x, y,tileManagerInstance.creatNewTileTemplate("stone", "copper")));
-            }else if(rnd.nextInt(1,10)==4){
-                mapArray.add(new MapSlot(x, y,tileManagerInstance.creatNewTileTemplate("basalt", null)));
+                mapArray.add(new MapSlot(x, y,tileManagerInstance.creatNewTileTemplate("basalt", "copper")));
+            }else if(rnd.nextInt(1,10)==5) {
+                mapArray.add(new MapSlot(x, y, tileManagerInstance.creatNewTileTemplate("sand", null)));
+            }else if(rnd.nextInt(1,10)==5){
+                    mapArray.add(new MapSlot(x, y,tileManagerInstance.creatNewTileTemplate("sand", null)));
             }else{
-                    mapArray.add(new MapSlot(x, y,tileManagerInstance.creatNewTileTemplate("Grass",null)));
+                    mapArray.add(new MapSlot(x, y,tileManagerInstance.creatNewTileTemplate("basalt",null)));
             }
 
         }

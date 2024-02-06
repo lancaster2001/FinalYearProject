@@ -1,6 +1,7 @@
 {
   "Name": "BasicBase",
   "Type": "Base",
+  "BuildMenuList": "drill",
   "MaxHealth": 50.0,
   "CostResource": "Rock",
   "CostQuantity": 5,

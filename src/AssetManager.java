@@ -1,4 +1,5 @@
 import javax.imageio.ImageIO;
+import javax.swing.plaf.ColorUIResource;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FilenameFilter;
@@ -24,10 +25,45 @@ public class AssetManager {
 
     private final ArrayList<String> ImageLinksArray = new ArrayList<String>();
     private final ArrayList<BufferedImage> ImagesArray = new ArrayList<BufferedImage>();
-    private final String assetsPath = "src/Assets/";
+    private final String assetsPath = gameConstants.assetsPath;
+    private final String errorImagePath = gameConstants.errorImagePath;
     public BufferedImage getImage(String type, String image){
         return getImage(assetsPath+type+"/"+image);
     }
+    public ArrayList<String> checkForVariants(String type,String givenImageLink){
+        boolean check = false;
+        ArrayList<String> returnList = new ArrayList<>();
+        String compareString = assetsPath+type+"/"+(givenImageLink.replace(".png","1.png"));
+        for(String currentLink:ImageLinksArray){
+            if(compareString.equalsIgnoreCase(currentLink)){
+                check = true;
+            }
+        }
+        if(check){
+            return getVariants(assetsPath+type+"/"+givenImageLink);
+        }else{
+            returnList.add(givenImageLink);
+            return returnList;
+        }
+    }
+    private ArrayList<String> getVariants(String givenImageLink){
+        ArrayList<String> returnList = new ArrayList<>();
+        boolean check = true;
+        int index = 1;
+        while(check) {
+            check = false;
+            for (String currentLink : ImageLinksArray) {
+                if (givenImageLink.replace(".png", index+".png").equalsIgnoreCase(currentLink)) {
+                    check = true;
+                    String compareString2 = currentLink.substring(0,currentLink.lastIndexOf("/"));
+                    returnList.add(currentLink.replace(compareString2+"/",""));
+                }
+            }
+            index += 1;
+        }
+        return returnList;
+    }
+
     private BufferedImage getImage(String imageLink) {
         BufferedImage desiredImage = null;
         String add = "";
@@ -40,11 +76,8 @@ public class AssetManager {
                             add = imageLink;
                             desiredImage = ImageIO.read(new File(imageLink));
                             ImagesArray.add(desiredImage);
-                        } catch (IOException e) {
-                            System.out.print("error loading image");
-                            throw new RuntimeException(e);
                         }catch (Exception e){
-                            throw new RuntimeException(e);
+                            return getImage(errorImagePath);
                         }
                     } else {
                         index += 1;
@@ -106,5 +139,6 @@ public class AssetManager {
         });
         return files;
     }
+
 
 }

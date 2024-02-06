@@ -23,26 +23,32 @@ public class Camera {
     double screenWidthProportion = 0.0;
     private int numOslotsWide = zoom;
     private int numOslotsTall = zoom;
-    private int x;
-    private int y;
+    private double x;
+    private double y;
     private int widthOfSlot;
     private int heightOfslot;
     private ArrayList<MapSlot> viewableMap = new ArrayList<MapSlot>();
-    public void setPosition(int x, int y){
+    public void setPosition(double x, double y){
         this.x = x;
         this.y = y;
         calculateValues();
     }
-    public int getX(){
+    public double getX(){
         return x;
     }
 
-    public int getY() {
+    public double getY() {
         return y;
     }
     public void draw(Graphics g){
-        for(MapSlot slot: viewableMap){
-            slot.draw(g,instance,AssetManager.getInstance());
+        if(viewableMap!=null) {
+            for (MapSlot slot : viewableMap) {
+                slot.draw(g, instance, AssetManager.getInstance());
+            }
+        }else{
+            g.setColor(gameConstants.resourceMenuTitleColour);
+            g.setFont(new Font("Arial", Font.BOLD, 100));
+            g.drawString("NO MAP", 100, 100);
         }
     }
 
@@ -109,9 +115,10 @@ public class Camera {
                 break;
         }
         outOfBoundsCheck();
+        calculateValues();
     }
-    public boolean isOnCamera(int x,int y){
-        Rectangle checker = new Rectangle(this.x,this.y,numOslotsWide,numOslotsTall);
+    public boolean isOnCamera(double x,double y){
+        Rectangle2D.Double checker = new Rectangle2D.Double(this.x,this.y,numOslotsWide,numOslotsTall);
         return checker.contains(x,y);
     }
 }

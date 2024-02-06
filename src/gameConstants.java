@@ -1,5 +1,14 @@
 import java.awt.*;
 public interface gameConstants {
+
+    //FILE LOCATIONS----------------------------------------------------------------------------------------
+    String assetsPath = "src/Assets/";
+    String errorImagePath = "src/Assets/error.png";
+    String towersPath = "src/Assets/Towers/";
+    String iconsPath = "src/Assets/Icons/";
+    String projectilesPath = "src/Assets/Projectiles/";
+    String enemiesPath = "src/Assets/Units/";
+    String blocksPath = "src/Assets/Blocks/";
     //FRAME-------------------------------------------------------------------------------------------------
     GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
     int screenWidth = gd.getDisplayMode().getWidth();
@@ -12,11 +21,11 @@ public interface gameConstants {
     char moveCameraRight = 'd';
     char pauseButton = ' ';
     //CAMERA-------------------------------------------------------------------------------------------------
-    int defaultZoom = 20;
+    int defaultZoom = 5;
     int[] defaultCameraCoordinates = {2,2};
     //MAP-------------------------------------------------------------------------------------------------------
-    int mapWidth = 100;
-    int mapHeight = 100;
+    int mapWidth = 10;
+    int mapHeight = 10;
     int mapSize = mapWidth * mapHeight;// 5x5 map should be 5*5
     //ENUMS--------------------------------------------------------------------------------------------------
     enum STATE {GAME, STARTMENU, GAMEOVER};

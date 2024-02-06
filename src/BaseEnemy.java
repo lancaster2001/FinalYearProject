@@ -1,6 +1,8 @@
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class BaseEnemy {
@@ -42,7 +44,17 @@ public class BaseEnemy {
         int y =(int)((pose.getY()-cameraInstance.getY())*heightOfSlot);
         int width =(int)(cameraInstance.getwidthOfSlot()*this.width);
         int height = (int)(cameraInstance.getheightOfslot()*this.height);
-        g.drawImage(AssetManager.getInstance().getImage("Units",imageLink), x, y, width, height, null);
+        BufferedImage image = AssetManager.getInstance().getImage("Units",imageLink);
+        double rotationRequired = pose.getTheta();
+        Graphics2D g2d = (Graphics2D) g;
+        AffineTransform backup = g2d.getTransform();
+        AffineTransform trans = new AffineTransform();
+        trans.rotate( rotationRequired, (x+(width/2)), (y+(height/2)) ); // the points to rotate around (the center in my example, your left side for your problem)
+        g2d.transform( trans );
+        g2d.drawImage( image, x, y ,width,height,null);  // the actual location of the sprite
+        g2d.setTransform( backup );
+
+        //g.drawImage(AssetManager.getInstance().getImage("Units",imageLink), x, y, width, height, null);
         drawHealthBar(g,new Rectangle(x,y,width,height));
     }
     private void drawHealthBar(Graphics g, Rectangle hitbox){

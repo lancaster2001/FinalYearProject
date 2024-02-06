@@ -58,24 +58,27 @@ public class GameUIBuildMenu {
 
     }
     private void drawMenuListsButtons(Graphics g){
+        int index = 0;
         for(Rectangle button: MenuListsButtons){
-            g.setColor(gameConstants.buildMenuBackgroundColour);
             g.fill3DRect(button.x, button.y, button.width, button.height, true);
+            g.drawImage(assetManagerInstance.getImage("Icons",menuListsNames[index]+".png"),button.x, button.y, button.width, button.height,null);
+            index+=1;
         }
     }
     private void drawBuildMenuButton(Graphics g){
         g.setColor(gameConstants.buildMenuBackgroundColour);
         g.fill3DRect(buildMenuButton.x, buildMenuButton.y, buildMenuButton.width, buildMenuButton.height, true);
+        g.drawImage(assetManagerInstance.getImage("Menus","buildmenuButton.png"),buildMenuButton.x, buildMenuButton.y, buildMenuButton.width, buildMenuButton.height,null);
     }
     private void drawBuildMenuBackground(Graphics g) {
         g.setColor(gameConstants.buildMenuBackgroundColour);
-        g.fill3DRect(buildMenuBackground.x, buildMenuBackground.y, buildMenuBackground.width, buildMenuBackground.height, true);
+        g.drawImage(assetManagerInstance.getImage("Menus","buildmenubackground.png"),buildMenuBackground.x, buildMenuBackground.y, buildMenuBackground.width, buildMenuBackground.height,null);
     }
     private void setDisplayList(){
         displayTowerArrayList.clear();
 
         for (TowerTemplate tower : towerArrayList) {
-            if(tower.getType().equals(menuListsNames[selectedMenuList])){
+            if(tower.getBuildMenuList().equalsIgnoreCase(menuListsNames[selectedMenuList])){
                 displayTowerArrayList.add(tower);
             }
         }

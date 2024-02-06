@@ -7,6 +7,8 @@ public final class Map {
         mapWidth = width;
         mapHeight =height;
         this.mapArray = mapArray;
+        BaseBaseTower playerbase =BaseBaseTower.getInstance();
+        setTower(playerbase,(int)playerbase.getPose().getX(),(int)playerbase.getPose().getY());
     }
     private ArrayList<MapSlot> mapArray = new ArrayList<>();
     private int mapWidth = 0;
@@ -30,11 +32,16 @@ public final class Map {
         int currentYindex = -1;
         int currentXindex = -1;
         try {
-            for (int yIndex = (int)section.y;yIndex <(section.y+section.height);yIndex ++){
+            /*for (int yIndex = (int)section.y;yIndex <(section.y+section.height);yIndex ++){
                 currentYindex = yIndex;
                 for (int xIndex = (int)section.x;xIndex <(section.x+section.width);xIndex ++){
                     currentXindex = xIndex;
                     mapSection.add(getSlotFromCoord(xIndex,yIndex));
+                }
+            }*/
+            for(MapSlot currentSlot: mapArray){
+                if(section.contains(new Point(currentSlot.getX(),currentSlot.getY()))){
+                    mapSection.add(currentSlot);
                 }
             }
         }catch (Exception IndexOutOfBoundsException){
@@ -53,13 +60,13 @@ public final class Map {
             if(section.x<1){
                 section.setRect(1,section.y,section.width,section.height);
             }
-            if(section.x+section.width>mapWidth+1){
+            if(section.x+section.width-1>mapWidth){
                 section.setRect((mapWidth+1)-section.width,section.y,section.width,section.height);
             }
             if(section.y<1){
                 section.setRect(section.x,1,section.width,section.height);
             }
-            if(section.y+section.height>mapHeight+1){
+            if(section.y+section.height-1>mapHeight){
                 section.setRect(section.x,(mapHeight+1)-section.height,section.width,section.height);
             }
             return section;

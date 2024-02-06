@@ -7,7 +7,7 @@
   "MoveSpeed": 2.5,
   "Cooldown": 4.0,
   "Range": 100.0,
-  "ImageLink": "enemy1.png",
+  "ImageLink": "basicenemy.png",
   "Bullet":[
     {"MoveSpeed": 8,
       "Damage": 1,

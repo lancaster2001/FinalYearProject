@@ -41,7 +41,7 @@ public class ResourceManager {
             while(iterator.hasNext()) {
                 JSONObject object = (JSONObject) iterator.next();
                 String name = object.getString("Name").toLowerCase();
-                inventory.put(name, new Resource(name, "ore-"+name+".png",name+".png"));
+                inventory.put(name.toLowerCase(), new Resource(name, "ore-"+name+".png",name+".png"));
             }
         } catch (IOException | JSONException e) {
             e.printStackTrace();
