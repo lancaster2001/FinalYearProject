@@ -10,13 +10,15 @@ public class Launcher {
         }
         return instance;
     }
-    private Launcher(){}
+    private Launcher(){
+        StateManager.getInstance().setCurrentState(gameConstants.STATE.STARTMENU);
+    }
     //----------------------------------------------------------------------------------
-
+    private final MainFrame frameInstance = MainFrame.getInstance();
+    public final MainPanel panelInstance = frameInstance.getPanelInstance();
     public static void main(String[] args) {
         Launcher theLauncher = Launcher.getInstance();
-        GameState gameStateInstance = GameState.getInstance();
-        gameStateInstance.startup();
     }
+
 
 }

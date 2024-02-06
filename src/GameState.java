@@ -21,6 +21,7 @@ public class GameState {
         BaseTower playerTower = BaseBaseTower.getInstance();
         mapInstance.setTower(playerTower,(int)playerTower.getPose().getX(),(int)playerTower.getPose().getY());
         resourceManagerInstance.queryInventory("Rock").add(20);
+        getMapInstance();
     }
     //----------------------------------------------------------------------------------
     private int tickRate = gameConstants.gameTickRate;
@@ -38,6 +39,7 @@ public class GameState {
 
     private boolean start = true;
     public void startup(){
+        cameraInstance.setPosition(cameraInstance.getX(), cameraInstance.getY());
         tickLoop();
         actLoop();
         screenRefresher();

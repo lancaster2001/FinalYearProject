@@ -1,3 +1,5 @@
+import javax.swing.plaf.ColorUIResource;
+
 public class StateManager {
     //singleton------------------------------------------------------------------------
     private static StateManager instance = new StateManager();
@@ -11,10 +13,17 @@ public class StateManager {
 
     }
     //----------------------------------------------------------------------------------
-    gameConstants.STATE currentState = gameConstants.STATE.GAME;
+    gameConstants.STATE currentState;
+    GameState gameStateInstance;
 
     public void setCurrentState(gameConstants.STATE givenState) {
         currentState = givenState;
+        if (currentState.equals(gameConstants.STATE.GAME)){
+            gameStateInstance = GameState.getInstance();
+            gameStateInstance.startup();
+        }else if (currentState.equals(gameConstants.STATE.STARTMENU)){
+            MenuState.getInstance();
+        }
     }
 
     public gameConstants.STATE getCurrentState() {

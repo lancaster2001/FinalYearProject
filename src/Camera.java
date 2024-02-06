@@ -28,12 +28,22 @@ public class Camera {
     private int widthOfSlot;
     private int heightOfslot;
     private ArrayList<MapSlot> viewableMap = new ArrayList<MapSlot>();
+    public void setPosition(int x, int y){
+        this.x = x;
+        this.y = y;
+        calculateValues();
+    }
     public int getX(){
         return x;
     }
 
     public int getY() {
         return y;
+    }
+    public void draw(Graphics g){
+        for(MapSlot slot: viewableMap){
+            slot.draw(g,instance,AssetManager.getInstance());
+        }
     }
 
     public int getZoom(){return zoom;}

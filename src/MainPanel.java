@@ -21,21 +21,17 @@ public final class MainPanel extends JPanel{
     public ArrayList<MapSlot> mapArray = new ArrayList<MapSlot>();
     private final Camera cameraInstance = Camera.getInstance();
     private final  GameStateDrawer gameStateDrawerInstance = GameStateDrawer.getInstance();
-    private gameConstants.STATE state;
+    private final StateManager StateManagerInstance = StateManager.getInstance();
+
 
     @Override
     protected void paintComponent(Graphics g) {
-        int numOslotsWide = cameraInstance.getNumOslotsWide();
-        int numOslotsTall = cameraInstance.getNumOslotsTall();
-        int widthOfSlot = cameraInstance.getwidthOfSlot();
-        int heightOfslot = cameraInstance.getheightOfslot();
         super.paintComponent(g);
-        gameStateDrawerInstance.draw(g,cameraInstance.getViewableMap(),numOslotsWide,numOslotsTall,widthOfSlot,heightOfslot);
-        fpsCounter(g);
-    }
-    private void fpsCounter(Graphics g){
-        g.setFont(new Font("Arial", Font.BOLD, 20));
-        g.drawString( String.valueOf(GameState.getInstance().fpsCounter),0,50);
+        if(StateManagerInstance.getCurrentState().equals( gameConstants.STATE.GAME)) {
+            gameStateDrawerInstance.draw(g);
+        } else if (StateManagerInstance.getCurrentState().equals(gameConstants.STATE.STARTMENU)) {
+            MenuState.getInstance().draw(g);
+        }
     }
 
 }

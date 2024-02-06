@@ -22,8 +22,8 @@ public class GameStateDrawer {
     private final EnemyManager enemyManagerInstance = EnemyManager.getInstance();
     private final ProjectileManager projectileManagerInstance = ProjectileManager.getInstance();
     //private final Map mapInstance = GameState.getInstance().getMapInstance();
-    public void draw(Graphics g, ArrayList<MapSlot> map, int numOslotsWide, int numOslotsTall, int widthOfSlot, int heightOfslot){
-        GameState.getInstance().getMapInstance().draw(g,cameraInstance,assetManagerInstance);
+    public void draw(Graphics g){
+        cameraInstance.draw(g);
         enemyManagerInstance.drawEnemies(g);
         projectileManagerInstance.draw(g,cameraInstance, assetManagerInstance);
         gameStateUIInstance.drawUI(g);
