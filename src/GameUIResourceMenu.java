@@ -17,8 +17,10 @@ public class GameUIResourceMenu {
     //----------------------------------------------------------------------------------------
     private final AssetManager assetManagerInstance = AssetManager.getInstance();
     private boolean resourceMenuState = true;
+    private int sizeOfTitle = gameConstants.ResourcesMenuTitleSize;
+    private int sizeOfResourceName = gameConstants.ResourcesMenuSizeOfResourceName;
     private Rectangle resourceMenuBackground = new Rectangle(gameConstants.resourcesMenuX, gameConstants.resourcesMenuY, gameConstants.resourcesMenuWidth, gameConstants.resourcesMenuHeight);
-    private Rectangle resourceMenuButton = new Rectangle(gameConstants.resourcesMenuX-(gameConstants.resourcesMenuWidth/10), gameConstants.resourcesMenuY+(gameConstants.resourcesMenuHeight/10), gameConstants.resourcesMenuWidth/10, gameConstants.resourcesMenuHeight/10);
+    private Rectangle resourceMenuButton = new Rectangle(gameConstants.resourcesMenuX-(gameConstants.resourcesMenuWidth/10), gameConstants.resourcesMenuY+(gameConstants.resourcesMenuHeight/10), gameConstants.resourcesMenuWidth/10, gameConstants.resourcesMenuHeight/7);
     public void drawResourcesMenu(Graphics g) {
         if(resourceMenuState) {
             drawResourcesMenuBackground(g);
@@ -29,11 +31,11 @@ public class GameUIResourceMenu {
     }
     private void drawResourcesMenuBackground(Graphics g) {
         g.setColor(gameConstants.resourceMenuBackgroundColour);
-        g.fill3DRect(resourceMenuBackground.x, resourceMenuBackground.y, resourceMenuBackground.width, resourceMenuBackground.height, true);
+        g.drawImage(assetManagerInstance.getImage("Menus","resourceMenuBackground.png"),resourceMenuBackground.x, resourceMenuBackground.y, resourceMenuBackground.width, resourceMenuBackground.height,null);
     }
     private void drawResourcesMenuTitle(Graphics g) {
         g.setColor(gameConstants.resourceMenuTitleColour);
-        g.setFont(new Font("Arial", Font.BOLD, gameConstants.ResourcesMenuTitleSize));
+        g.setFont(new Font("Arial", Font.BOLD, sizeOfTitle));
         g.drawString("Resources:", gameConstants.resourcesMenuX, gameConstants.resourcesMenuY + gameConstants.ResourcesMenuTitleSize);
     }
 
@@ -43,16 +45,16 @@ public class GameUIResourceMenu {
         int index = 0;
         for (Resource currentResource : inventory) {
             index += 1;
-            int y = gameConstants.resourcesMenuY + (gameConstants.ResourcesMenuTitleSize * (index + 1));
-            int width = gameConstants.ResourcesMenuTitleSize;
-            g.setFont(new Font("Arial", Font.BOLD, gameConstants.ResourcesMenuTitleSize));
-            g.drawImage(assetManagerInstance.getImage("Icons",currentResource.getIconImageLink()), gameConstants.resourcesMenuX, y, width, width, null);
-            g.drawString(currentResource.getName() + ": " + currentResource.getQuantity(), gameConstants.resourcesMenuX + width, y+width);
+            int y = resourceMenuBackground.y + sizeOfTitle + (sizeOfResourceName * (index));
+            int width = sizeOfResourceName;
+            g.setFont(new Font("Arial", Font.BOLD, sizeOfResourceName));
+            g.drawImage(assetManagerInstance.getImage("Icons",currentResource.getIconImageLink()), resourceMenuBackground.x, y, width, width, null);
+            g.drawString(currentResource.getName() + ": " + currentResource.getQuantity(), resourceMenuBackground.x + width, y+width);
         }
     }
     private void drawResourceMenuButton(Graphics g){
         g.setColor(gameConstants.buildMenuBackgroundColour);
-        g.fill3DRect(resourceMenuButton.x, resourceMenuButton.y, resourceMenuButton.width, resourceMenuButton.height, true);
+        g.drawImage(assetManagerInstance.getImage("Menus","resourceMenuButton.png"),resourceMenuButton.x, resourceMenuButton.y, resourceMenuButton.width, resourceMenuButton.height,null);
     }
     public boolean takeInput(Point p) {
         if (resourceMenuButton.contains(p.x, p.y)) {

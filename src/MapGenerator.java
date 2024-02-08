@@ -20,10 +20,21 @@ public class MapGenerator {
         return generateBasicMap(mapWidth,mapHeight);
     }
     private Map generateBasicMap(int mapWidth, int mapHeight){
+        boolean check = true;
         ArrayList<MapSlot> mapArray = new ArrayList<>();
         for(int slotNumber = 0; slotNumber < (gameConstants.mapSize); slotNumber++){
             int x = (slotNumber%gameConstants.mapWidth)+1;
             int y = (slotNumber/gameConstants.mapWidth)+1;
+            if(check){
+                check = !check;
+                mapArray.add(new MapSlot(x, y,tileManagerInstance.creatNewTileTemplate("test", null)));
+            }else{
+                check = !check;
+                mapArray.add(new MapSlot(x, y,tileManagerInstance.creatNewTileTemplate("sand", null)));
+            }
+
+            /*
+
             Random rnd = new Random();
             if(rnd.nextInt(1,10)==5){
                 mapArray.add(new MapSlot(x, y,tileManagerInstance.creatNewTileTemplate("basalt", "copper")));
@@ -33,7 +44,7 @@ public class MapGenerator {
                     mapArray.add(new MapSlot(x, y,tileManagerInstance.creatNewTileTemplate("sand", null)));
             }else{
                     mapArray.add(new MapSlot(x, y,tileManagerInstance.creatNewTileTemplate("basalt",null)));
-            }
+            }*/
 
         }
         latestMap =new Map(mapArray, mapWidth, mapHeight);

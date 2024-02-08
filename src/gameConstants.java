@@ -24,8 +24,8 @@ public interface gameConstants {
     int defaultZoom = 5;
     int[] defaultCameraCoordinates = {2,2};
     //MAP-------------------------------------------------------------------------------------------------------
-    int mapWidth = 10;
-    int mapHeight = 10;
+    int mapWidth = 100;
+    int mapHeight = 100;
     int mapSize = mapWidth * mapHeight;// 5x5 map should be 5*5
     //ENUMS--------------------------------------------------------------------------------------------------
     enum STATE {GAME, STARTMENU, GAMEOVER};
@@ -33,9 +33,10 @@ public interface gameConstants {
     //Game Settings-------------------------------------------------------------------------------------------
     int gameTickRate = 25;//number of milliseconds per tick
     //UI------------------------------------------------------------------------------------------------------
-    int resourcesMenuWidth = screenWidth / 10;
-    int resourcesMenuHeight = screenHeight / 5;
-    int ResourcesMenuTitleSize = 13;
+    int resourcesMenuWidth = screenWidth / 9;
+    int resourcesMenuHeight = screenHeight / 4;
+    int ResourcesMenuTitleSize = 20;
+    int ResourcesMenuSizeOfResourceName = 30;
     int resourcesMenuX = screenWidth - resourcesMenuWidth;
     int resourcesMenuY = 0;
     Color resourceMenuBackgroundColour = Color.WHITE;

@@ -13,6 +13,12 @@ public class BaseTile {
             g.drawImage(assetManagerInstance.getImage("Tiles", "ore-"+resource+".png"), x, y, width, height, null);
         }
     }
+    /*protected void draw(Graphics g, int x, int y, int width , int height,AssetManager assetManagerInstance){
+        g.drawImage(assetManagerInstance.getImage("Tiles",imageLink), x, y, width, height, null);
+        if(!resource.equalsIgnoreCase("Rock")) {
+            g.drawImage(assetManagerInstance.getImage("Tiles", "ore-"+resource+".png"), x, y, width, height, null);
+        }
+    }*/
     public String getImageLink(){
         return imageLink;
     }

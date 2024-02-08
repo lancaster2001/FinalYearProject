@@ -40,7 +40,7 @@ public final class Map {
                 }
             }*/
             for(MapSlot currentSlot: mapArray){
-                if(section.contains(new Point(currentSlot.getX(),currentSlot.getY()))){
+                if(section.intersects(currentSlot.getX(),currentSlot.getY(),1.0,1.0)){
                     mapSection.add(currentSlot);
                 }
             }
@@ -78,12 +78,10 @@ public final class Map {
             slot.tick(tickMultiplier);
         }
     }
-    public void draw(Graphics g,Camera cameraInstance, AssetManager assetManagerInstance){
+    private void draw(Graphics g,Camera cameraInstance, AssetManager assetManagerInstance){
         for(MapSlot slot: mapArray){
             if(slot.onScreenCheck(cameraInstance)){
-                slot.draw(g,cameraInstance,assetManagerInstance);
-
-
+                //slot.draw(g,cameraInstance,assetManagerInstance);
             }
         }
     }

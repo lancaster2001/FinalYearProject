@@ -25,25 +25,33 @@ public class MapSlot {
             tower = null;
         }
     }
-    protected void draw(Graphics g,Camera cameraInstance,AssetManager assetManagerInstance){
-        int widthOfSlot = cameraInstance.getwidthOfSlot();
-        int heightOfSlot = cameraInstance.getheightOfslot();
-        int x = (int)((this.x-cameraInstance.getX())*widthOfSlot);
-        int y =(int)((this.y-cameraInstance.getY())*heightOfSlot);
-        int width = cameraInstance.getwidthOfSlot();
-        int height = cameraInstance.getheightOfslot();
+    protected void draw(Graphics g,int x, int y, int slotWidth ,int slotHeight,AssetManager assetManagerInstance){
         if(tile!=null){
-            tile.draw(g,x,y,width,height,assetManagerInstance);
+            tile.draw(g,x,y,slotWidth,slotHeight,assetManagerInstance);
         }
         if (tower != null) {
-            tower.draw(g,x,y,width,height,assetManagerInstance);
+            tower.draw(g,x,y,slotWidth,slotHeight,assetManagerInstance);
         }
         g.setColor(Color.BLACK);
-        g.drawRect(x, y, widthOfSlot, heightOfSlot);
-        g.setColor(gameConstants.resourceMenuTitleColour);
-        g.setFont(new Font("Arial", Font.BOLD, 20));
-        g.drawString(this.x+", "+this.y, x, y + gameConstants.ResourcesMenuTitleSize);
+        //g.drawRect(x, y, slotWidth, slotHeight);
+        g.setColor(Color.red);
+        g.setFont(new Font("Arial", Font.BOLD, 10));
+        g.drawString(this.x+", "+this.y, x, y + 10);
     }
+    /*protected void draw(Graphics g,double cameraX, double cameraY, int slotWidth ,int slotHeight,AssetManager assetManagerInstance){int x = (int)((this.x-cameraX)*slotWidth);
+        int y =(int)((this.y-cameraY)*slotHeight);
+        if(tile!=null){
+            tile.draw(g,x,y,slotWidth,slotHeight,assetManagerInstance);
+        }
+        if (tower != null) {
+            tower.draw(g,x,y,slotWidth,slotHeight,assetManagerInstance);
+        }
+        g.setColor(Color.BLACK);
+        g.drawRect(x, y, slotWidth, slotHeight);
+        g.setColor(Color.red);
+        g.setFont(new Font("Arial", Font.BOLD, 10));
+        g.drawString(this.x+", "+this.y, x, y + 10);
+    }*/
     public boolean onScreenCheck(Camera cameraInstance){
         return cameraInstance.isOnCamera(x,y);
     }

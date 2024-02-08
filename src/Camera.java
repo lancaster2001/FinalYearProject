@@ -27,6 +27,8 @@ public class Camera {
     private double y;
     private int widthOfSlot;
     private int heightOfslot;
+    private final int screenWidth = gameConstants.screenWidth;
+    private final int screenHeight = gameConstants.screenHeight;
     private ArrayList<MapSlot> viewableMap = new ArrayList<MapSlot>();
     public void setPosition(double x, double y){
         this.x = x;
@@ -42,51 +44,271 @@ public class Camera {
     }
     public void draw(Graphics g){
         if(viewableMap!=null) {
+            int initialWidthExcess = getWidthExcess();
+            int widthExcess= initialWidthExcess;
+            double widthExcessAccumulator = 0.0;
+            boolean addApixel = false;
+
+            int nextXpos = 0;
+            int nextYpos = -getheightOfslot();
+            double accumulatorX = 0.00000000;
+            double accumulatorY = 0.00000000;
+            double previousY = 0.00000000;
+            double previousX = 0.00000000;
+            int widthToDraw = 0;
+            int heightToDraw = 0;
             for (MapSlot slot : viewableMap) {
-                slot.draw(g, instance, AssetManager.getInstance());
+                widthToDraw = getwidthOfSlot();
+                if((int)previousY!=slot.getY()){
+                    g.drawImage( AssetManager.getInstance().getImage("gaymen","error.png"), nextXpos+widthToDraw,nextYpos,widthToDraw,heightToDraw,null);
+                    heightToDraw = getheightOfslot();
+                    accumulatorY+= ((double)screenHeight/(double)numOslotsTall)-getheightOfslot();
+                    previousY = slot.getY();
+                    if(accumulatorY>=1.0){
+                        accumulatorY-=1.0;
+                        heightToDraw+=1;
+                        nextYpos-=1;
+                    }
+                    accumulatorX= 0.00000000;
+                    if (widthExcessAccumulator>0.00000000){
+                        //addApixel=true;
+                    }
+                    widthExcessAccumulator = 0.00000000;
+                    widthExcess = getWidthExcess();
+                    nextYpos += heightToDraw;
+                    nextXpos = 0;
+                }
+                if((int)previousX!=slot.getX()){
+                    previousX = slot.getX();
+                    if(accumulatorX>=1.0){
+                        accumulatorX-=1.0;
+                        widthToDraw+=1;
+                        nextXpos-=1;
+                    }
+                    if(widthExcess>0.00000000){
+                        if(initialWidthExcess>numOslotsWide) {
+                            widthToDraw += ((double) widthExcess / (double) numOslotsWide);
+                            widthExcess -= ((double) widthExcess / (double) numOslotsWide);
+                            widthExcessAccumulator += ((double) widthExcess / (double) numOslotsWide) - (widthExcess / numOslotsWide);
+                        }else{
+                            widthToDraw += 1;
+                            widthExcess -= 1;
+                            widthExcessAccumulator += 1;
+                        }
+                    }
+                }
+
+                slot.draw(g,getOnScreenX(slot.getX()),getOnScreenY(slot.getY()),getOnScreenXandWidth(slot.getX())[1],getOnScreenYandHeight(slot.getY())[1],AssetManager.getInstance());
+                nextXpos += widthToDraw;
             }
+            g.drawImage( AssetManager.getInstance().getImage("gaymen","error.png"), nextXpos+widthToDraw,nextYpos,widthToDraw,heightToDraw,null);
         }else{
             g.setColor(gameConstants.resourceMenuTitleColour);
             g.setFont(new Font("Arial", Font.BOLD, 100));
             g.drawString("NO MAP", 100, 100);
         }
     }
+    private int[] getOnScreenXandWidth (double x){
+        double onCameraX = x-this.x;
+        int initialExcess = getWidthExcess();
+        int Excess= initialExcess;
+        int nextXpos = 0;
+        double accumulator = 0.00000000;
+        int widthToDraw = 0;
+        for(int index = 0;index<=(int)onCameraX;index++){
+            nextXpos += widthToDraw;
+            widthToDraw = getwidthOfSlot();
+            if(Excess>0.00000000){
+                if(initialExcess>numOslotsWide) {
+                    widthToDraw += ((double) Excess / (double) numOslotsWide);
+                    Excess -= ((double) Excess / (double) numOslotsWide);
+                }else{
+                    widthToDraw += 1;
+                    Excess -= 1;
+                }
+            }
+        }
+        return new int[]{nextXpos+(int)((onCameraX-(int)onCameraX)*getwidthOfSlot()),widthToDraw};
+    }
+    public int getOnScreenX(double x) {
+        return getOnScreenXandWidth(x)[0];
+    }
+    public int getWidthExcess() {
+        /*double onCameraX = numOslotsWide+1;
+        int nextXpos = -getwidthOfSlot();
+        double accumulator = 0.0;
+        int widthToDraw = getwidthOfSlot();
+        for(int index = 0;index<=(int)onCameraX;index++){
+            widthToDraw = getwidthOfSlot();
+            accumulator += ((double) screenWidth / (double) numOslotsWide) - getwidthOfSlot();
+            if (accumulator >= 1.0) {
+                accumulator -= 1.0;
+                widthToDraw += 1;
+                nextXpos-=1;
+            }
+            nextXpos += widthToDraw;
+
+        }
+        return screenWidth-(nextXpos+(int)((onCameraX-(int)onCameraX)*getwidthOfSlot())-widthToDraw)-1;*/
+        int nextXpos = 0;
+        double accumulator = 0.00000000;
+        int widthToDraw = 0;
+        for(int index = 0;index<=numOslotsWide;index++){
+            nextXpos += widthToDraw;
+            widthToDraw = getwidthOfSlot();
+        }
+        return screenWidth-(nextXpos);
+    }
+    public int[] getOnScreenYandHeight(double y) {
+        /*double onCameraY = y-this.y;
+        int nextYpos = -getheightOfslot();
+        double accumulatorY = 0.0;
+        for(int index = 0;index<=(int)onCameraY;index++){
+            int heightToDraw = getheightOfslot();
+            accumulatorY += ((double) screenHeight / (double) numOslotsTall) - getheightOfslot();
+            if (accumulatorY >= 1.0) {
+                accumulatorY -= 1.0;
+                heightToDraw += 1;
+                nextYpos-=1;
+            }
+            nextYpos += heightToDraw;
+
+        }
+        return nextYpos+(int)((onCameraY-(int)onCameraY)*getwidthOfSlot());*/
+        double onCameraY = y-this.y;
+        int initialExcess = getHeightExcess();
+        int Excess= initialExcess;
+        double ExcessAccumulator = 0.0;
+        int nextYpos = 0;
+        double accumulator = 0.00000000;
+        int heightToDraw = 0;
+        for(int index = 0;index<=(int)onCameraY;index++){
+            nextYpos += heightToDraw;
+            heightToDraw = getheightOfslot();
+            if(Excess>0.00000000){
+                if(initialExcess>numOslotsTall) {
+                    heightToDraw += ((double) Excess / (double) numOslotsTall);
+                    Excess -= ((double) Excess / (double) numOslotsTall);
+                    ExcessAccumulator += ((double) Excess / (double) numOslotsTall) - (Excess / numOslotsTall);
+                }else{
+                    heightToDraw += 1;
+                    Excess -= 1;
+                    ExcessAccumulator += 1;
+                }
+            }
+        }
+        return new int[]{nextYpos+(int)((onCameraY-(int)onCameraY)*getheightOfslot()),heightToDraw};
+    }
+    public int getOnScreenY(double y) {
+        return getOnScreenYandHeight(y)[0];
+    }
+    public int getHeightExcess() {
+        int nextYpos = -getwidthOfSlot();
+        double accumulator = 0.0;
+        int heightToDraw = getwidthOfSlot();
+        for(int index = 0;index<=numOslotsTall;index++){
+            nextYpos += heightToDraw;
+            heightToDraw = getheightOfslot();
+        }
+        return screenHeight-nextYpos;
+    }
+    private Rectangle getPlacementOfSlot(int x,int y) {
+        int returnX = 0;
+        int returnY = 0;
+        int returnWidth = 0;
+        int returnHeight = 0;
+
+        int nextXpos = -getwidthOfSlot();
+        int nextYpos = -getheightOfslot();
+        double accumulatorX = 0.0;
+        double accumulatorY = 0.0;
+        double previousY = 0.0;
+        double previousX = 0.0;
+        for (MapSlot slot : viewableMap) {
+            int widthToDraw = getwidthOfSlot();
+            int heightToDraw = getheightOfslot();
+            if ((int) previousX != slot.getX()) {
+                accumulatorX += ((double) screenWidth / (double) numOslotsWide) - getwidthOfSlot();
+                previousX = slot.getX();
+                if (accumulatorX >= 1.0) {
+                    accumulatorX -= 1.0;
+                    widthToDraw += 1;
+                }
+                nextXpos += widthToDraw;
+            }
+            if ((int) previousY != slot.getY()) {
+                accumulatorY += ((double) screenHeight / (double) numOslotsTall) - getheightOfslot();
+                previousY = slot.getY();
+                if (accumulatorY >= 1.0) {
+                    accumulatorY -= 1.0;
+                    heightToDraw += 1;
+                }
+                nextYpos += heightToDraw;
+                nextXpos = 0;
+            }
+            if((slot.getX() == x)&&(slot.getY() == y)){
+                returnX = nextXpos;
+                returnY = nextYpos;
+                returnWidth = widthToDraw;
+                returnHeight = heightToDraw;
+            }
+        }
+        return new Rectangle(returnX,returnY,returnWidth,returnHeight);
+    }
 
     public int getZoom(){return zoom;}
     private void calculateValues(){
         numOslotsTall = zoom;
-        numOslotsWide = (int)((double)numOslotsTall*screenWidthProportion);
-        widthOfSlot = gameConstants.screenWidth/numOslotsWide;
-        heightOfslot = gameConstants.screenHeight/numOslotsTall;
-        viewableMap = GameState.getInstance().getMapInstance().getMapSection(new Rectangle2D.Double(x, y,numOslotsWide,numOslotsTall));
-        outOfBoundsCheck();
+        getNumOslotsWide();
+        //if(outOfBoundsCheck()){calculateValues();}
+
+
+        viewableMap = GameState.getInstance().getMapInstance().getMapSection(getExcessMap(new Rectangle2D.Double(x, y,getNumOslotsWide(),numOslotsTall)));
+
+    }
+    private Rectangle2D.Double getExcessMap(Rectangle2D.Double map){
+        if(map.width*getwidthOfSlot()<screenWidth){
+            map.width = screenWidth/getwidthOfSlot();
+        }
+        if(map.height*getheightOfslot()<screenHeight){
+            map.height = screenHeight/getheightOfslot();
+        }
+        return map;
     }
     public void increaseZoom(){
-        if ((zoom*screenWidthProportion< gameConstants.mapWidth-1) && (zoom*screenWidthProportion < gameConstants.mapHeight-1)){
+        if ((x+(zoom*screenWidthProportion)-1< gameConstants.mapWidth-1) && (y+(zoom*screenWidthProportion) < gameConstants.mapHeight-1)){
             zoom += 1;
-            x-=1;
-            y-=1;
+           // x-=1;
+           // y-=1;
             calculateValues();
         }
     }
     public void decreaseZoom(){
         if (zoom > 1){
             zoom -= 1;
-            x+=1;
-            y+=1;
+           // x+=1;
+           // y+=1;
             calculateValues();
         }
     }
-    private void outOfBoundsCheck(){
+    private boolean outOfBoundsCheck(){
+        Rectangle2D.Double original = new Rectangle2D.Double(x,y,numOslotsWide,numOslotsTall);
         Rectangle2D.Double placement = GameState.getInstance().outOfBoundsCheck(new Rectangle2D.Double(x,y,numOslotsWide,numOslotsTall));
-        x = (int)placement.x;
-        y = (int)placement.y;
+        x = placement.x;
+        y = placement.y;
         numOslotsWide = (int)placement.width;
         numOslotsTall = (int)placement.height;
+        return !original.equals(placement);
     }
-    public int getheightOfslot() {return heightOfslot;}
-    public int getwidthOfSlot() {return widthOfSlot;}
-    public int getNumOslotsWide(){return numOslotsWide;}
+    public int getheightOfslot() {
+        heightOfslot = (screenHeight/numOslotsTall);
+        return heightOfslot;
+    }
+    public int getwidthOfSlot() {
+        widthOfSlot = (screenWidth/numOslotsWide);
+        return widthOfSlot;
+    }
+    //public int getNumOslotsWide(){return numOslotsWide;}
     public int getNumOslotsTall() {return numOslotsTall;}
     public MapSlot getMapslot(int x, int y){
         MapSlot desiredSlot;
@@ -120,5 +342,11 @@ public class Camera {
     public boolean isOnCamera(double x,double y){
         Rectangle2D.Double checker = new Rectangle2D.Double(this.x,this.y,numOslotsWide,numOslotsTall);
         return checker.contains(x,y);
+    }
+    private int getNumOslotsWide(){
+        numOslotsWide = (int)((double)numOslotsTall*screenWidthProportion);
+        numOslotsWide += (screenWidth - (numOslotsWide * widthOfSlot)) / getwidthOfSlot();
+
+        return numOslotsWide;
     }
 }

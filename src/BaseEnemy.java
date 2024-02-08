@@ -38,10 +38,8 @@ public class BaseEnemy {
     }
 
     protected void draw(Graphics g){
-        int widthOfSlot = cameraInstance.getwidthOfSlot();
-        int heightOfSlot = cameraInstance.getheightOfslot();
-        int x = (int)((pose.getX()-cameraInstance.getX())*widthOfSlot);
-        int y =(int)((pose.getY()-cameraInstance.getY())*heightOfSlot);
+        int x = cameraInstance.getOnScreenX(pose.getX());
+        int y =cameraInstance.getOnScreenY(pose.getY());
         int width =(int)(cameraInstance.getwidthOfSlot()*this.width);
         int height = (int)(cameraInstance.getheightOfslot()*this.height);
         BufferedImage image = AssetManager.getInstance().getImage("Units",imageLink);

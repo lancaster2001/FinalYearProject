@@ -70,12 +70,10 @@ public class Bullet {
         return false;
     }
     public void draw(Graphics g,Camera cameraInstance, AssetManager assetManagerInstance){
-        int widthOfSlot = cameraInstance.getwidthOfSlot();
-        int heightOfSlot = cameraInstance.getheightOfslot();
-        int x = (int)((this.pose.getX()-cameraInstance.getX())*widthOfSlot);
-        int y = (int)((this.pose.getY()-cameraInstance.getY())*heightOfSlot);
-        int width = (int)(this.width*widthOfSlot);
-        int height = (int)(this.height*heightOfSlot);
+        int x = cameraInstance.getOnScreenX(pose.getX());
+        int y = cameraInstance.getOnScreenY(pose.getY());
+        int width = (int)(this.width*cameraInstance.getwidthOfSlot());
+        int height = (int)(this.height*cameraInstance.getheightOfslot());
         //g.drawImage(assetManagerInstance.getImage(imageLink),x, y, width, height,null);
         double rotationRequired = pose.getTheta();
         BufferedImage image = AssetManager.getInstance().getImage("Projectiles",imageLink);
