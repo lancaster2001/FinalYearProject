@@ -40,7 +40,7 @@ public class GameStateInputHandler {
             int sloty = (e.getY()-titleHeight)/cameraInstance.getheightOfslot()+1;
             MapSlot clickedSlot = cameraInstance.getMapslot(slotx, sloty);
             GameState.getInstance().getMapInstance().setTower(gameUIBuildMenuInstance.getSelectedTower(), clickedSlot.getX(), clickedSlot.getY());
-
+            GameState.getInstance().getMapInstance().save();
         }
     }
 }

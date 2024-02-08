@@ -1,4 +1,8 @@
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.awt.*;
+import java.util.Iterator;
 
 public class MapSlot {
     private int x = -1;
@@ -10,6 +14,23 @@ public class MapSlot {
         this.x = x;
         this.y = y;
         this.tile = new BaseTile(tile);
+    }
+    public MapSlot(JSONObject jsonObject){
+
+        JSONObject position = jsonObject.getJSONObject("Position");
+        JSONObject tile = jsonObject.getJSONObject("Tile");
+        JSONObject tower;
+        try {
+            tower = jsonObject.getJSONObject("Tower");
+        }catch (Exception e){
+            tower = null;
+        }
+        x = position.getInt("X");
+        y = position.getInt("Y");
+        this.tile = new BaseTile(TileManager.getInstance().loadTileTemplate(tile));
+        if(tower != null){
+            setTower(TowerManager.getInstance().loadTemplateFromJsonObject(tower));
+        }
     }
     public void tick(double tickMultiplier){
         if(tower!=null){
@@ -63,6 +84,20 @@ public class MapSlot {
                 tower = new BaseDrillTower(x, y, newTower);
             }
         }
+    }
+    public JSONObject getJsonObject(){
+        JSONObject json = new JSONObject();
+        JSONObject j = new JSONObject();
+        j.put("X", x);
+        j.put("Y", y);
+        json.put("Position", j);
+        if(tower != null) {
+            json.put("Tower", tower.getJsonObject());
+        }else{
+            json.put("Tower","null");
+        }
+        json.put("Tile",tile.getJsonObject());
+        return json;
     }
     public void setTower(BaseTower newTower){
        tower = newTower;

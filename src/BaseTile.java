@@ -1,4 +1,9 @@
+import org.json.JSONObject;
+
 import java.awt.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class BaseTile {
     protected String imageLink;
@@ -13,12 +18,12 @@ public class BaseTile {
             g.drawImage(assetManagerInstance.getImage("Tiles", "ore-"+resource+".png"), x, y, width, height, null);
         }
     }
-    /*protected void draw(Graphics g, int x, int y, int width , int height,AssetManager assetManagerInstance){
-        g.drawImage(assetManagerInstance.getImage("Tiles",imageLink), x, y, width, height, null);
-        if(!resource.equalsIgnoreCase("Rock")) {
-            g.drawImage(assetManagerInstance.getImage("Tiles", "ore-"+resource+".png"), x, y, width, height, null);
-        }
-    }*/
+    protected JSONObject getJsonObject(){
+        JSONObject j = new JSONObject();
+        j.put("ImageLink", imageLink.replace(".png", ""));
+        j.put("Resource", resource);
+        return j;
+    }
     public String getImageLink(){
         return imageLink;
     }

@@ -31,7 +31,7 @@ public class TileTemplate {
                 return currentImageLink;
             }
         }
-        return "error.png";
+        return "error";
     }
 
     public String getResource() {

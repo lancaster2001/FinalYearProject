@@ -19,6 +19,7 @@ public class GameState {
     private GameState(){
         TowerManager.getInstance();
         BaseTower playerTower = BaseBaseTower.getInstance();
+        mapInstance = getMapInstance();
         mapInstance.setTower(playerTower,(int)playerTower.getPose().getX(),(int)playerTower.getPose().getY());
         resourceManagerInstance.queryInventory("Rock").add(20);
         getMapInstance();
@@ -32,7 +33,7 @@ public class GameState {
     private final EnemyManager enemyManagerInstance = EnemyManager.getInstance();
     private final ProjectileManager projectileManagerInstance = ProjectileManager.getInstance();
     private  final  ResourceManager resourceManagerInstance = ResourceManager.getInstance();
-    private Map mapInstance = mapGeneratorInstance.createNewMap(gameConstants.mapWidth,gameConstants.mapHeight);
+    private Map mapInstance = getMapInstance();
 
     int fps = 0;
     int fpsCounter =0;
@@ -112,10 +113,13 @@ public class GameState {
     }
 
     public Map getMapInstance() {
+
         if (mapInstance!=null){
             return mapInstance;
         }else{
-            mapInstance = mapGeneratorInstance.createNewMap(gameConstants.mapWidth,gameConstants.mapHeight);
+            if(mapGeneratorInstance.loadMap("src/Saves/save1/0.9143746867193433.json")==null) {
+                mapInstance = mapGeneratorInstance.createNewMap(gameConstants.mapWidth, gameConstants.mapHeight);
+            }
         }
         return mapInstance;
     }

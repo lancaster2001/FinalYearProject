@@ -1,5 +1,10 @@
+import org.json.JSONObject;
+
 import javax.naming.Name;
 import java.awt.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public abstract class BaseTower {
     protected Pose pose = new Pose();
@@ -11,6 +16,7 @@ public abstract class BaseTower {
     protected double health;
     protected String costResource = "Rock";
     protected int costQuantity = 5;
+    private TowerTemplate tempalate;
     public void tick(BaseTile tile,double tickMultiplier){
     }
     public void tick(double tickMultiplier){}
@@ -23,7 +29,9 @@ public abstract class BaseTower {
         this.imageLink = template.getImageLink();
         this.maxHealth = template.getMaxHealth();
         health = maxHealth;
+        this.tempalate = template;
     }
+
     public void takeDamage(double damage){
         health-=damage;
     }
@@ -48,6 +56,15 @@ public abstract class BaseTower {
             g.drawRect(hitbox.x,hitbox.y-height,(int)((health/maxHealth)*hitbox.width),height);
         }
     }
+    protected JSONObject getJsonObject(){
+        JSONObject j = new JSONObject();
+        j.put("X", pose.getX());
+        j.put("Y", pose.getY());
+        j.put("Theta", pose.getTheta());
+        j.put("Name", tempalate.getName());
+        j.put("Type", tempalate.getType());
+        return j;
+    }
     protected String getCostResource(){
         return costResource;
     }
@@ -58,4 +75,9 @@ public abstract class BaseTower {
     public double getHealth() {
         return health;
     }
+
+    public TowerTemplate getTempalate() {
+        return tempalate;
+    }
+
 }

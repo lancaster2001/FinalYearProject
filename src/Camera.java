@@ -44,64 +44,11 @@ public class Camera {
     }
     public void draw(Graphics g){
         if(viewableMap!=null) {
-            int initialWidthExcess = getWidthExcess();
-            int widthExcess= initialWidthExcess;
-            double widthExcessAccumulator = 0.0;
-            boolean addApixel = false;
-
-            int nextXpos = 0;
-            int nextYpos = -getheightOfslot();
-            double accumulatorX = 0.00000000;
-            double accumulatorY = 0.00000000;
-            double previousY = 0.00000000;
-            double previousX = 0.00000000;
-            int widthToDraw = 0;
-            int heightToDraw = 0;
             for (MapSlot slot : viewableMap) {
-                widthToDraw = getwidthOfSlot();
-                if((int)previousY!=slot.getY()){
-                    g.drawImage( AssetManager.getInstance().getImage("gaymen","error.png"), nextXpos+widthToDraw,nextYpos,widthToDraw,heightToDraw,null);
-                    heightToDraw = getheightOfslot();
-                    accumulatorY+= ((double)screenHeight/(double)numOslotsTall)-getheightOfslot();
-                    previousY = slot.getY();
-                    if(accumulatorY>=1.0){
-                        accumulatorY-=1.0;
-                        heightToDraw+=1;
-                        nextYpos-=1;
-                    }
-                    accumulatorX= 0.00000000;
-                    if (widthExcessAccumulator>0.00000000){
-                        //addApixel=true;
-                    }
-                    widthExcessAccumulator = 0.00000000;
-                    widthExcess = getWidthExcess();
-                    nextYpos += heightToDraw;
-                    nextXpos = 0;
-                }
-                if((int)previousX!=slot.getX()){
-                    previousX = slot.getX();
-                    if(accumulatorX>=1.0){
-                        accumulatorX-=1.0;
-                        widthToDraw+=1;
-                        nextXpos-=1;
-                    }
-                    if(widthExcess>0.00000000){
-                        if(initialWidthExcess>numOslotsWide) {
-                            widthToDraw += ((double) widthExcess / (double) numOslotsWide);
-                            widthExcess -= ((double) widthExcess / (double) numOslotsWide);
-                            widthExcessAccumulator += ((double) widthExcess / (double) numOslotsWide) - (widthExcess / numOslotsWide);
-                        }else{
-                            widthToDraw += 1;
-                            widthExcess -= 1;
-                            widthExcessAccumulator += 1;
-                        }
-                    }
-                }
-
-                slot.draw(g,getOnScreenX(slot.getX()),getOnScreenY(slot.getY()),getOnScreenXandWidth(slot.getX())[1],getOnScreenYandHeight(slot.getY())[1],AssetManager.getInstance());
-                nextXpos += widthToDraw;
+                int[] xAndWidth = getOnScreenXandWidth(slot.getX());
+                int[] yAndHeight = getOnScreenYandHeight(slot.getY());
+                slot.draw(g,xAndWidth[0],yAndHeight[0],xAndWidth[1],yAndHeight[1],AssetManager.getInstance());
             }
-            g.drawImage( AssetManager.getInstance().getImage("gaymen","error.png"), nextXpos+widthToDraw,nextYpos,widthToDraw,heightToDraw,null);
         }else{
             g.setColor(gameConstants.resourceMenuTitleColour);
             g.setFont(new Font("Arial", Font.BOLD, 100));
@@ -134,22 +81,6 @@ public class Camera {
         return getOnScreenXandWidth(x)[0];
     }
     public int getWidthExcess() {
-        /*double onCameraX = numOslotsWide+1;
-        int nextXpos = -getwidthOfSlot();
-        double accumulator = 0.0;
-        int widthToDraw = getwidthOfSlot();
-        for(int index = 0;index<=(int)onCameraX;index++){
-            widthToDraw = getwidthOfSlot();
-            accumulator += ((double) screenWidth / (double) numOslotsWide) - getwidthOfSlot();
-            if (accumulator >= 1.0) {
-                accumulator -= 1.0;
-                widthToDraw += 1;
-                nextXpos-=1;
-            }
-            nextXpos += widthToDraw;
-
-        }
-        return screenWidth-(nextXpos+(int)((onCameraX-(int)onCameraX)*getwidthOfSlot())-widthToDraw)-1;*/
         int nextXpos = 0;
         double accumulator = 0.00000000;
         int widthToDraw = 0;
@@ -160,21 +91,6 @@ public class Camera {
         return screenWidth-(nextXpos);
     }
     public int[] getOnScreenYandHeight(double y) {
-        /*double onCameraY = y-this.y;
-        int nextYpos = -getheightOfslot();
-        double accumulatorY = 0.0;
-        for(int index = 0;index<=(int)onCameraY;index++){
-            int heightToDraw = getheightOfslot();
-            accumulatorY += ((double) screenHeight / (double) numOslotsTall) - getheightOfslot();
-            if (accumulatorY >= 1.0) {
-                accumulatorY -= 1.0;
-                heightToDraw += 1;
-                nextYpos-=1;
-            }
-            nextYpos += heightToDraw;
-
-        }
-        return nextYpos+(int)((onCameraY-(int)onCameraY)*getwidthOfSlot());*/
         double onCameraY = y-this.y;
         int initialExcess = getHeightExcess();
         int Excess= initialExcess;

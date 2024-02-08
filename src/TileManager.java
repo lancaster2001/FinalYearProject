@@ -1,3 +1,4 @@
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -7,6 +8,7 @@ import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class TileManager {
     //singleton-------------------------------------------------------------------------
@@ -25,9 +27,16 @@ public class TileManager {
     private final String assetFoldername = "Tiles";
     public TileTemplate creatNewTileTemplate(String tile, String resource){
         if(resource!=null) {
-            return new TileTemplate(tile, resource, AssetManager.getInstance().checkForVariants(assetFoldername,tile + ".png"));
+            return new TileTemplate(tile, resource, AssetManager.getInstance().checkForVariants(assetFoldername,tile+ ".png"));
         }else{
             return new TileTemplate(tile, "rock",AssetManager.getInstance().checkForVariants(assetFoldername,tile + ".png"));
         }
+    }
+    public TileTemplate loadTileTemplate(JSONObject jsonArray){
+        String tile;
+        String resource;
+        tile = jsonArray.getString("ImageLink");
+        resource = jsonArray.getString("Resource");
+        return creatNewTileTemplate(tile,resource);
     }
 }

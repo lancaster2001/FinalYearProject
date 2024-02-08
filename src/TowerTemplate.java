@@ -88,4 +88,11 @@ public class TowerTemplate {
     public String getBuildMenuList() {
         return BuildMenuList;
     }
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 }

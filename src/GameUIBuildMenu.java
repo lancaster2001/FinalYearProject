@@ -60,15 +60,24 @@ public class GameUIBuildMenu {
     private void drawMenuListsButtons(Graphics g){
         int index = 0;
         for(Rectangle button: MenuListsButtons){
+            g.setColor(Color.white);
+            if(selectedMenuList== index){
+                g.setColor(Color.gray);
+            }
             g.fill3DRect(button.x, button.y, button.width, button.height, true);
-            g.drawImage(assetManagerInstance.getImage("Icons",menuListsNames[index]+".png"),button.x, button.y, button.width, button.height,null);
+            if (button.width>button.height){
+                g.drawImage(assetManagerInstance.getImage("Icons",menuListsNames[index]+".png"),button.x+(button.width/2)-(button.height/2), button.y, button.height, button.height,null);
+
+            }else {
+                g.drawImage(assetManagerInstance.getImage("Icons", menuListsNames[index] + ".png"), button.x, button.y+(button.height/2)-(button.width/2), button.width, button.width, null);
+            }
             index+=1;
         }
     }
     private void drawBuildMenuButton(Graphics g){
         g.setColor(gameConstants.buildMenuBackgroundColour);
         g.fill3DRect(buildMenuButton.x, buildMenuButton.y, buildMenuButton.width, buildMenuButton.height, true);
-        g.drawImage(assetManagerInstance.getImage("Menus","buildmenuButton.png"),buildMenuButton.x, buildMenuButton.y, buildMenuButton.width, buildMenuButton.height,null);
+        g.drawImage(assetManagerInstance.getImage("Menus","buildmenuButtonBackground.png"),buildMenuButton.x, buildMenuButton.y, buildMenuButton.width, buildMenuButton.height,null);
     }
     private void drawBuildMenuBackground(Graphics g) {
         g.setColor(gameConstants.buildMenuBackgroundColour);

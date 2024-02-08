@@ -1,29 +1,35 @@
+import org.json.JSONObject;
+
+import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public final class Map {
     public Map(ArrayList<MapSlot> mapArray,int width, int height){
+        name = String.valueOf(Math.random());
         mapWidth = width;
-        mapHeight =height;
+        mapHeight = height;
         this.mapArray = mapArray;
         BaseBaseTower playerbase =BaseBaseTower.getInstance();
         setTower(playerbase,(int)playerbase.getPose().getX(),(int)playerbase.getPose().getY());
     }
     private ArrayList<MapSlot> mapArray = new ArrayList<>();
+    private String name;
     private int mapWidth = 0;
     private int mapHeight = 0;
     private MapSlot getSlotFromCoord(int x, int y){
-        int desiredSlotNum = 0;
-        MapSlot desiredSlot;
-        desiredSlotNum += (y-1)*mapWidth;
-        desiredSlotNum += x-1;
-        try {
-           desiredSlot = mapArray.get(desiredSlotNum);
-        }catch (Exception IndexOutOfBoundsException){
-            desiredSlot = mapArray.getFirst();
+        for(MapSlot currentSlot: mapArray){
+            if((currentSlot.getX()==x)&&(currentSlot.getY()==y)){
+                return currentSlot;
+            }
         }
-        return desiredSlot;
+        return null;
     }
 
 
@@ -32,13 +38,6 @@ public final class Map {
         int currentYindex = -1;
         int currentXindex = -1;
         try {
-            /*for (int yIndex = (int)section.y;yIndex <(section.y+section.height);yIndex ++){
-                currentYindex = yIndex;
-                for (int xIndex = (int)section.x;xIndex <(section.x+section.width);xIndex ++){
-                    currentXindex = xIndex;
-                    mapSection.add(getSlotFromCoord(xIndex,yIndex));
-                }
-            }*/
             for(MapSlot currentSlot: mapArray){
                 if(section.intersects(currentSlot.getX(),currentSlot.getY(),1.0,1.0)){
                     mapSection.add(currentSlot);
@@ -78,12 +77,29 @@ public final class Map {
             slot.tick(tickMultiplier);
         }
     }
-    private void draw(Graphics g,Camera cameraInstance, AssetManager assetManagerInstance){
-        for(MapSlot slot: mapArray){
-            if(slot.onScreenCheck(cameraInstance)){
-                //slot.draw(g,cameraInstance,assetManagerInstance);
-            }
+    public String save(){
+        String saveLink = "src/Saves/Maps/";
+        try {
+            Files.createDirectories(Paths.get(saveLink));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+        String fileName = saveLink+name+".json";
+        JSONObject json = new JSONObject();
+        json.put("Name", name);
+        json.put("Width", mapWidth);
+        json.put("Height", mapHeight);
+        for(MapSlot currentSlot: mapArray) {
+            json.put(""+(((currentSlot.getY()-1)*mapWidth)+(currentSlot.getX()-1)), currentSlot.getJsonObject());
+        }
+        try (FileWriter file = new FileWriter(fileName)) {
+            file.write(json.toString());
+            file.flush();
+        } catch (IOException e) {
+            e.fillInStackTrace();
+        }
+
+        return saveLink;
     }
 
     public void setTower(TowerTemplate newTower, int x, int y){
