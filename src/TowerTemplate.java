@@ -9,7 +9,6 @@ public class TowerTemplate {
     private double height;
     private double range;
     private double speed;
-    private double cooldown;
     private BulletTemplate bulletTemplate;
     private String BuildMenuList;
 
@@ -24,16 +23,11 @@ public class TowerTemplate {
         this.type = type;
         this.maxHealth = maxHealth;
         this.BuildMenuList = BuildMenuList;
+        this.speed = speed;
     }
     public void setupTurret(double range, BulletTemplate bulletTemplate){
         this.range = range;
         this.bulletTemplate = bulletTemplate;
-    }
-    public void setupDrill(double speed){
-        this.speed = speed;
-    }
-    public void setupConveyer(double speed){
-        this.speed = speed;
     }
 
     public String getName() {

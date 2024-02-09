@@ -30,7 +30,7 @@ public abstract class BaseTower {
         this.costQuantity = template.getCostQuantity();
         this.imageLink = template.getImageLink();
         this.maxHealth = template.getMaxHealth();
-        this.speed = speed;
+        this.speed = template.getSpeed();
         health = maxHealth;
         this.tempalate = template;
     }

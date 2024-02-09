@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class conveyer extends  BaseTower{
     gameConstants.DIRECTION direction;
     ArrayList<Resource> inventory = new ArrayList<>();
-    double speed;
     public conveyer(Pose pose, TowerTemplate template) {
         super(pose, template);
     }
@@ -24,7 +23,11 @@ public class conveyer extends  BaseTower{
             resource.draw(g,x,y,slotWidth,slotHeight,assetManagerInstance);
         }
     }
-    public void addResource(Resource resource){
-        inventory.add(resource);
+    public boolean addResource(Resource resource){
+        if(!(inventory.size()>=1)){
+            inventory.add(resource);
+            return true;
+        }
+        return false;
     }
 }

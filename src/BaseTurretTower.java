@@ -6,16 +6,16 @@ import java.util.ArrayList;
 public class BaseTurretTower extends BaseTower{
     private final EnemyManager enemyManagerInstance = EnemyManager.getInstance();
     private final ProjectileManager projectileManagerInstance = ProjectileManager.getInstance();
-    protected double range = 0.0;
+    protected double range;
     private double shootAccumulator = 0.0;
-    private double cooldown = 1.0;
+    private double cooldown;
     private BulletTemplate bullet;
     private double targetX;
     private double targetY;
     public BaseTurretTower(Pose pose,TowerTemplate template){
         super(pose,template);
         this.range = template.getRange();
-        this.cooldown = template.getCooldown();
+        this.cooldown = speed;
         this.bullet = template.getBulletTemplate();
     }
 

@@ -3,12 +3,11 @@ import java.util.ArrayList;
 
 public class BaseDrillTower extends BaseTower{
     private double actAccumulator = 0.0;
-    private double speed = 1.0;
     private final double actAccumulatorLimit = 1.0;
+    ArrayList<Resource> inventory = new ArrayList<>();
     public BaseDrillTower(Pose pose,TowerTemplate template){
         super(pose,template);
         imageLink = template.getImageLink();
-        speed = template.getSpeed();
     }
     public void act(BaseTile tile, ResourceManager resourceManagerInstance){
         resourceManagerInstance.queryInventory(tile.getResource()).add();
@@ -17,7 +16,9 @@ public class BaseDrillTower extends BaseTower{
         actAccumulator+=tickMultiplier*speed;
         if (actAccumulator>=actAccumulatorLimit){
             actAccumulator-=actAccumulatorLimit;
-
+            inventory.add(ResourceManager.getInstance().getResource(tile.getResource()));
+        }
+        if (!inventory.isEmpty()) {
             boolean conveyerCheck = false;
             Map mapInstance = GameState.getInstance().getMapInstance();
             MapSlot slotToCheck = null;
@@ -32,7 +33,7 @@ public class BaseDrillTower extends BaseTower{
             }
             if(slotToCheck!=null){
                 if (slotToCheck.getTower() instanceof conveyer) {
-                    ((conveyer)slotToCheck.getTower()).addResource(ResourceManager.getInstance().getResource(tile.getResource(),new Pose(slotToCheck.getX(),slotToCheck.getY(),0)));
+                    ((conveyer)slotToCheck.getTower()).addResource(ResourceManager.getInstance().getResource(inventory.get(0).getName(),new Pose(slotToCheck.getX(),slotToCheck.getY(),0)));
                 }else{
                     ResourceManager.getInstance().queryInventory(tile.getResource()).add();
                 }

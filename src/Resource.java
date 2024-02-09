@@ -24,7 +24,9 @@ public class Resource {
     public void draw(Graphics g, int x, int y, int slotWidth , int slotHeight, AssetManager assetManagerInstance) {
         int width = (int) (this.width * slotWidth);
         int height = (int) (this.height * slotHeight);
-        Rectangle towerBox = new Rectangle(x, y, width, height);
+        int xToDraw = x+(int)((pose.getX()-(int)pose.getX())*slotWidth);
+        int yToDraw =y+(int)((pose.getY()-(int)pose.getY())*slotHeight);
+        Rectangle towerBox = new Rectangle(xToDraw,yToDraw, width, height);
         g.drawImage(AssetManager.getInstance().getImage("Towers",iconImageLink), towerBox.x, towerBox.y, towerBox.width, towerBox.height, null);
 
     }
@@ -33,8 +35,10 @@ public class Resource {
     }
     public void move(double Theta, double distance) {
         double targetX = (distance * Math.sin(Theta));
-        double targetY = (distance * Math.sin(Theta));
-        pose.setX(pose.getX() + targetX);
+        double targetY = (distance * Math.cos(Theta));
+        double x = pose.getX();
+        double xtoset = x + targetX;
+        pose.setX(xtoset);
         pose.setY(pose.getY() + targetY);
     }
     public boolean add(){
