@@ -2,6 +2,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Resource {
+    String id = String.valueOf(Math.random());
     private int quantity = 0;
     double width = 0.5;
     double height = 0.5;
@@ -21,11 +22,11 @@ public class Resource {
         this.iconImageLink = iconImageLink;
         this.pose= pose;
     }
-    public void draw(Graphics g, int x, int y, int slotWidth , int slotHeight, AssetManager assetManagerInstance) {
+    public void draw(Graphics g, double x, double y, int slotWidth , int slotHeight, AssetManager assetManagerInstance) {
         int width = (int) (this.width * slotWidth);
         int height = (int) (this.height * slotHeight);
-        int xToDraw = x+(int)((pose.getX()-(int)pose.getX())*slotWidth);
-        int yToDraw =y+(int)((pose.getY()-(int)pose.getY())*slotHeight);
+        int xToDraw = (int)((pose.getX()-x)*slotWidth);
+        int yToDraw =(int)((pose.getY()-y)*slotHeight);
         Rectangle towerBox = new Rectangle(xToDraw,yToDraw, width, height);
         g.drawImage(AssetManager.getInstance().getImage("Towers",iconImageLink), towerBox.x, towerBox.y, towerBox.width, towerBox.height, null);
 
@@ -84,5 +85,9 @@ public class Resource {
 
     public Pose getPose() {
         return pose;
+    }
+
+    public String getId() {
+        return id;
     }
 }

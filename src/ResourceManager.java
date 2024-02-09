@@ -3,6 +3,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileReader;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Objects;
 
 public class ResourceManager {
     //singleton------------------------------------------------------------------------
@@ -24,6 +26,7 @@ public class ResourceManager {
     private ResourceManager(){setup();}
     //----------------------------------------------------------------------------------
     private HashMap<String, Resource> inventory = new HashMap<String, Resource>();
+    ArrayList<Resource> listToDraw = new ArrayList<>();
     String tilePath ="src/Assets/Tiles/";
     String iconPath = "src/Assets/Icons/";
     String resourcesJsonPath = "src/Resources/Resources.json";
@@ -66,5 +69,22 @@ public class ResourceManager {
             }
         }
         return returnArray;
+    }
+    public void addToDrawList(Resource resource){
+        boolean check = true;
+        for(Resource resource1:listToDraw){
+            if(resource1.getId().equals(resource.getId())){
+                check = false;
+            }
+        }
+        if(check){
+            listToDraw.add(resource);
+        }
+    }
+    public void draw(Graphics g, double x, double y, int slotWidth , int slotHeight, AssetManager assetManagerInstance){
+        for(Resource resource:listToDraw){
+            resource.draw(g,x,y,slotWidth,slotHeight,assetManagerInstance);
+        }
+        listToDraw.clear();
     }
 }

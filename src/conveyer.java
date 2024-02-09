@@ -20,7 +20,8 @@ public class conveyer extends  BaseTower{
     public void draw(Graphics g,int x, int y, int slotWidth ,int slotHeight,AssetManager assetManagerInstance){
         super.draw(g,x,y,slotWidth,slotHeight,assetManagerInstance);
         for(Resource resource:inventory){
-            resource.draw(g,x,y,slotWidth,slotHeight,assetManagerInstance);
+            //resource.draw(g,x,y,slotWidth,slotHeight,assetManagerInstance);
+            ResourceManager.getInstance().addToDrawList(resource);
         }
     }
     public boolean addResource(Resource resource){

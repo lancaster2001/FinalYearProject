@@ -19,6 +19,7 @@ public class Camera {
         return instance;
     }
     //-----------------------------------------------------------------
+    private final ResourceManager resourceManagerInstance = ResourceManager.getInstance();
     private int zoom = gameConstants.defaultZoom;//number of tiles in width
     double screenWidthProportion = 0.0;
     private int numOslotsWide = zoom;
@@ -54,6 +55,7 @@ public class Camera {
             g.setFont(new Font("Arial", Font.BOLD, 100));
             g.drawString("NO MAP", 100, 100);
         }
+        resourceManagerInstance.draw(g,x,y,getwidthOfSlot(),getheightOfslot(),AssetManager.getInstance());
     }
     private int[] getOnScreenXandWidth (double x){
         double onCameraX = x-this.x;
