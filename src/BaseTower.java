@@ -16,6 +16,7 @@ public abstract class BaseTower {
     protected double height = 1.0;
     protected  double maxHealth;
     protected double health;
+    protected double speed;
     protected String costResource = "Rock";
     protected int costQuantity = 5;
     private TowerTemplate tempalate;
@@ -29,6 +30,7 @@ public abstract class BaseTower {
         this.costQuantity = template.getCostQuantity();
         this.imageLink = template.getImageLink();
         this.maxHealth = template.getMaxHealth();
+        this.speed = speed;
         health = maxHealth;
         this.tempalate = template;
     }

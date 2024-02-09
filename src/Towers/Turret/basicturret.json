@@ -5,7 +5,7 @@
   "Width": 1.0,
   "Height": 1.0,
   "Range": 100.0,
-  "Cooldown": 1.0,
+  "Speed": 1.0,
   "CostResource": "Rock",
   "CostQuantity": 5,
   "ImageLink": "basicturret.png",

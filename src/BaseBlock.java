@@ -3,7 +3,7 @@ import java.awt.*;
 public class BaseBlock extends BaseTower {
 
     BaseBlock(Pose pose, String imageLink){
-        super(pose, new TowerTemplate("Block",1,1,"rock",0,imageLink,"Block",0,""));
+        super(pose, new TowerTemplate("Block",1,1,"rock",0,imageLink,"Block",0,"",0));
 
     }
     public void tick(BaseTile tile,double tickMultiplier){}

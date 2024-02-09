@@ -88,23 +88,22 @@ public class TowerManager {
             BuildMenuList = type;
         }
         try {
+            double speed;
+            try {
+                speed = jsonObject.getDouble("Speed");
+            }catch (Exception e){
+                speed = 0;
+            }
             String costResource = jsonObject.getString("CostResource");
             int costQuantity = jsonObject.getInt("CostQuantity");
             double width = jsonObject.getDouble("Width");
             double height = jsonObject.getDouble("Height");
             double maxhealth = jsonObject.getDouble("MaxHealth");
             String imageLink = jsonObject.getString("ImageLink");
-            template = new TowerTemplate(name, width, height, costResource, costQuantity, imageLink, type, maxhealth, BuildMenuList);
+            template = new TowerTemplate(name, width, height, costResource, costQuantity, imageLink, type, maxhealth, BuildMenuList,speed);
             if (type.equals("Turret")) {
                 double range = jsonObject.getDouble("Range");
-                double cooldown = jsonObject.getDouble("Cooldown");
-                    JSONArray bullet = jsonObject.getJSONArray("Bullet");template.setupTurret(range, cooldown, readBulletTemplate(bullet));
-                } else if (type.equals("Drill")) {
-                    double speed = jsonObject.getDouble("Speed");
-                    template.setupDrill(speed);
-                } else if (type.equals("Conveyer")) {
-                    double speed = jsonObject.getDouble("Speed");
-                    template.setupConveyer(speed);
+                    JSONArray bullet = jsonObject.getJSONArray("Bullet");template.setupTurret(range, readBulletTemplate(bullet));
                 }
                 return template;
         } catch(JSONException e){

@@ -5,7 +5,7 @@
   "Width": 1.5,
   "Height": 1.5,
   "Range": 100.0,
-  "Cooldown": 1.0,
+  "Speed": 1.0,
   "CostResource": "copper",
   "CostQuantity": 5,
   "ImageLink": "basicturret.png",

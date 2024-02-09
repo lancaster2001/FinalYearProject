@@ -168,6 +168,10 @@ public class GameUIBuildMenu {
         return selectedMenuElement;
     }
     public TowerTemplate getSelectedTower(){
-        return displayTowerArrayList.get(selectedMenuElement);
+        if(selectedMenuList!= -1) {
+            return displayTowerArrayList.get(selectedMenuElement);
+        }else{
+            return null;
+        }
     }
 }
