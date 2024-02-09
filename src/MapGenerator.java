@@ -110,6 +110,7 @@ public class MapGenerator {
             }
             return new Map(mapArray, mapWidth, mapHeight);
         } catch (IOException | JSONException e) {
+            e.fillInStackTrace();
             return null;
         }
     }

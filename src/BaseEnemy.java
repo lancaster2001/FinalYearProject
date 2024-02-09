@@ -23,8 +23,8 @@ public class BaseEnemy {
     protected String imageLink = "src/Assets/Units/enemy1.png";
     private Point2D.Double targetLocation = new Point2D.Double(50,50);
     private final Point2D.Double playerBasePoint = new Point2D.Double((int)BaseBaseTower.getInstance().getPose().getX(),(int)BaseBaseTower.getInstance().getPose().getY());
-    public BaseEnemy(double x, double y,EnemyTemplate template){
-        pose = new Pose(x,y, 0.0);
+    public BaseEnemy(Pose pose,EnemyTemplate template){
+        this.pose = pose;
         width = template.getWidth();
         height = template.getHeight();
         damage = template.getDamage();

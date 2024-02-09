@@ -12,8 +12,8 @@ public class BaseTurretTower extends BaseTower{
     private BulletTemplate bullet;
     private double targetX;
     private double targetY;
-    public BaseTurretTower(int x, int y,TowerTemplate template){
-        super(x,y,template);
+    public BaseTurretTower(Pose pose,TowerTemplate template){
+        super(pose,template);
         this.range = template.getRange();
         this.cooldown = template.getCooldown();
         this.bullet = template.getBulletTemplate();

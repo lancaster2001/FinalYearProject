@@ -31,7 +31,7 @@ public class GameUIBuildMenu {
     private ArrayList<TowerTemplate> displayTowerArrayList = new ArrayList<>();;
     private int selectedMenuElement = -1;
     private int selectedMenuList = -1;
-    private String[] menuListsNames = {"Turret","Drill"};
+    private String[] menuListsNames = {"Turret","Drill","Support"};
     private void loadBuildMenu() {
         towerArrayList = towerManagerInstance.getTowerArrayList();
         selectedMenuList = 0;
@@ -77,7 +77,7 @@ public class GameUIBuildMenu {
     private void drawBuildMenuButton(Graphics g){
         g.setColor(gameConstants.buildMenuBackgroundColour);
         g.fill3DRect(buildMenuButton.x, buildMenuButton.y, buildMenuButton.width, buildMenuButton.height, true);
-        g.drawImage(assetManagerInstance.getImage("Menus","buildmenuButtonBackground.png"),buildMenuButton.x, buildMenuButton.y, buildMenuButton.width, buildMenuButton.height,null);
+        g.drawImage(assetManagerInstance.getImage("Menus","buildmenuButton.png"),buildMenuButton.x, buildMenuButton.y, buildMenuButton.width, buildMenuButton.height,null);
     }
     private void drawBuildMenuBackground(Graphics g) {
         g.setColor(gameConstants.buildMenuBackgroundColour);

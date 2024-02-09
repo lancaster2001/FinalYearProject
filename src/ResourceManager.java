@@ -41,27 +41,17 @@ public class ResourceManager {
             while(iterator.hasNext()) {
                 JSONObject object = (JSONObject) iterator.next();
                 String name = object.getString("Name").toLowerCase();
-                inventory.put(name.toLowerCase(), new Resource(name, "ore-"+name+".png",name+".png"));
+                inventory.put(name.toLowerCase(), getResource(name));
             }
         } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
-
-        /*
-        String[] directories = file.list(new FilenameFilter() {
-            @Override
-            public boolean accept(File current, String name) {
-                return new File(current, name).isDirectory();
-            }
-        });
-
-        ArrayList<BufferedImage> allImages = new ArrayList<BufferedImage>();
-        if (directories != null) {
-            for(String currentResource: directories) {
-                AssetManager.getInstance().re
-                inventory.put(currentResource, new Resource(currentResource));
-            }
-        }*/
+    }
+    public Resource getResource(String name){
+        return new Resource(name, "ore-"+name+".png",name+".png");
+    }
+    public Resource getResource(String name, Pose pose){
+        return new Resource(name, "ore-"+name+".png",name+".png", pose);
     }
     public Resource queryInventory(String query){
         return inventory.get(query.toLowerCase());

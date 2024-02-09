@@ -33,6 +33,9 @@ public class TowerTemplate {
     public void setupDrill(double speed){
         this.speed = speed;
     }
+    public void setupConveyer(double speed){
+        this.speed = speed;
+    }
 
     public String getName() {
         return name;

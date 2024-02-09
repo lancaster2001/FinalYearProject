@@ -20,7 +20,7 @@ public class GameState {
         TowerManager.getInstance();
         BaseTower playerTower = BaseBaseTower.getInstance();
         mapInstance = getMapInstance();
-        mapInstance.setTower(playerTower,(int)playerTower.getPose().getX(),(int)playerTower.getPose().getY());
+        //mapInstance.setTower(playerTower,(int)playerTower.getPose().getX(),(int)playerTower.getPose().getY());
         resourceManagerInstance.queryInventory("Rock").add(20);
         getMapInstance();
     }
@@ -58,13 +58,11 @@ public class GameState {
                 if(!start) {
                     tickLoop();
                     start = true;
-
                 }
                 fpsCounter =fps;
                 System.out.println(fps);
                 fps=0;
                 actLoop();
-
             }
         };
         actTimer.schedule(task,1000 );
@@ -97,7 +95,8 @@ public class GameState {
         };
         tickTimer.schedule(task,tickRate);
     }
-    public void userInput(KeyEvent e){
+    public boolean userInput(KeyEvent e){
+        boolean check = true;
         if(e.getKeyChar() == gameConstants.moveCameraUp){
             cameraInstance.move(gameConstants.DIRECTION.UP);
         }else if(e.getKeyChar() == gameConstants.moveCameraDown){
@@ -106,7 +105,10 @@ public class GameState {
             cameraInstance.move(gameConstants.DIRECTION.LEFT);
         }else if(e.getKeyChar() == gameConstants.moveCameraRight){
             cameraInstance.move(gameConstants.DIRECTION.RIGHT);
+        }else{
+            check = false;
         }
+        return check;
     }
     public Rectangle2D.Double outOfBoundsCheck(Rectangle2D.Double section){
         return mapInstance.sectionOutOfBoundsCheck(section,false);
@@ -117,7 +119,8 @@ public class GameState {
         if (mapInstance!=null){
             return mapInstance;
         }else{
-            if(mapGeneratorInstance.loadMap("src/Saves/save1/0.9143746867193433.json")==null) {
+            mapInstance =mapGeneratorInstance.loadMap("src/Saves/Maps/map.json");
+            if(mapInstance==null) {
                 mapInstance = mapGeneratorInstance.createNewMap(gameConstants.mapWidth, gameConstants.mapHeight);
             }
         }

@@ -93,7 +93,7 @@ public class EnemyManager {
     public void createEnemy(double x, double y, String name){
         for(EnemyTemplate template:enemyTemplates){
             if(name.equalsIgnoreCase(template.getName())){
-                enemyList.add(new BaseEnemy(x,y,template));
+                enemyList.add(new BaseEnemy(new Pose(x,y,0),template));
             }
         }
     }

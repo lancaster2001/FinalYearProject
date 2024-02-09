@@ -1,0 +1,19 @@
+{
+  "Type": "Turret",
+  "Name": "Advanced Turret",
+  "MaxHealth": 20.0,
+  "Width": 1.5,
+  "Height": 1.5,
+  "Range": 100.0,
+  "Cooldown": 1.0,
+  "CostResource": "copper",
+  "CostQuantity": 5,
+  "ImageLink": "basicturret.png",
+  "Bullet":[
+    {"MoveSpeed": 8,
+    "Damage": 1,
+    "Width": 0.6,
+    "Height": 0.6,
+    "ImageLink": "basicbullet.png"}
+  ]
+}

@@ -102,6 +102,9 @@ public class TowerManager {
                 } else if (type.equals("Drill")) {
                     double speed = jsonObject.getDouble("Speed");
                     template.setupDrill(speed);
+                } else if (type.equals("Conveyer")) {
+                    double speed = jsonObject.getDouble("Speed");
+                    template.setupConveyer(speed);
                 }
                 return template;
         } catch(JSONException e){
@@ -131,7 +134,7 @@ public class TowerManager {
     }
     public TowerTemplate getTemplate(String name){
         for(TowerTemplate template: towerArrayList){
-            if (template.getName().equals(name)){
+            if (template.getName().equalsIgnoreCase(name)){
                 return  template;
             }
         }

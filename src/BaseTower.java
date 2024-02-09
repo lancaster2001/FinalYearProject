@@ -2,6 +2,8 @@ import org.json.JSONObject;
 
 import javax.naming.Name;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -20,9 +22,8 @@ public abstract class BaseTower {
     public void tick(BaseTile tile,double tickMultiplier){
     }
     public void tick(double tickMultiplier){}
-    public BaseTower(int x, int y,TowerTemplate template){
-        this.pose.setX(x);
-        this.pose.setY(y);
+    public BaseTower(Pose pose,TowerTemplate template){
+        this.pose = pose;
         this.name = template.getName();
         this.costResource = template.getCostResource();
         this.costQuantity = template.getCostQuantity();
@@ -44,7 +45,18 @@ public abstract class BaseTower {
         int width = (int)(this.width * slotWidth);
         int height = (int)(this.height * slotHeight);
         Rectangle towerBox = new Rectangle(x, y, width, height);
-        g.drawImage(AssetManager.getInstance().getImage("Towers",imageLink), towerBox.x, towerBox.y, towerBox.width, towerBox.height, null);
+        // Rotation information
+        double rotationRequired = pose.getTheta();
+        BufferedImage image = AssetManager.getInstance().getImage("Towers",imageLink);
+
+        Graphics2D g2d = (Graphics2D) g;
+        AffineTransform backup = g2d.getTransform();
+        AffineTransform trans = new AffineTransform();
+        trans.rotate( rotationRequired, (x+(width/2)), (y+(height/2)) ); // the points to rotate around (the center in my example, your left side for your problem)
+        g2d.transform( trans );
+        g2d.drawImage( image, x, y ,width,height,null);  // the actual location of the sprite
+        g2d.setTransform( backup ); // restore previous transform
+        //g.drawImage(AssetManager.getInstance().getImage("Towers",imageLink), towerBox.x, towerBox.y, towerBox.width, towerBox.height, null);
         drawHealthBar(g, towerBox);
     }
     protected void drawHealthBar(Graphics g, Rectangle hitbox){

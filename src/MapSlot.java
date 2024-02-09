@@ -29,7 +29,9 @@ public class MapSlot {
         y = position.getInt("Y");
         this.tile = new BaseTile(TileManager.getInstance().loadTileTemplate(tile));
         if(tower != null){
-            setTower(TowerManager.getInstance().loadTemplateFromJsonObject(tower));
+            TowerTemplate template = TowerManager.getInstance().getTemplate(tower.getString("Name"));
+            ResourceManager.getInstance().queryInventory(template.getCostResource()).add(template.getCostQuantity());
+            setTower(template,tower.getDouble("Theta"));
         }
     }
     public void tick(double tickMultiplier){
@@ -59,29 +61,17 @@ public class MapSlot {
         g.setFont(new Font("Arial", Font.BOLD, 10));
         g.drawString(this.x+", "+this.y, x, y + 10);
     }
-    /*protected void draw(Graphics g,double cameraX, double cameraY, int slotWidth ,int slotHeight,AssetManager assetManagerInstance){int x = (int)((this.x-cameraX)*slotWidth);
-        int y =(int)((this.y-cameraY)*slotHeight);
-        if(tile!=null){
-            tile.draw(g,x,y,slotWidth,slotHeight,assetManagerInstance);
-        }
-        if (tower != null) {
-            tower.draw(g,x,y,slotWidth,slotHeight,assetManagerInstance);
-        }
-        g.setColor(Color.BLACK);
-        g.drawRect(x, y, slotWidth, slotHeight);
-        g.setColor(Color.red);
-        g.setFont(new Font("Arial", Font.BOLD, 10));
-        g.drawString(this.x+", "+this.y, x, y + 10);
-    }*/
     public boolean onScreenCheck(Camera cameraInstance){
         return cameraInstance.isOnCamera(x,y);
     }
-    public void setTower(TowerTemplate newTower){
+    public void setTower(TowerTemplate newTower,double theta){
         if (ResourceManager.getInstance().queryInventory(newTower.getCostResource()).remove(newTower.getCostQuantity())) {
             if (newTower.getType().equals("Turret")) {
-                tower = new BaseTurretTower(x, y, newTower);
+                tower = new BaseTurretTower(new Pose(x,y,theta), newTower);
             } else if (newTower.getType().equals("Drill")) {
-                tower = new BaseDrillTower(x, y, newTower);
+                tower = new BaseDrillTower(new Pose(x,y,theta), newTower);
+            } else if(newTower.getType().equals("Conveyers")) {
+                tower = new conveyer(new Pose(x,y,theta), newTower);
             }
         }
     }
