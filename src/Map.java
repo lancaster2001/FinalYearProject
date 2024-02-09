@@ -105,9 +105,6 @@ public final class Map {
     public void setTower(TowerTemplate newTower,Pose pose){
         getSlotFromCoord((int)pose.getX(),(int)pose.getY()).setTower(newTower,pose.getTheta());
     }
-    /*public void setTower(TowerTemplate newTower, int x, int y){
-        getSlotFromCoord(x,y).setTower(TowerManager.getInstance().newTower);
-    }*/
     public void setTower(BaseTower newTower, int x, int y){
         getSlotFromCoord(x,y).setTower(newTower);
     }

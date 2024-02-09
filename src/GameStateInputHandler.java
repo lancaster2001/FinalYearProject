@@ -21,7 +21,7 @@ public class GameStateInputHandler {
     public void userInput(KeyEvent e){
         if(GameState.getInstance().userInput(e)){
 
-        } else if (e.getKeyChar() == 'r') {
+        } else if (e.getKeyChar()=='r') {
             buildRotation+= Math.PI/2;
             if(buildRotation>=2* Math.PI){
                 buildRotation-=2*Math.PI;

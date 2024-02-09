@@ -28,19 +28,17 @@ public class Resource {
         int xToDraw = (int)((pose.getX()-x)*slotWidth);
         int yToDraw =(int)((pose.getY()-y)*slotHeight);
         Rectangle towerBox = new Rectangle(xToDraw,yToDraw, width, height);
-        g.drawImage(AssetManager.getInstance().getImage("Towers",iconImageLink), towerBox.x, towerBox.y, towerBox.width, towerBox.height, null);
+        g.drawImage(AssetManager.getInstance().getImage("Icons",iconImageLink), towerBox.x, towerBox.y, towerBox.width, towerBox.height, null);
 
-    }
-    public void place(Pose pose) {
-        this.pose = pose;
     }
     public void move(double Theta, double distance) {
         double targetX = (distance * Math.sin(Theta));
-        double targetY = (distance * Math.cos(Theta));
+        double targetY = (distance * Math.sin(Theta-(Math.PI/2)));
         double x = pose.getX();
         double xtoset = x + targetX;
         pose.setX(xtoset);
         pose.setY(pose.getY() + targetY);
+        pose.setTheta(Theta);
     }
     public boolean add(){
         quantity+=1;
@@ -89,5 +87,13 @@ public class Resource {
 
     public String getId() {
         return id;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public double getWidth() {
+        return width;
     }
 }

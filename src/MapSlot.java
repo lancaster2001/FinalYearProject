@@ -1,8 +1,6 @@
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.awt.*;
-import java.util.Iterator;
 
 public class MapSlot {
     private int x = -1;
@@ -29,9 +27,13 @@ public class MapSlot {
         y = position.getInt("Y");
         this.tile = new BaseTile(TileManager.getInstance().loadTileTemplate(tile));
         if(tower != null){
+            try{
             TowerTemplate template = TowerManager.getInstance().getTemplate(tower.getString("Name"));
             ResourceManager.getInstance().queryInventory(template.getCostResource()).add(template.getCostQuantity());
             setTower(template,tower.getDouble("Theta"));
+            }catch(Exception e){
+                e.printStackTrace();
+            }
         }
     }
     public void tick(double tickMultiplier){
@@ -70,8 +72,8 @@ public class MapSlot {
                 tower = new BaseTurretTower(new Pose(x,y,theta), newTower);
             } else if (newTower.getType().equals("Drill")) {
                 tower = new BaseDrillTower(new Pose(x,y,theta), newTower);
-            } else if(newTower.getType().equals("Conveyers")) {
-                tower = new conveyer(new Pose(x,y,theta), newTower);
+            } else if(newTower.getType().equals("Conveyors")) {
+                tower = new conveyor(new Pose(x,y,theta), newTower);
             }
         }
     }

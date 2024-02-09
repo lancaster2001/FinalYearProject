@@ -1,6 +1,6 @@
 {
-  "Type": "Conveyer",
-  "Name": "Basic Conveyer",
+  "Type": "Conveyor",
+  "Name": "Basic conveyor",
   "BuildMenuList": "Support",
   "MaxHealth": 10.0,
   "Width": 1.0,
@@ -8,5 +8,5 @@
   "CostResource": "Rock",
   "CostQuantity": 1,
   "Speed": 0.25,
-  "ImageLink": "conveyer.png"
+  "ImageLink": "conveyor.png"
 }

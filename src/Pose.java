@@ -42,11 +42,6 @@ public final class Pose {
     public void setY(double y){
         this.y = y;
     }
-    /*public String toString() {
-        return String.format("<%.10f", this.x) + ", " +
-                String.format("%.10f", this.y) + ", " +
-                String.format("%.10f", this.theta) + ">";
-    }*/
 
     //getters
     public double getX() {
