@@ -46,17 +46,15 @@ public class GameStateInputHandler {
             check = true;
         }else {
             if(e.getButton()== MouseEvent.BUTTON3){
-                int slotx = e.getX() / cameraInstance.getbaseWidthOfSlot() + 1;
-                int sloty = (e.getY() - titleHeight) / cameraInstance.getbaseHeightOfslot() + 1;
-                MapSlot clickedSlot = cameraInstance.getMapslot(slotx, sloty);
+                int[] g = cameraInstance.slotOnScreen(e.getPoint());
+                MapSlot clickedSlot = cameraInstance.getMapslot(g[0], g[1]);
                 if (gameUIBuildMenuInstance.getSelectedTower() != null) {
                     GameState.getInstance().getMapInstance().clearTower(clickedSlot.getX(), clickedSlot.getY());
                     GameState.getInstance().getMapInstance().save();
                 }
             }else {
-                int slotx = e.getX() / cameraInstance.getbaseWidthOfSlot() + 1;
-                int sloty = (e.getY() - titleHeight) / cameraInstance.getbaseHeightOfslot() + 1;
-                MapSlot clickedSlot = cameraInstance.getMapslot(slotx, sloty);
+                int[] g = cameraInstance.slotOnScreen(e.getPoint());
+                MapSlot clickedSlot = cameraInstance.getMapslot(g[0], g[1]);
                 if (gameUIBuildMenuInstance.getSelectedTower() != null) {
                     GameState.getInstance().getMapInstance().setTower(gameUIBuildMenuInstance.getSelectedTower(), new Pose(clickedSlot.getX(), clickedSlot.getY(), buildRotation));
                     GameState.getInstance().getMapInstance().save();

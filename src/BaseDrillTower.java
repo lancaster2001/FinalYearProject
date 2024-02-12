@@ -19,7 +19,11 @@ public class BaseDrillTower extends BaseTower{
         actAccumulator+=tickMultiplier*speed;
         if (actAccumulator>=actAccumulatorLimit){
             actAccumulator-=actAccumulatorLimit;
-            inventory.add(ResourceManager.getInstance().getResource(tile.getResource()));
+            Resource resource = ResourceManager.getInstance().getResource(tile.getResource());
+            resource.add();
+            if(inventory.size()<inventorySize){
+                inventory.add(resource);
+            }
         }
         if (!inventory.isEmpty()) {
             boolean conveyerCheck = false;

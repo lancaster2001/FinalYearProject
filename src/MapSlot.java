@@ -61,7 +61,7 @@ public class MapSlot {
         //g.drawRect(x, y, slotWidth, slotHeight);
         g.setColor(Color.red);
         g.setFont(new Font("Arial", Font.BOLD, 10));
-        g.drawString(this.x+", "+this.y, x, y + 10);
+        //g.drawString(this.x+", "+this.y, x, y + 10);
     }
     public boolean onScreenCheck(Camera cameraInstance){
         return cameraInstance.isOnCamera(x,y);

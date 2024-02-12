@@ -158,7 +158,7 @@ public abstract class BaseTower {
                 }
                 currentTower = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX() + 1, pose.getY(), 0.5, 0.5)).getFirst().getTower();
                 if (currentTower != null) {
-                    resource.setPose(new Pose(currentTower.getPose().getX(), currentTower.getPose().getY(), Math.PI / 2));
+                    resource.setPose(new Pose(pose.getX()+1.0000001, pose.getY()+(0.5-resource.getHeight()/2), Math.PI / 2));
                     if (nextDirection == Math.PI / 2 && currentTower.addToInventory((int) pose.getX(), (int) pose.getY(), resource)) {
                         nextDirection += Math.PI / 2;
                         while (nextDirection >= (Math.PI * 2) - 0.1) {
@@ -170,7 +170,7 @@ public abstract class BaseTower {
                 }
                 currentTower = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX(), pose.getY() + 1, 0.5, 0.5)).getFirst().getTower();
                 if (currentTower != null) {
-                    resource.setPose(new Pose(currentTower.getPose().getX(), currentTower.getPose().getY(), Math.PI));
+                    resource.setPose(new Pose(pose.getX()+(0.5-resource.getWidth()/2), pose.getY()+1.0000001, Math.PI));
                     if (nextDirection == Math.PI && currentTower.addToInventory((int) pose.getX(), (int) pose.getY(), resource)) {
                         nextDirection += Math.PI / 2;
                         while (nextDirection >= (Math.PI * 2) - 0.1) {
@@ -182,7 +182,7 @@ public abstract class BaseTower {
                 }
                 currentTower = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX() - 1, pose.getY(), 0.5, 0.5)).getFirst().getTower();
                 if (currentTower != null) {
-                    resource.setPose(new Pose(currentTower.getPose().getX(), currentTower.getPose().getY(), Math.PI * 1.5));
+                    resource.setPose(new Pose(pose.getX()-0.0000001, pose.getY()+(0.5-resource.getHeight()/2), Math.PI * 1.5));
                     if (nextDirection == Math.PI * 1.5 && currentTower.addToInventory((int) pose.getX(), (int) pose.getY(), resource)) {
                         nextDirection += Math.PI / 2;
                         while (nextDirection >= (Math.PI * 2) - 0.1) {

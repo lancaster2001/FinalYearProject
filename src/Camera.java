@@ -42,6 +42,21 @@ public class Camera {
     public double getY() {
         return y;
     }
+    public int[] slotOnScreen(Point p){
+
+        if(viewableMap!=null) {
+            for (MapSlot slot : viewableMap) {
+                int[] xAndWidth = getOnScreenXandWidth(slot.getX());
+                int[] yAndHeight = getOnScreenYandHeight(slot.getY());
+                Rectangle2D.Double slotRectangle = new Rectangle2D.Double(xAndWidth[0],yAndHeight[0],xAndWidth[1],yAndHeight[1]);
+                if(slotRectangle.contains(p)){
+                    return new int[]{slot.getX()-(int)x+1,slot.getY()-(int)y+1};
+                }
+            }
+        }
+        return new int[]{};
+    }
+
     public void draw(Graphics g){
         if(viewableMap!=null) {
             for (MapSlot slot : viewableMap) {
@@ -192,8 +207,8 @@ public class Camera {
         return map;
     }
     public void increaseZoom(){
-        if ((x+(zoom*screenWidthProportion)-1< gameConstants.mapWidth-1) && (y+(zoom*screenWidthProportion) < gameConstants.mapHeight-1)){
-            zoom += 1;
+        if ((x+(zoom*screenWidthProportion)< gameConstants.mapWidth-4) && (y+(zoom*screenWidthProportion) < gameConstants.mapHeight-4)){
+            zoom += 2;
            // x-=1;
            // y-=1;
             calculateValues();
@@ -201,7 +216,7 @@ public class Camera {
     }
     public void decreaseZoom(){
         if (zoom > 1){
-            zoom -= 1;
+            zoom -= 2;
            // x+=1;
            // y+=1;
             calculateValues();
