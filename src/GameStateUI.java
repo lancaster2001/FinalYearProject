@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.util.ArrayList;
 public class GameStateUI {
     //singleton-------------------------------------------------------------------------
     private static GameStateUI instance = new GameStateUI();

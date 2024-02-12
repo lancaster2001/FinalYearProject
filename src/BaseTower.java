@@ -1,12 +1,10 @@
 import org.json.JSONObject;
 
-import javax.naming.Name;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.util.ArrayList;
 
 public abstract class BaseTower {
     protected Pose pose = new Pose();
@@ -15,10 +13,15 @@ public abstract class BaseTower {
     protected double width = 1.0;
     protected double height = 1.0;
     protected  double maxHealth;
+    private double nextDirection;
     protected double health;
     protected double speed;
     protected String costResource = "Rock";
     protected int costQuantity = 5;
+    protected int inventorySize = 0;
+    protected ArrayList<Resource> inventory = new ArrayList<>();
+    protected ArrayList<Double> outputDirections = new ArrayList<>();
+    protected ArrayList<Double> inputDirections = new ArrayList<>();
     private TowerTemplate tempalate;
     public void tick(BaseTile tile,double tickMultiplier){
     }
@@ -92,6 +95,125 @@ public abstract class BaseTower {
 
     public TowerTemplate getTempalate() {
         return tempalate;
+    }
+    private Double getDirectionOfInput(int x, int y){
+        double atan2_x =(x)-pose.getX();
+        double atan2_y =(y)-pose.getY();
+        double rot1 = Math.atan2(atan2_y,atan2_x);
+        return rot1+(Math.PI/2);
+    }
+
+    public boolean addToInventory(int x, int y,Resource resource){
+        double directionOfInput = getDirectionOfInput(x,y);
+        boolean inputCheck = false;
+        if(!inputDirections.isEmpty()) {
+            for (Double direction : inputDirections) {
+                if (direction.equals(directionOfInput)) {
+                    inputCheck = true;
+                    break;
+                }
+            }
+        }
+        if(inputCheck) {
+                boolean check = true;
+                for (Resource resource1 : inventory) {
+                    if (resource1.getId().equals(resource.getId())) {
+                        check = false;
+                    }
+                }
+                if (check && (inventory.size() < inventorySize)) {
+                    inventory.add(resource);
+
+                    return true;
+                }
+
+        }
+        return false;
+    }
+    protected boolean outputResource(Resource resource) {
+        Map mapInstance = GameState.getInstance().getMapInstance();
+        BaseTower currentTower;
+        boolean existanceCheck =  false;
+        Integer outputIndex = null;
+        int index = 0;
+        for(Resource resource1: inventory){
+            if(resource1.getId().equalsIgnoreCase(resource.getId())){
+                existanceCheck = true;
+                outputIndex = index;
+            }
+            index+=1;
+        }
+        if (existanceCheck) {
+                currentTower = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX(), pose.getY() - 1, 0.5, 0.5)).getFirst().getTower();
+                if (currentTower != null) {
+                    resource.setPose(new Pose(pose.getX()+(0.5-resource.getWidth()/2), pose.getY()-0.0000001, 0));
+                    if (nextDirection == 0 && currentTower.addToInventory((int) pose.getX(), (int) pose.getY(), resource)) {
+                        nextDirection += Math.PI / 2;
+                        while (nextDirection >= (Math.PI * 2) - 0.1) {
+                            nextDirection -= Math.PI * 2;
+                        }
+                        removeListOfIndexes(outputIndex);
+                        return true;
+                    }
+                }
+                currentTower = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX() + 1, pose.getY(), 0.5, 0.5)).getFirst().getTower();
+                if (currentTower != null) {
+                    resource.setPose(new Pose(currentTower.getPose().getX(), currentTower.getPose().getY(), Math.PI / 2));
+                    if (nextDirection == Math.PI / 2 && currentTower.addToInventory((int) pose.getX(), (int) pose.getY(), resource)) {
+                        nextDirection += Math.PI / 2;
+                        while (nextDirection >= (Math.PI * 2) - 0.1) {
+                            nextDirection -= Math.PI * 2;
+                        }
+                        removeListOfIndexes(outputIndex);
+                        return true;
+                    }
+                }
+                currentTower = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX(), pose.getY() + 1, 0.5, 0.5)).getFirst().getTower();
+                if (currentTower != null) {
+                    resource.setPose(new Pose(currentTower.getPose().getX(), currentTower.getPose().getY(), Math.PI));
+                    if (nextDirection == Math.PI && currentTower.addToInventory((int) pose.getX(), (int) pose.getY(), resource)) {
+                        nextDirection += Math.PI / 2;
+                        while (nextDirection >= (Math.PI * 2) - 0.1) {
+                            nextDirection -= Math.PI * 2;
+                        }
+                        removeListOfIndexes(outputIndex);
+                        return true;
+                    }
+                }
+                currentTower = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX() - 1, pose.getY(), 0.5, 0.5)).getFirst().getTower();
+                if (currentTower != null) {
+                    resource.setPose(new Pose(currentTower.getPose().getX(), currentTower.getPose().getY(), Math.PI * 1.5));
+                    if (nextDirection == Math.PI * 1.5 && currentTower.addToInventory((int) pose.getX(), (int) pose.getY(), resource)) {
+                        nextDirection += Math.PI / 2;
+                        while (nextDirection >= (Math.PI * 2) - 0.1) {
+                            nextDirection -= Math.PI * 2;
+                        }
+                        removeListOfIndexes(outputIndex);
+                        return true;
+                    }
+                }
+                nextDirection += Math.PI / 2;
+                while (nextDirection >= (Math.PI * 2) - 0.1) {
+                    nextDirection -= Math.PI * 2;
+                }
+            }
+        return false;
+    }
+    protected void removeListOfIndexes(ArrayList<Integer> indexesToRemove){
+        for(int toRemoveIndex = indexesToRemove.size()-1;toRemoveIndex>=0;toRemoveIndex--){
+            for(int index = inventory.size()-1; index>=0; index--){
+                if(indexesToRemove.get(toRemoveIndex)==index){
+
+                    inventory.remove(index);
+                    break;
+                }
+            }
+        }
+    }
+    protected void removeListOfIndexes(Integer indexesToRemove){
+        ArrayList<Integer> index = new ArrayList<>();
+        index.add(indexesToRemove);
+        removeListOfIndexes(index);
     }
 
 }

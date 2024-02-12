@@ -72,8 +72,8 @@ public class Bullet {
     public void draw(Graphics g,Camera cameraInstance, AssetManager assetManagerInstance){
         int x = cameraInstance.getOnScreenX(pose.getX());
         int y = cameraInstance.getOnScreenY(pose.getY());
-        int width = (int)(this.width*cameraInstance.getwidthOfSlot());
-        int height = (int)(this.height*cameraInstance.getheightOfslot());
+        int width = (int)(this.width*cameraInstance.getwidthOfslot(pose.getX()));
+        int height = (int)(this.height*cameraInstance.getheightOfslot(pose.getY()));
         //g.drawImage(assetManagerInstance.getImage(imageLink),x, y, width, height,null);
         double rotationRequired = pose.getTheta();
         BufferedImage image = AssetManager.getInstance().getImage("Projectiles",imageLink);

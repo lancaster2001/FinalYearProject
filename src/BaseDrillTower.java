@@ -4,10 +4,13 @@ import java.util.ArrayList;
 public class BaseDrillTower extends BaseTower{
     private double actAccumulator = 0.0;
     private final double actAccumulatorLimit = 1.0;
-    ArrayList<Resource> inventory = new ArrayList<>();
     public BaseDrillTower(Pose pose,TowerTemplate template){
         super(pose,template);
         imageLink = template.getImageLink();
+        inventorySize = 5;
+        for(double index =0;index<4;index+=1.0){
+            outputDirections.add(index * (Math.PI / 2));
+        }
     }
     public void act(BaseTile tile, ResourceManager resourceManagerInstance){
         resourceManagerInstance.queryInventory(tile.getResource()).add();
@@ -32,14 +35,7 @@ public class BaseDrillTower extends BaseTower{
                 slotToCheck=mapInstance.getMapSection(new Rectangle2D.Double(pose.getX()-1,pose.getY(),0.5,0.5)).getFirst();
             }
             if(slotToCheck!=null){
-                if (slotToCheck.getTower() instanceof conveyor) {
-                    Resource resourceToAddCopy = ResourceManager.getInstance().getResource(inventory.get(0).getName());
-                    Pose resourceSpawnPose = new Pose(slotToCheck.getX()+0.5-(resourceToAddCopy.getWidth()/2),slotToCheck.getY()+0.5-(resourceToAddCopy.getHeight()/2), slotToCheck.getTower().getPose().getTheta());
-                    Resource resourceToAdd = ResourceManager.getInstance().getResource(inventory.get(0).getName(),resourceSpawnPose);
-                    ((conveyor)slotToCheck.getTower()).addResource(resourceToAdd);
-                }else{
-                    ResourceManager.getInstance().queryInventory(tile.getResource()).add();
-                }
+                outputResource(inventory.getFirst());
             }
         }
     }

@@ -1,10 +1,11 @@
-import java.io.*;
-import java.nio.charset.StandardCharsets;
+import org.json.*;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Scanner;
-
-import  org.json.*;
 
 
 public class TowerManager {
@@ -103,9 +104,11 @@ public class TowerManager {
             template = new TowerTemplate(name, width, height, costResource, costQuantity, imageLink, type, maxhealth, BuildMenuList,speed);
             if (type.equals("Turret")) {
                 double range = jsonObject.getDouble("Range");
-                    JSONArray bullet = jsonObject.getJSONArray("Bullet");template.setupTurret(range, readBulletTemplate(bullet));
-                }
-                return template;
+                int BulletCostQuantity = jsonObject.getInt("BulletCostQuantity");
+                String BulletCostResource = jsonObject.getString("BulletCostResource");
+                JSONArray bullet = jsonObject.getJSONArray("Bullet");template.setupTurret(range, readBulletTemplate(bullet),BulletCostResource,BulletCostQuantity);
+            }
+            return template;
         } catch(JSONException e){
             e.printStackTrace();
         }

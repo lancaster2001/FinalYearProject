@@ -1,5 +1,3 @@
-import javax.swing.plaf.ColorUIResource;
-
 public class StateManager {
     //singleton------------------------------------------------------------------------
     private static StateManager instance = new StateManager();

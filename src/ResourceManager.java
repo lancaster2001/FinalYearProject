@@ -4,15 +4,11 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.FileReader;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Objects;
 
 public class ResourceManager {
     //singleton------------------------------------------------------------------------
@@ -81,9 +77,12 @@ public class ResourceManager {
             listToDraw.add(resource);
         }
     }
-    public void draw(Graphics g, double x, double y, int slotWidth , int slotHeight, AssetManager assetManagerInstance){
+    public void draw(Graphics g, AssetManager assetManagerInstance){
         for(Resource resource:listToDraw){
-            resource.draw(g,x,y,slotWidth,slotHeight,assetManagerInstance);
+            int[] x = Camera.getInstance().getOnScreenXandWidth(resource.getPose().getX());
+            int[] y = Camera.getInstance().getOnScreenYandHeight(resource.getPose().getY());
+
+            resource.draw(g,x[0], y[0],x[1],y[1],assetManagerInstance);
         }
         listToDraw.clear();
     }

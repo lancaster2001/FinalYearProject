@@ -26,6 +26,8 @@ public class GameStateInputHandler {
             if(buildRotation>=2* Math.PI){
                 buildRotation-=2*Math.PI;
             }
+        }else if (e.getKeyChar()==' ') {
+            GameState.getInstance().paused = !GameState.getInstance().paused;
         }
     }
     public void userInput(MouseWheelEvent e){
@@ -43,13 +45,22 @@ public class GameStateInputHandler {
         if(GameStateUI.getInstance().takeInput(e.getPoint())){
             check = true;
         }else {
-
-            int slotx = e.getX()/cameraInstance.getwidthOfSlot()+1;
-            int sloty = (e.getY()-titleHeight)/cameraInstance.getheightOfslot()+1;
-            MapSlot clickedSlot = cameraInstance.getMapslot(slotx, sloty);
-            if(gameUIBuildMenuInstance.getSelectedTower()!=null) {
-                GameState.getInstance().getMapInstance().setTower(gameUIBuildMenuInstance.getSelectedTower(), new Pose(clickedSlot.getX(), clickedSlot.getY(), buildRotation));
-                GameState.getInstance().getMapInstance().save();
+            if(e.getButton()== MouseEvent.BUTTON3){
+                int slotx = e.getX() / cameraInstance.getbaseWidthOfSlot() + 1;
+                int sloty = (e.getY() - titleHeight) / cameraInstance.getbaseHeightOfslot() + 1;
+                MapSlot clickedSlot = cameraInstance.getMapslot(slotx, sloty);
+                if (gameUIBuildMenuInstance.getSelectedTower() != null) {
+                    GameState.getInstance().getMapInstance().clearTower(clickedSlot.getX(), clickedSlot.getY());
+                    GameState.getInstance().getMapInstance().save();
+                }
+            }else {
+                int slotx = e.getX() / cameraInstance.getbaseWidthOfSlot() + 1;
+                int sloty = (e.getY() - titleHeight) / cameraInstance.getbaseHeightOfslot() + 1;
+                MapSlot clickedSlot = cameraInstance.getMapslot(slotx, sloty);
+                if (gameUIBuildMenuInstance.getSelectedTower() != null) {
+                    GameState.getInstance().getMapInstance().setTower(gameUIBuildMenuInstance.getSelectedTower(), new Pose(clickedSlot.getX(), clickedSlot.getY(), buildRotation));
+                    GameState.getInstance().getMapInstance().save();
+                }
             }
         }
     }

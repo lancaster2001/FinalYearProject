@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class GameUIBuildMenu {
@@ -168,7 +167,7 @@ public class GameUIBuildMenu {
         return selectedMenuElement;
     }
     public TowerTemplate getSelectedTower(){
-        if(selectedMenuList!= -1) {
+        if(selectedMenuElement!= -1) {
             return displayTowerArrayList.get(selectedMenuElement);
         }else{
             return null;

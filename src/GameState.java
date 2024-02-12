@@ -1,9 +1,5 @@
-import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
-import java.io.Console;
-import java.util.ArrayList;
-import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -34,6 +30,7 @@ public class GameState {
     private final ProjectileManager projectileManagerInstance = ProjectileManager.getInstance();
     private  final  ResourceManager resourceManagerInstance = ResourceManager.getInstance();
     private Map mapInstance = getMapInstance();
+    public boolean paused = false;
 
     int fps = 0;
     int fpsCounter =0;
@@ -81,10 +78,12 @@ public class GameState {
     }
     private void tickLoop(){
         Timer tickTimer = new Timer();
-        double tickMultiplier = tickRate/1000.0;
-        mapInstance.tick(tickMultiplier);
-        enemyManagerInstance.tick(tickMultiplier);
-        projectileManagerInstance.tick(tickMultiplier);
+        if(!paused) {
+            double tickMultiplier = tickRate / 1000.0;
+            mapInstance.tick(tickMultiplier);
+            enemyManagerInstance.tick(tickMultiplier);
+            projectileManagerInstance.tick(tickMultiplier);
+        }
         TimerTask task = new TimerTask() {
             public static double i = 0;
             @Override

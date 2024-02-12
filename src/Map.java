@@ -1,9 +1,7 @@
 import org.json.JSONObject;
 
-import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -101,6 +99,9 @@ public final class Map {
         }
 
         return saveLink;
+    }
+    public void clearTower(int x ,int y){
+        getSlotFromCoord(x,y).clearTower();
     }
     public void setTower(TowerTemplate newTower,Pose pose){
         getSlotFromCoord((int)pose.getX(),(int)pose.getY()).setTower(newTower,pose.getTheta());

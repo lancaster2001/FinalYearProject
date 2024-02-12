@@ -40,8 +40,8 @@ public class BaseEnemy {
     protected void draw(Graphics g){
         int x = cameraInstance.getOnScreenX(pose.getX());
         int y =cameraInstance.getOnScreenY(pose.getY());
-        int width =(int)(cameraInstance.getwidthOfSlot()*this.width);
-        int height = (int)(cameraInstance.getheightOfslot()*this.height);
+        int width =(int)(cameraInstance.getwidthOfslot(pose.getX())*this.width);
+        int height = (int)(cameraInstance.getheightOfslot(pose.getY())*this.height);
         BufferedImage image = AssetManager.getInstance().getImage("Units",imageLink);
         double rotationRequired = pose.getTheta();
         Graphics2D g2d = (Graphics2D) g;

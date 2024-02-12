@@ -8,6 +8,8 @@ public class BaseTurretTower extends BaseTower{
     private final ProjectileManager projectileManagerInstance = ProjectileManager.getInstance();
     protected double range;
     private double shootAccumulator = 0.0;
+    private String BulletCostResource;
+    private int BulletCostQuantity;
     private double cooldown;
     private BulletTemplate bullet;
     private double targetX;
@@ -17,6 +19,12 @@ public class BaseTurretTower extends BaseTower{
         this.range = template.getRange();
         this.cooldown = speed;
         this.bullet = template.getBulletTemplate();
+        this.BulletCostQuantity = template.getBulletCostQuantity();
+        this.BulletCostResource = template.getBulletCostResource();
+        inventorySize = 10;
+        for(double index =0;index<4;index+=1.0){
+            inputDirections.add(index * (Math.PI / 2));
+        }
     }
 
     private boolean checkForEnemies(){
@@ -51,12 +59,22 @@ public class BaseTurretTower extends BaseTower{
             shoot();
         }
     }
-    public void setup(int x,int y){
-        pose = new Pose(x,y,0.0);
-    }
     public void shoot(){
-        if(shootAccumulator== cooldown) {
+        int counter = 0;
+        for(Resource resource:inventory){
+            if(resource.getName().equalsIgnoreCase(BulletCostResource)){
+                counter += 1;
+            }
+        }
+        if((shootAccumulator== cooldown)&&(counter>=BulletCostQuantity)) {
             shootAccumulator -= cooldown;
+            int counter2 = BulletCostQuantity;
+            for(int index = inventory.size()-1;index>=0;index--) {
+                if((inventory.get(index).getName().equalsIgnoreCase(BulletCostResource))&&(counter2>0)){
+                    counter2-=1;
+                    inventory.remove(index);
+                }
+            }
             projectileManagerInstance.addBullet(pose.getX(), pose.getY(),pose.getTheta(), "player" ,bullet);
         }
     }

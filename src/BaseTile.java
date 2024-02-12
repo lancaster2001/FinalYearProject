@@ -1,9 +1,6 @@
 import org.json.JSONObject;
 
 import java.awt.*;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 
 public class BaseTile {
     protected String imageLink;

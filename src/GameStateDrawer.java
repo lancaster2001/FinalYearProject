@@ -1,8 +1,4 @@
 import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 public class GameStateDrawer {
     //singleton-------------------------------------------------------------------------
@@ -24,6 +20,7 @@ public class GameStateDrawer {
     //private final Map mapInstance = GameState.getInstance().getMapInstance();
     public void draw(Graphics g){
         cameraInstance.draw(g);
+        ResourceManager.getInstance().draw(g,AssetManager.getInstance());
         enemyManagerInstance.drawEnemies(g);
         projectileManagerInstance.draw(g,cameraInstance, assetManagerInstance);
         gameStateUIInstance.drawUI(g);

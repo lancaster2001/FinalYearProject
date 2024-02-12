@@ -1,6 +1,5 @@
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
-
 import java.util.ArrayList;
 
 public class Camera {
@@ -55,9 +54,8 @@ public class Camera {
             g.setFont(new Font("Arial", Font.BOLD, 100));
             g.drawString("NO MAP", 100, 100);
         }
-        resourceManagerInstance.draw(g,x,y,getwidthOfSlot(),getheightOfslot(),AssetManager.getInstance());
     }
-    private int[] getOnScreenXandWidth (double x){
+    public int[] getOnScreenXandWidth (double x){
         double onCameraX = x-this.x;
         int initialExcess = getWidthExcess();
         int Excess= initialExcess;
@@ -66,7 +64,7 @@ public class Camera {
         int widthToDraw = 0;
         for(int index = 0;index<=(int)onCameraX;index++){
             nextXpos += widthToDraw;
-            widthToDraw = getwidthOfSlot();
+            widthToDraw = getbaseWidthOfSlot();
             if(Excess>0.00000000){
                 if(initialExcess>numOslotsWide) {
                     widthToDraw += ((double) Excess / (double) numOslotsWide);
@@ -77,7 +75,7 @@ public class Camera {
                 }
             }
         }
-        return new int[]{nextXpos+(int)((onCameraX-(int)onCameraX)*getwidthOfSlot()),widthToDraw};
+        return new int[]{nextXpos+(int)((onCameraX-(int)onCameraX)* getbaseWidthOfSlot()),widthToDraw};
     }
     public int getOnScreenX(double x) {
         return getOnScreenXandWidth(x)[0];
@@ -88,7 +86,7 @@ public class Camera {
         int widthToDraw = 0;
         for(int index = 0;index<=numOslotsWide;index++){
             nextXpos += widthToDraw;
-            widthToDraw = getwidthOfSlot();
+            widthToDraw = getbaseWidthOfSlot();
         }
         return screenWidth-(nextXpos);
     }
@@ -102,7 +100,7 @@ public class Camera {
         int heightToDraw = 0;
         for(int index = 0;index<=(int)onCameraY;index++){
             nextYpos += heightToDraw;
-            heightToDraw = getheightOfslot();
+            heightToDraw = getbaseHeightOfslot();
             if(Excess>0.00000000){
                 if(initialExcess>numOslotsTall) {
                     heightToDraw += ((double) Excess / (double) numOslotsTall);
@@ -115,18 +113,18 @@ public class Camera {
                 }
             }
         }
-        return new int[]{nextYpos+(int)((onCameraY-(int)onCameraY)*getheightOfslot()),heightToDraw};
+        return new int[]{nextYpos+(int)((onCameraY-(int)onCameraY)* getbaseHeightOfslot()),heightToDraw};
     }
     public int getOnScreenY(double y) {
         return getOnScreenYandHeight(y)[0];
     }
     public int getHeightExcess() {
-        int nextYpos = -getwidthOfSlot();
+        int nextYpos = -getbaseWidthOfSlot();
         double accumulator = 0.0;
-        int heightToDraw = getwidthOfSlot();
+        int heightToDraw = getbaseWidthOfSlot();
         for(int index = 0;index<=numOslotsTall;index++){
             nextYpos += heightToDraw;
-            heightToDraw = getheightOfslot();
+            heightToDraw = getbaseHeightOfslot();
         }
         return screenHeight-nextYpos;
     }
@@ -136,17 +134,17 @@ public class Camera {
         int returnWidth = 0;
         int returnHeight = 0;
 
-        int nextXpos = -getwidthOfSlot();
-        int nextYpos = -getheightOfslot();
+        int nextXpos = -getbaseWidthOfSlot();
+        int nextYpos = -getbaseHeightOfslot();
         double accumulatorX = 0.0;
         double accumulatorY = 0.0;
         double previousY = 0.0;
         double previousX = 0.0;
         for (MapSlot slot : viewableMap) {
-            int widthToDraw = getwidthOfSlot();
-            int heightToDraw = getheightOfslot();
+            int widthToDraw = getbaseWidthOfSlot();
+            int heightToDraw = getbaseHeightOfslot();
             if ((int) previousX != slot.getX()) {
-                accumulatorX += ((double) screenWidth / (double) numOslotsWide) - getwidthOfSlot();
+                accumulatorX += ((double) screenWidth / (double) numOslotsWide) - getbaseWidthOfSlot();
                 previousX = slot.getX();
                 if (accumulatorX >= 1.0) {
                     accumulatorX -= 1.0;
@@ -155,7 +153,7 @@ public class Camera {
                 nextXpos += widthToDraw;
             }
             if ((int) previousY != slot.getY()) {
-                accumulatorY += ((double) screenHeight / (double) numOslotsTall) - getheightOfslot();
+                accumulatorY += ((double) screenHeight / (double) numOslotsTall) - getbaseHeightOfslot();
                 previousY = slot.getY();
                 if (accumulatorY >= 1.0) {
                     accumulatorY -= 1.0;
@@ -185,11 +183,11 @@ public class Camera {
 
     }
     private Rectangle2D.Double getExcessMap(Rectangle2D.Double map){
-        if(map.width*getwidthOfSlot()<screenWidth){
-            map.width = screenWidth/getwidthOfSlot();
+        if(map.width* getbaseWidthOfSlot()<screenWidth){
+            map.width = screenWidth/ getbaseWidthOfSlot();
         }
-        if(map.height*getheightOfslot()<screenHeight){
-            map.height = screenHeight/getheightOfslot();
+        if(map.height* getbaseHeightOfslot()<screenHeight){
+            map.height = screenHeight/ getbaseHeightOfslot();
         }
         return map;
     }
@@ -218,13 +216,19 @@ public class Camera {
         numOslotsTall = (int)placement.height;
         return !original.equals(placement);
     }
-    public int getheightOfslot() {
+    public int getbaseHeightOfslot() {
         heightOfslot = (screenHeight/numOslotsTall);
         return heightOfslot;
     }
-    public int getwidthOfSlot() {
+    public int getbaseWidthOfSlot() {
         widthOfSlot = (screenWidth/numOslotsWide);
         return widthOfSlot;
+    }
+    public int getheightOfslot(double y){
+        return getOnScreenYandHeight(y)[1];
+    }
+    public int getwidthOfslot(double x){
+        return getOnScreenXandWidth(x)[1];
     }
     //public int getNumOslotsWide(){return numOslotsWide;}
     public int getNumOslotsTall() {return numOslotsTall;}
@@ -263,7 +267,7 @@ public class Camera {
     }
     private int getNumOslotsWide(){
         numOslotsWide = (int)((double)numOslotsTall*screenWidthProportion);
-        numOslotsWide += (screenWidth - (numOslotsWide * widthOfSlot)) / getwidthOfSlot();
+        numOslotsWide += (screenWidth - (numOslotsWide * widthOfSlot)) / getbaseWidthOfSlot();
 
         return numOslotsWide;
     }

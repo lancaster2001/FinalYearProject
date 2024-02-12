@@ -74,8 +74,13 @@ public class MapSlot {
                 tower = new BaseDrillTower(new Pose(x,y,theta), newTower);
             } else if(newTower.getType().equals("Conveyors")) {
                 tower = new conveyor(new Pose(x,y,theta), newTower);
+            } else if(newTower.getType().equals("Router")) {
+                tower = new Router(new Pose(x,y,theta), newTower);
             }
         }
+    }
+    public void clearTower(){
+        tower = null;
     }
     public JSONObject getJsonObject(){
         JSONObject json = new JSONObject();

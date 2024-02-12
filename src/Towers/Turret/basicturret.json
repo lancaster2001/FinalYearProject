@@ -6,6 +6,8 @@
   "Height": 1.0,
   "Range": 100.0,
   "Speed": 1.0,
+  "BulletCostResource": "Rock",
+  "BulletCostQuantity": 1,
   "CostResource": "Rock",
   "CostQuantity": 5,
   "ImageLink": "basicturret.png",

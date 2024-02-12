@@ -11,6 +11,8 @@ public class TowerTemplate {
     private double speed;
     private BulletTemplate bulletTemplate;
     private String BuildMenuList;
+    private String BulletCostResource;
+    private int BulletCostQuantity;
 
     public TowerTemplate(){}
     public TowerTemplate(String name,double width, double height, String costResource, int costQuantity, String imageLink,String type, double maxHealth,String BuildMenuList,double speed){
@@ -25,9 +27,11 @@ public class TowerTemplate {
         this.BuildMenuList = BuildMenuList;
         this.speed = speed;
     }
-    public void setupTurret(double range, BulletTemplate bulletTemplate){
+    public void setupTurret(double range, BulletTemplate bulletTemplate,String BulletCostResource, int bulletCostQuantity){
         this.range = range;
         this.bulletTemplate = bulletTemplate;
+        this.BulletCostResource = BulletCostResource;
+        this.BulletCostQuantity = bulletCostQuantity;
     }
 
     public String getName() {
@@ -90,5 +94,13 @@ public class TowerTemplate {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public int getBulletCostQuantity() {
+        return BulletCostQuantity;
+    }
+
+    public String getBulletCostResource() {
+        return BulletCostResource;
     }
 }

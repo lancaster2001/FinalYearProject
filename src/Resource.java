@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public class Resource {
     String id = String.valueOf(Math.random());
@@ -22,16 +21,13 @@ public class Resource {
         this.iconImageLink = iconImageLink;
         this.pose= pose;
     }
-    public void draw(Graphics g, double x, double y, int slotWidth , int slotHeight, AssetManager assetManagerInstance) {
-        int width = (int) (this.width * slotWidth);
-        int height = (int) (this.height * slotHeight);
-        int xToDraw = (int)((pose.getX()-x)*slotWidth);
-        int yToDraw =(int)((pose.getY()-y)*slotHeight);
-        Rectangle towerBox = new Rectangle(xToDraw,yToDraw, width, height);
-        g.drawImage(AssetManager.getInstance().getImage("Icons",iconImageLink), towerBox.x, towerBox.y, towerBox.width, towerBox.height, null);
+    public void draw(Graphics g, int x, int y, int slotWidth , int slotHeight, AssetManager assetManagerInstance) {
+        int width = (int)(this.width*slotWidth);
+        int height = (int)(this.height*slotHeight);
+        g.drawImage(AssetManager.getInstance().getImage("Icons",iconImageLink), x, y, width, height, null);
 
     }
-    public void move(double Theta, double distance) {
+    public void move(double distance,double Theta) {
         double targetX = (distance * Math.sin(Theta));
         double targetY = (distance * Math.sin(Theta-(Math.PI/2)));
         double x = pose.getX();
@@ -39,6 +35,15 @@ public class Resource {
         pose.setX(xtoset);
         pose.setY(pose.getY() + targetY);
         pose.setTheta(Theta);
+    }
+    public void move(double distance) {
+        double targetX = (distance * Math.sin(pose.getTheta()));
+        double targetY = (distance * Math.sin(pose.getTheta()-(Math.PI/2)));
+        double x = pose.getX();
+        double xtoset = x + targetX;
+        pose.setX(xtoset);
+        pose.setY(pose.getY() + targetY);
+        pose.setTheta(pose.getTheta());
     }
     public boolean add(){
         quantity+=1;
@@ -95,5 +100,12 @@ public class Resource {
 
     public double getWidth() {
         return width;
+    }
+    public void setTheta(double theta){
+        pose.setTheta(theta);
+    }
+
+    public void setPose(Pose pose) {
+        this.pose = pose;
     }
 }
