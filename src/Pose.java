@@ -36,10 +36,12 @@ public final class Pose {
     public void setPosition(Pose p) {
         this.setPosition(p.getX(), p.getY(), p.getTheta());
     }
-    public void setX(double x){
+
+    public void setX(double x) {
         this.x = x;
     }
-    public void setY(double y){
+
+    public void setY(double y) {
         this.y = y;
     }
 

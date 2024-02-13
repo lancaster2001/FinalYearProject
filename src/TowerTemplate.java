@@ -14,8 +14,10 @@ public class TowerTemplate {
     private String BulletCostResource;
     private int BulletCostQuantity;
 
-    public TowerTemplate(){}
-    public TowerTemplate(String name,double width, double height, String costResource, int costQuantity, String imageLink,String type, double maxHealth,String BuildMenuList,double speed){
+    public TowerTemplate() {
+    }
+
+    public TowerTemplate(String name, double width, double height, String costResource, int costQuantity, String imageLink, String type, double maxHealth, String BuildMenuList, double speed) {
         this.name = name;
         this.costQuantity = costQuantity;
         this.costResource = costResource;
@@ -27,7 +29,8 @@ public class TowerTemplate {
         this.BuildMenuList = BuildMenuList;
         this.speed = speed;
     }
-    public void setupTurret(double range, BulletTemplate bulletTemplate,String BulletCostResource, int bulletCostQuantity){
+
+    public void setupTurret(double range, BulletTemplate bulletTemplate, String BulletCostResource, int bulletCostQuantity) {
         this.range = range;
         this.bulletTemplate = bulletTemplate;
         this.BulletCostResource = BulletCostResource;
@@ -81,14 +84,16 @@ public class TowerTemplate {
     public double getMaxHealth() {
         return maxHealth;
     }
-    public void setImageLink(String imageLink){
+
+    public void setImageLink(String imageLink) {
         this.imageLink = imageLink;
     }
 
     public String getBuildMenuList() {
         return BuildMenuList;
     }
-    public void setName(String name){
+
+    public void setName(String name) {
         this.name = name;
     }
 

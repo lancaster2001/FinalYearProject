@@ -11,7 +11,7 @@ public class EnemyTemplate {
     private BulletTemplate bullet;
 
 
-    EnemyTemplate(String name,double width, double height, double damage, double maxHealth, double moveSpeed, String imageLink,double range, double cooldown, BulletTemplate bullet){
+    EnemyTemplate(String name, double width, double height, double damage, double maxHealth, double moveSpeed, String imageLink, double range, double cooldown, BulletTemplate bullet) {
         this.name = name;
         this.width = width;
         this.height = height;

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 public class GameUIResourceMenu {
     //singleton-------------------------------------------------------------------------
     private static GameUIResourceMenu instance = new GameUIResourceMenu();
+
     private GameUIResourceMenu() {
         //loadBuildMenu();
     }
@@ -14,25 +15,29 @@ public class GameUIResourceMenu {
         }
         return instance;
     }
+
     //----------------------------------------------------------------------------------------
     private final AssetManager assetManagerInstance = AssetManager.getInstance();
     private boolean resourceMenuState = true;
     private int sizeOfTitle = gameConstants.ResourcesMenuTitleSize;
     private int sizeOfResourceName = gameConstants.ResourcesMenuSizeOfResourceName;
     private Rectangle resourceMenuBackground = new Rectangle(gameConstants.resourcesMenuX, gameConstants.resourcesMenuY, gameConstants.resourcesMenuWidth, gameConstants.resourcesMenuHeight);
-    private Rectangle resourceMenuButton = new Rectangle(gameConstants.resourcesMenuX-(gameConstants.resourcesMenuWidth/10), gameConstants.resourcesMenuY+(gameConstants.resourcesMenuHeight/10), gameConstants.resourcesMenuWidth/10, gameConstants.resourcesMenuHeight/7);
+    private Rectangle resourceMenuButton = new Rectangle(gameConstants.resourcesMenuX - (gameConstants.resourcesMenuWidth / 10), gameConstants.resourcesMenuY + (gameConstants.resourcesMenuHeight / 10), gameConstants.resourcesMenuWidth / 10, gameConstants.resourcesMenuHeight / 7);
+
     public void drawResourcesMenu(Graphics g) {
-        if(resourceMenuState) {
+        if (resourceMenuState) {
             drawResourcesMenuBackground(g);
             drawResourcesMenuTitle(g);
             drawResourcesMenuResources(g);
         }
         drawResourceMenuButton(g);
     }
+
     private void drawResourcesMenuBackground(Graphics g) {
         g.setColor(gameConstants.resourceMenuBackgroundColour);
-        g.drawImage(assetManagerInstance.getImage("Menus","resourceMenuBackground.png"),resourceMenuBackground.x, resourceMenuBackground.y, resourceMenuBackground.width, resourceMenuBackground.height,null);
+        g.drawImage(assetManagerInstance.getImage("Menus", "resourceMenuBackground.png"), resourceMenuBackground.x, resourceMenuBackground.y, resourceMenuBackground.width, resourceMenuBackground.height, null);
     }
+
     private void drawResourcesMenuTitle(Graphics g) {
         g.setColor(gameConstants.resourceMenuTitleColour);
         g.setFont(new Font("Arial", Font.BOLD, sizeOfTitle));
@@ -48,17 +53,19 @@ public class GameUIResourceMenu {
             int y = resourceMenuBackground.y + sizeOfTitle + (sizeOfResourceName * (index));
             int width = sizeOfResourceName;
             g.setFont(new Font("Arial", Font.BOLD, sizeOfResourceName));
-            g.drawImage(assetManagerInstance.getImage("Icons",currentResource.getIconImageLink()), resourceMenuBackground.x, y, width, width, null);
-            g.drawString(currentResource.getName() + ": " + currentResource.getQuantity(), resourceMenuBackground.x + width, y+width);
+            g.drawImage(assetManagerInstance.getImage("Icons", currentResource.getIconImageLink()), resourceMenuBackground.x, y, width, width, null);
+            g.drawString(currentResource.getName() + ": " + currentResource.getQuantity(), resourceMenuBackground.x + width, y + width);
         }
     }
-    private void drawResourceMenuButton(Graphics g){
+
+    private void drawResourceMenuButton(Graphics g) {
         g.setColor(gameConstants.buildMenuBackgroundColour);
-        g.drawImage(assetManagerInstance.getImage("Menus","resourceMenuButton.png"),resourceMenuButton.x, resourceMenuButton.y, resourceMenuButton.width, resourceMenuButton.height,null);
+        g.drawImage(assetManagerInstance.getImage("Menus", "resourceMenuButton.png"), resourceMenuButton.x, resourceMenuButton.y, resourceMenuButton.width, resourceMenuButton.height, null);
     }
+
     public boolean takeInput(Point p) {
         if (resourceMenuButton.contains(p.x, p.y)) {
-            resourceMenuState= !resourceMenuState;
+            resourceMenuState = !resourceMenuState;
             if (resourceMenuState) {
                 resourceMenuButton.setLocation(resourceMenuButton.x - resourceMenuBackground.width, resourceMenuButton.y);
             } else {

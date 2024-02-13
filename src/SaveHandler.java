@@ -2,7 +2,8 @@ public class SaveHandler {
     //singleton-------------------------------------------------------------------------
     private static SaveHandler instance = new SaveHandler();
 
-    private SaveHandler() {}
+    private SaveHandler() {
+    }
 
     public static SaveHandler getInstance() {
         if (instance == null) {
@@ -10,6 +11,7 @@ public class SaveHandler {
         }
         return instance;
     }
+
     //----------------------------------------------------------------------------------------
     private String saveSlot = "save1";
 

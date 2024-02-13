@@ -1,4 +1,5 @@
 import java.awt.*;
+
 public interface gameConstants {
 
     //FILE LOCATIONS----------------------------------------------------------------------------------------
@@ -22,14 +23,20 @@ public interface gameConstants {
     char pauseButton = ' ';
     //CAMERA-------------------------------------------------------------------------------------------------
     int defaultZoom = 5;
-    int[] defaultCameraCoordinates = {2,2};
+    int[] defaultCameraCoordinates = {2, 2};
     //MAP-------------------------------------------------------------------------------------------------------
     int mapWidth = 100;
     int mapHeight = 100;
     int mapSize = mapWidth * mapHeight;// 5x5 map should be 5*5
+
     //ENUMS--------------------------------------------------------------------------------------------------
-    enum STATE {GAME, STARTMENU, GAMEOVER};
-    enum DIRECTION {UP, DOWN, LEFT, RIGHT, NULL};
+    enum STATE {GAME, STARTMENU, GAMEOVER}
+
+    ;
+
+    enum DIRECTION {UP, DOWN, LEFT, RIGHT, NULL}
+
+    ;
     //Game Settings-------------------------------------------------------------------------------------------
     int gameTickRate = 25;//number of milliseconds per tick
     //UI------------------------------------------------------------------------------------------------------
@@ -44,12 +51,12 @@ public interface gameConstants {
     int buildMenuWidth = screenWidth;
     int buildMenuHeight = screenHeight / 7;
     int buildMenux = 0;
-    int buildMenuy = screenHeight-buildMenuHeight;
+    int buildMenuy = screenHeight - buildMenuHeight;
     Color buildMenuBackgroundColour = Color.white;
-    int numberOfElementsInBuildMenu = buildMenuWidth/((buildMenuHeight/10)*12);
-    int spaceBetweenBuildMenuElements = (buildMenuHeight/10);
-    int buildMenuElementWidth = ((buildMenuHeight/10)*8);
-    int buildMenuElementHeight = ((buildMenuHeight/10)*8);
+    int numberOfElementsInBuildMenu = buildMenuWidth / ((buildMenuHeight / 10) * 12);
+    int spaceBetweenBuildMenuElements = (buildMenuHeight / 10);
+    int buildMenuElementWidth = ((buildMenuHeight / 10) * 8);
+    int buildMenuElementHeight = ((buildMenuHeight / 10) * 8);
     //MAIN MENU----------------------------------------------------------------------------------------------
     Color mainMenuBackgroundColor = Color.white;
 }

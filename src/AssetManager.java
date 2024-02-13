@@ -3,6 +3,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
+
 public class AssetManager {
     //singleton-------------------------------------------------------------------------
     private static AssetManager instance = new AssetManager();
@@ -25,36 +26,39 @@ public class AssetManager {
     private final ArrayList<BufferedImage> ImagesArray = new ArrayList<BufferedImage>();
     private final String assetsPath = gameConstants.assetsPath;
     private final String errorImagePath = gameConstants.errorImagePath;
-    public BufferedImage getImage(String type, String image){
-        return getImage(assetsPath+type+"/"+image);
+
+    public BufferedImage getImage(String type, String image) {
+        return getImage(assetsPath + type + "/" + image);
     }
-    public ArrayList<String> checkForVariants(String type,String givenImageLink){
+
+    public ArrayList<String> checkForVariants(String type, String givenImageLink) {
         boolean check = false;
         ArrayList<String> returnList = new ArrayList<>();
-        String compareString = assetsPath+type+"/"+(givenImageLink.replace(".png","1.png"));
-        for(String currentLink:ImageLinksArray){
-            if(compareString.equalsIgnoreCase(currentLink)){
+        String compareString = assetsPath + type + "/" + (givenImageLink.replace(".png", "1.png"));
+        for (String currentLink : ImageLinksArray) {
+            if (compareString.equalsIgnoreCase(currentLink)) {
                 check = true;
             }
         }
-        if(check){
-            return getVariants(assetsPath+type+"/"+givenImageLink);
-        }else{
+        if (check) {
+            return getVariants(assetsPath + type + "/" + givenImageLink);
+        } else {
             returnList.add(givenImageLink);
             return returnList;
         }
     }
-    private ArrayList<String> getVariants(String givenImageLink){
+
+    private ArrayList<String> getVariants(String givenImageLink) {
         ArrayList<String> returnList = new ArrayList<>();
         boolean check = true;
         int index = 1;
-        while(check) {
+        while (check) {
             check = false;
             for (String currentLink : ImageLinksArray) {
-                if (givenImageLink.replace(".png", index+".png").equalsIgnoreCase(currentLink)) {
+                if (givenImageLink.replace(".png", index + ".png").equalsIgnoreCase(currentLink)) {
                     check = true;
-                    String compareString2 = currentLink.substring(0,currentLink.lastIndexOf("/"));
-                    returnList.add(currentLink.replace(compareString2+"/",""));
+                    String compareString2 = currentLink.substring(0, currentLink.lastIndexOf("/"));
+                    returnList.add(currentLink.replace(compareString2 + "/", ""));
                 }
             }
             index += 1;
@@ -74,7 +78,7 @@ public class AssetManager {
                             add = imageLink;
                             desiredImage = ImageIO.read(new File(imageLink));
                             ImagesArray.add(desiredImage);
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             return getImage(errorImagePath);
                         }
                     } else {
@@ -95,7 +99,7 @@ public class AssetManager {
                 throw new RuntimeException(e);
             }
         }
-        if(!add.isEmpty()){
+        if (!add.isEmpty()) {
             ImageLinksArray.add(add);
         }
         return desiredImage;
@@ -113,12 +117,13 @@ public class AssetManager {
         if (directories != null) {
             for (String currenFolder : directories) {
                 String theLink = dirLink + currenFolder;
-                for(String currentImage: getImagesInFolder(theLink)) {
-                    getImage(theLink+"/"+currentImage);
+                for (String currentImage : getImagesInFolder(theLink)) {
+                    getImage(theLink + "/" + currentImage);
                 }
             }
         }
     }
+
     public String[] getImagesInFolder(String theLink) {
         File dir = new File(theLink);
         String[] files = dir.list(new FilenameFilter() {
@@ -128,6 +133,7 @@ public class AssetManager {
         });
         return files;
     }
+
     public String[] getJsonsInFolder(String theLink) {
         File dir = new File(theLink);
         String[] files = dir.list(new FilenameFilter() {

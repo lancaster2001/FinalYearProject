@@ -66,20 +66,21 @@ public class TowerManager {
             template.setType(holder.substring(holder.lastIndexOf("/") + 1));
             template.setName(link.substring(link.lastIndexOf("/") + 1, link.length() - 5));
             return template;
-        } catch(IOException | JSONException e){
-        e.printStackTrace();
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
         }
         return null;
     }
-    public TowerTemplate loadTemplateFromJsonObject (JSONObject jsonObject){
+
+    public TowerTemplate loadTemplateFromJsonObject(JSONObject jsonObject) {
         TowerTemplate template = new TowerTemplate();
         String type;
         String name;
         try {
             type = jsonObject.getString("Type");
             name = jsonObject.getString("Name");
-        }catch (Exception e){
-            name =  "";
+        } catch (Exception e) {
+            name = "";
             type = "";
         }
         String BuildMenuList;
@@ -92,7 +93,7 @@ public class TowerManager {
             double speed;
             try {
                 speed = jsonObject.getDouble("Speed");
-            }catch (Exception e){
+            } catch (Exception e) {
                 speed = 0;
             }
             String costResource = jsonObject.getString("CostResource");
@@ -101,43 +102,47 @@ public class TowerManager {
             double height = jsonObject.getDouble("Height");
             double maxhealth = jsonObject.getDouble("MaxHealth");
             String imageLink = jsonObject.getString("ImageLink");
-            template = new TowerTemplate(name, width, height, costResource, costQuantity, imageLink, type, maxhealth, BuildMenuList,speed);
+            template = new TowerTemplate(name, width, height, costResource, costQuantity, imageLink, type, maxhealth, BuildMenuList, speed);
             if (type.equals("Turret")) {
                 double range = jsonObject.getDouble("Range");
                 int BulletCostQuantity = jsonObject.getInt("BulletCostQuantity");
                 String BulletCostResource = jsonObject.getString("BulletCostResource");
-                JSONArray bullet = jsonObject.getJSONArray("Bullet");template.setupTurret(range, readBulletTemplate(bullet),BulletCostResource,BulletCostQuantity);
+                JSONArray bullet = jsonObject.getJSONArray("Bullet");
+                template.setupTurret(range, readBulletTemplate(bullet), BulletCostResource, BulletCostQuantity);
             }
             return template;
-        } catch(JSONException e){
+        } catch (JSONException e) {
             e.printStackTrace();
         }
         return template;
     }
+
     private BulletTemplate readBulletTemplate(JSONArray bullet) {
         // Replace "path/to/your/file.json" with the actual path to your JSON file
         BulletTemplate template = new BulletTemplate();
 
         Iterator<Object> iterator = bullet.iterator();
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             JSONObject object = (JSONObject) iterator.next();
             double movespeed = object.getDouble("MoveSpeed");
             double damage = object.getDouble("Damage");
             double width = object.getDouble("Width");
             double height = object.getDouble("Height");
             String imageLink = object.getString("ImageLink");
-            template = new BulletTemplate(movespeed, damage ,width,height, imageLink);
+            template = new BulletTemplate(movespeed, damage, width, height, imageLink);
 
         }
         return template;
     }
+
     public ArrayList<TowerTemplate> getTowerArrayList() {
         return towerArrayList;
     }
-    public TowerTemplate getTemplate(String name){
-        for(TowerTemplate template: towerArrayList){
-            if (template.getName().equalsIgnoreCase(name)){
-                return  template;
+
+    public TowerTemplate getTemplate(String name) {
+        for (TowerTemplate template : towerArrayList) {
+            if (template.getName().equalsIgnoreCase(name)) {
+                return template;
             }
         }
         return new TowerTemplate();

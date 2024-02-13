@@ -13,20 +13,26 @@ import java.util.Iterator;
 public class ResourceManager {
     //singleton------------------------------------------------------------------------
     private static ResourceManager instance = new ResourceManager();
-    public static ResourceManager getInstance(){
+
+    public static ResourceManager getInstance() {
         if (instance == null) {
             instance = new ResourceManager();
         }
         return instance;
     }
-    private ResourceManager(){setup();}
+
+    private ResourceManager() {
+        setup();
+    }
+
     //----------------------------------------------------------------------------------
     private HashMap<String, Resource> inventory = new HashMap<String, Resource>();
     ArrayList<Resource> listToDraw = new ArrayList<>();
-    String tilePath ="src/Assets/Tiles/";
+    String tilePath = "src/Assets/Tiles/";
     String iconPath = "src/Assets/Icons/";
     String resourcesJsonPath = "src/Resources/Resources.json";
-    private void setup(){
+
+    private void setup() {
         String filePath = resourcesJsonPath;
 
         try (FileReader reader = new FileReader(filePath)) {
@@ -37,7 +43,7 @@ public class ResourceManager {
             // Accessing values from the JSON object
             JSONArray resources = jsonObject.getJSONArray("Resources");
             Iterator<Object> iterator = resources.iterator();
-            while(iterator.hasNext()) {
+            while (iterator.hasNext()) {
                 JSONObject object = (JSONObject) iterator.next();
                 String name = object.getString("Name").toLowerCase();
                 inventory.put(name.toLowerCase(), getResource(name));
@@ -46,43 +52,49 @@ public class ResourceManager {
             e.printStackTrace();
         }
     }
-    public Resource getResource(String name){
-        return new Resource(name, "ore-"+name+".png",name+".png");
+
+    public Resource getResource(String name) {
+        return new Resource(name, "ore-" + name + ".png", name + ".png");
     }
-    public Resource getResource(String name, Pose pose){
-        return new Resource(name, "ore-"+name+".png",name+".png", pose);
+
+    public Resource getResource(String name, Pose pose) {
+        return new Resource(name, "ore-" + name + ".png", name + ".png", pose);
     }
-    public Resource queryInventory(String query){
+
+    public Resource queryInventory(String query) {
         return inventory.get(query.toLowerCase());
     }
-    public ArrayList<Resource> getInventoryArray(){
+
+    public ArrayList<Resource> getInventoryArray() {
         ArrayList<Resource> returnArray = new ArrayList<Resource>();
         ArrayList<Resource> inventoryArray = new ArrayList<Resource>();
         inventoryArray.addAll(inventory.values());
-        for(Resource index: inventoryArray){
-            if (index.getQuantity()>0){
+        for (Resource index : inventoryArray) {
+            if (index.getQuantity() > 0) {
                 returnArray.add(index);
             }
         }
         return returnArray;
     }
-    public void addToDrawList(Resource resource){
+
+    public void addToDrawList(Resource resource) {
         boolean check = true;
-        for(Resource resource1:listToDraw){
-            if(resource1.getId().equals(resource.getId())){
+        for (Resource resource1 : listToDraw) {
+            if (resource1.getId().equals(resource.getId())) {
                 check = false;
             }
         }
-        if(check){
+        if (check) {
             listToDraw.add(resource);
         }
     }
-    public void draw(Graphics g, AssetManager assetManagerInstance){
-        for(Resource resource:listToDraw){
+
+    public void draw(Graphics g, AssetManager assetManagerInstance) {
+        for (Resource resource : listToDraw) {
             int[] x = Camera.getInstance().getOnScreenXandWidth(resource.getPose().getX());
             int[] y = Camera.getInstance().getOnScreenYandHeight(resource.getPose().getY());
 
-            resource.draw(g,x[0], y[0],x[1],y[1],assetManagerInstance);
+            resource.draw(g, x[0], y[0], x[1], y[1], assetManagerInstance);
         }
         listToDraw.clear();
     }

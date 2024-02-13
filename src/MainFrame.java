@@ -5,21 +5,27 @@ import java.awt.event.*;
 public class MainFrame extends JFrame implements KeyListener, MouseWheelListener, MouseListener {
     //singleton-------------------------------------------------------------------------
     private static MainFrame instance = new MainFrame();
-    private MainFrame(){
+
+    private MainFrame() {
         setup();
     }
+
     public static MainFrame getInstance() {
         if (instance == null) {
             instance = new MainFrame();
         }
         return instance;
     }
+
     //----------------------------------------------------------------------------------------
     private final MainPanel PanelInstance = MainPanel.getInstance();
-    private final JComponent draw = new JComponent(){};
-    public MainPanel getPanelInstance(){
+    private final JComponent draw = new JComponent() {
+    };
+
+    public MainPanel getPanelInstance() {
         return PanelInstance;
     }
+
     private void setup() {
         this.setTitle("Resource Management and Tower Defence Game");
         this.setResizable(false);
@@ -38,37 +44,47 @@ public class MainFrame extends JFrame implements KeyListener, MouseWheelListener
         this.add(PanelInstance);
         this.setVisible(true);
     }
+
     @Override
-    public void mouseClicked(MouseEvent e) {}
+    public void mouseClicked(MouseEvent e) {
+    }
+
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
         InputHandler.getInstance().userInput(e);
     }
+
     @Override
     public void keyTyped(KeyEvent e) {
         InputHandler.getInstance().userInput(e);
     }
+
     @Override
     public void keyPressed(KeyEvent e) {
 
     }
+
     @Override
     public void keyReleased(KeyEvent e) {
 
     }
+
     @Override
     public void mousePressed(MouseEvent e) {
         InputHandler.getInstance().userInput(e);
 
     }
+
     @Override
     public void mouseReleased(MouseEvent e) {
 
     }
+
     @Override
     public void mouseEntered(MouseEvent e) {
 
     }
+
     @Override
     public void mouseExited(MouseEvent e) {
 

@@ -6,6 +6,6 @@
   "Height": 1.0,
   "CostResource": "Rock",
   "CostQuantity": 5,
-  "Speed": 1.0,
+  "Speed": 5.0,
   "ImageLink": "pneumatic-drill.png"
 }
