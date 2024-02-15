@@ -25,6 +25,7 @@ public class Bullet {
         this.height = template.height;
         this.imageLink = template.imageLink;
         this.type = type;
+        this.range = range;
     }
 
     protected boolean tick(double tickMultiplier) {

@@ -32,17 +32,24 @@ public class BaseDrillTower extends BaseTower {
             boolean conveyerCheck = false;
             Map mapInstance = GameState.getInstance().getMapInstance();
             MapSlot slotToCheck = null;
-            if (pose.getTheta() == 0) {
-                slotToCheck = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX(), pose.getY() - 1, 0.5, 0.5)).getFirst();
-            } else if (pose.getTheta() == Math.PI / 2) {
-                slotToCheck = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX() + 1, pose.getY(), 0.5, 0.5)).getFirst();
-            } else if (pose.getTheta() == Math.PI) {
-                slotToCheck = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX(), pose.getY() + 1, 0.5, 0.5)).getFirst();
-            } else if (pose.getTheta() == Math.PI * 1.5) {
-                slotToCheck = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX() - 1, pose.getY(), 0.5, 0.5)).getFirst();
-            }
+
+            slotToCheck = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX(), pose.getY() - 1, 0.5, 0.5)).getFirst();
             if (slotToCheck != null) {
-                outputResource(inventory.getFirst());
+                if(outputResource(inventory.getFirst())){
+
+                }else{
+                    slotToCheck = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX() + 1, pose.getY(), 0.5, 0.5)).getFirst();
+                    if(outputResource(inventory.getFirst())){
+
+                    }else{
+                        slotToCheck = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX(), pose.getY() + 1, 0.5, 0.5)).getFirst();
+                        if(outputResource(inventory.getFirst())){
+
+                        }else{
+                            slotToCheck = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX() - 1, pose.getY(), 0.5, 0.5)).getFirst();
+                        }
+                    }
+                }
             }
         }
     }

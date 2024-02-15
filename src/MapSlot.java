@@ -6,6 +6,7 @@ public class MapSlot {
     private int x = -1;
     private int y = -1;
     private BaseTower tower;
+    private BaseTower tempTower;
     private BaseTile tile;
 
     public MapSlot(int x, int y, TileTemplate tile) {
@@ -61,33 +62,26 @@ public class MapSlot {
         if (tower != null) {
             tower.draw(g, x, y, slotWidth, slotHeight, assetManagerInstance);
         }
+        if (tempTower != null) {
+            tempTower.draw(g, x, y, slotWidth, slotHeight, assetManagerInstance);
+        }
+
         g.setColor(Color.BLACK);
         //g.drawRect(x, y, slotWidth, slotHeight);
         g.setColor(Color.red);
         g.setFont(new Font("Arial", Font.BOLD, 10));
-        //g.drawString(this.x+", "+this.y, x, y + 10);
+        g.drawString(this.x+", "+this.y, x, y + 10);
     }
 
     public boolean onScreenCheck(Camera cameraInstance) {
         return cameraInstance.isOnCamera(x, y);
     }
 
-    public void setTower(TowerTemplate newTower, double theta) {
-        if (ResourceManager.getInstance().queryInventory(newTower.getCostResource()).remove(newTower.getCostQuantity())) {
-            if (newTower.getType().equals("Turret")) {
-                tower = new BaseTurretTower(new Pose(x, y, theta), newTower);
-            } else if (newTower.getType().equals("Drill")) {
-                tower = new BaseDrillTower(new Pose(x, y, theta), newTower);
-            } else if (newTower.getType().equals("Conveyors")) {
-                tower = new conveyor(new Pose(x, y, theta), newTower);
-            } else if (newTower.getType().equals("Router")) {
-                tower = new Router(new Pose(x, y, theta), newTower);
-            }
-        }
-    }
-
     public void clearTower() {
         tower = null;
+    }
+    public void clearTempTower() {
+        tempTower = null;
     }
 
     public JSONObject getJsonObject() {
@@ -103,6 +97,30 @@ public class MapSlot {
         }
         json.put("Tile", tile.getJsonObject());
         return json;
+    }
+    public void setTower(TowerTemplate newTower, double theta) {
+        tower = getTowerFromTemplate(newTower,theta);
+    }
+    public void setTempTower(TowerTemplate newTower, double theta) {
+        tempTower = getTowerFromTemplate(newTower,theta);
+    }
+    private BaseTower getTowerFromTemplate(TowerTemplate newTower, double theta) {
+        BaseTower returnTower;
+        if (ResourceManager.getInstance().queryInventory(newTower.getCostResource()).remove(newTower.getCostQuantity())) {
+            if (newTower.getType().equals("Turret")) {
+                returnTower = new BaseTurretTower(new Pose(x, y, theta), newTower);
+            } else if (newTower.getType().equals("Drill")) {
+                returnTower = new BaseDrillTower(new Pose(x, y, theta), newTower);
+            } else if (newTower.getType().equals("Conveyors")) {
+                returnTower = new conveyor(new Pose(x, y, theta), newTower);
+            } else if (newTower.getType().equals("Router")) {
+                returnTower = new Router(new Pose(x, y, theta), newTower);
+            }else{
+                return null;
+            }
+            return returnTower;
+        }
+        return null;
     }
 
     public void setTower(BaseTower newTower) {

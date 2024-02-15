@@ -121,4 +121,7 @@ public class Resource {
     public void setPose(Pose pose) {
         this.pose = pose;
     }
+    public void setQuantity(int quantity){
+        this.quantity = quantity;
+    }
 }

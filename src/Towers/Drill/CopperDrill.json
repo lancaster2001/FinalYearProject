@@ -1,10 +1,10 @@
 {
   "Type": "Drill",
-  "Name": "Iron Drill",
+  "Name": "Copper Drill",
   "MaxHealth": 10.0,
   "Width": 1.0,
   "Height": 1.0,
-  "CostResource": "Rock",
+  "CostResource": "copper",
   "CostQuantity": 5,
   "Speed": 1.5,
   "ImageLink": "plasma-bore.png"

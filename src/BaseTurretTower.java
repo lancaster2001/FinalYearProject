@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -12,8 +13,11 @@ public class BaseTurretTower extends BaseTower {
     private int BulletCostQuantity;
     private double cooldown;
     private BulletTemplate bullet;
-    private double targetX;
-    private double targetY;
+    BaseEnemy previousEnemy;
+    private double targetPreviousX = -1;
+    private double targetPreviousY=-1;
+    private Point2D.Double predictedEnemyPoint = new Point2D.Double(-1,-1);
+
 
     public BaseTurretTower(Pose pose, TowerTemplate template) {
         super(pose, template);
@@ -28,18 +32,36 @@ public class BaseTurretTower extends BaseTower {
         }
     }
 
-    private boolean checkForEnemies() {
-        ArrayList<BaseEnemy> enemyList = enemyManagerInstance.getEnemyList();
+    private boolean checkForEnemies(double tickMultiplier) {
+         ArrayList<BaseEnemy> enemyList = enemyManagerInstance.getEnemyList();
         for (BaseEnemy enemy : enemyList) {
             if (range >= calculateDistantToTarget(enemy.getPose().getX(), enemy.getPose().getY())) {
                 double x = enemy.getPose().getX() + (enemy.getWidth() / 2);
                 double y = enemy.getPose().getY() + (enemy.getHeight() / 2);
+
+                if ((targetPreviousY!=-1)&&(targetPreviousX!=-1)){
+                    double enemySpeedx = enemy.getPose().getX()-targetPreviousX;
+                    double enemySpeedy = enemy.getPose().getY()-targetPreviousY;
+                    if((enemySpeedx!= 0)&&(enemySpeedy!=0)) {
+                        double enemySpeedBase = Math.pow(Math.pow(enemySpeedx, 2) + Math.pow(enemySpeedy, 2), 0.5);
+                        double distanceToTarget = calculateDistantToTarget(enemy.getPose().getX(), enemy.getPose().getY());
+                        double predictedTimeBeforeImpact = distanceToTarget / (enemySpeedBase / tickMultiplier);
+                        x = enemy.getPose().getX() + (enemySpeedx * predictedTimeBeforeImpact) + (enemy.getWidth() / 2);
+                        y = enemy.getPose().getY() + (enemySpeedy * predictedTimeBeforeImpact) + (enemy.getHeight() / 2);
+                        predictedEnemyPoint.x = x;
+                        predictedEnemyPoint.y = y;
+                    }
+                }
                 calculateDirectionToTarget(x, y);
                 shoot();
+                targetPreviousX = enemy.getPose().getX();
+                targetPreviousY = enemy.getPose().getY();
+                previousEnemy = enemy;
                 return true;
             }
         }
-        pose.setTheta(0);
+
+        clearValues();
         return false;
     }
 
@@ -53,13 +75,18 @@ public class BaseTurretTower extends BaseTower {
     private double calculateDistantToTarget(double x, double y) {
         return (Math.sqrt((Math.pow(pose.getX() - x, 2)) + (Math.pow(pose.getY() - y, 2))));
     }
+    private void clearValues(){
+        pose.setTheta(0);
+        targetPreviousX = -1;
+        targetPreviousY = -1;
+    }
 
     public void tick(double tickMultiplier) {
         shootAccumulator += tickMultiplier;
         if (shootAccumulator >= cooldown) {
             shootAccumulator = cooldown;
         }
-        if (checkForEnemies()) {
+        if (checkForEnemies(tickMultiplier)) {
             shoot();
         }
     }
@@ -97,8 +124,14 @@ public class BaseTurretTower extends BaseTower {
         AffineTransform trans = new AffineTransform();
         trans.rotate(rotationRequired, (x + (width / 2)), (y + (height / 2))); // the points to rotate around (the center in my example, your left side for your problem)
         g2d.transform(trans);
-        g2d.drawImage(image, x, y, width, height, null);  // the actual location of the sprite
+        g2d.drawImage(image, x, y, width, height, null);// the actual location of the sprite
         g2d.setTransform(backup); // restore previous transform
         drawHealthBar(g, towerBox);
+        if((predictedEnemyPoint.x != -1)&&(predictedEnemyPoint.y != -1)) {
+            g.setColor(Color.red);
+            g.setFont(new Font("Arial", Font.BOLD, 10));
+            g.drawString(predictedEnemyPoint.x + "", x, y + 20);
+            g.drawString(predictedEnemyPoint.y + "", x, y + 30);
+        }
     }
 }

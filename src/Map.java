@@ -103,7 +103,7 @@ public final class Map {
             e.fillInStackTrace();
         }
 
-        return saveLink;
+        return fileName;
     }
 
     public void clearTower(int x, int y) {
@@ -111,7 +111,17 @@ public final class Map {
     }
 
     public void setTower(TowerTemplate newTower, Pose pose) {
-        getSlotFromCoord((int) pose.getX(), (int) pose.getY()).setTower(newTower, pose.getTheta());
+        if ((newTower!=null)&&(pose!=null)){
+            getSlotFromCoord((int) pose.getX(), (int) pose.getY()).setTower(newTower, pose.getTheta());
+        }
+    }
+    public void setTempTower(TowerTemplate newTower, Pose pose) {
+        if ((newTower!=null)&&(pose!=null)) {
+            getSlotFromCoord((int) pose.getX(), (int) pose.getY()).setTempTower(newTower, pose.getTheta());
+        }
+    }
+    public void clearTempTower(int x, int y){
+        getSlotFromCoord(x,y).clearTempTower();
     }
 
     public void setTower(BaseTower newTower, int x, int y) {

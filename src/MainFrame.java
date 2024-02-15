@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class MainFrame extends JFrame implements KeyListener, MouseWheelListener, MouseListener {
+public class MainFrame extends JFrame implements KeyListener, MouseWheelListener, MouseListener,MouseMotionListener {
     //singleton-------------------------------------------------------------------------
     private static MainFrame instance = new MainFrame();
 
@@ -39,6 +39,7 @@ public class MainFrame extends JFrame implements KeyListener, MouseWheelListener
         addKeyListener(this);
         addMouseWheelListener(this);
         addMouseListener(this);
+        addMouseMotionListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
         this.add(PanelInstance);
@@ -88,5 +89,15 @@ public class MainFrame extends JFrame implements KeyListener, MouseWheelListener
     @Override
     public void mouseExited(MouseEvent e) {
 
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        InputHandler.getInstance().mouseMoved(e);
     }
 }

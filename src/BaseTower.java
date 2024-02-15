@@ -157,6 +157,8 @@ public abstract class BaseTower {
             }
             index += 1;
         }
+        //todo change this to start at a different direction each time it outputs a resource
+        //todo make this applicable for all output types
         if (existanceCheck) {
             currentTower = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX(), pose.getY() - 1, 0.5, 0.5)).getFirst().getTower();
             if (currentTower != null) {

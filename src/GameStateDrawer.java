@@ -20,14 +20,26 @@ public class GameStateDrawer {
     private final GameStateUI gameStateUIInstance = GameStateUI.getInstance();
     private final EnemyManager enemyManagerInstance = EnemyManager.getInstance();
     private final ProjectileManager projectileManagerInstance = ProjectileManager.getInstance();
+    private Point currentMouseLocation;
 
     //private final Map mapInstance = GameState.getInstance().getMapInstance();
     public void draw(Graphics g) {
+        //GameStateInputHandler.getInstance().changeMousePosition();
         cameraInstance.draw(g);
         ResourceManager.getInstance().draw(g, AssetManager.getInstance());
         enemyManagerInstance.drawEnemies(g);
         projectileManagerInstance.draw(g, cameraInstance, assetManagerInstance);
         gameStateUIInstance.drawUI(g);
+
+    }
+    private void drawTowerBlueprint(Graphics g){
+        int[] slot = cameraInstance.slotOnScreen(currentMouseLocation);
+        MapSlot clickedSlot = cameraInstance.getMapslot(slot[0], slot[1]);
+
+
+    }
+    public void setCurrentMouseLocation(Point p){
+        currentMouseLocation = p;
 
     }
 }

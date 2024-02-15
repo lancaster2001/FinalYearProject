@@ -10,7 +10,7 @@
   "BulletCostQuantity": 1,
   "CostResource": "copper",
   "CostQuantity": 5,
-  "ImageLink": "basicturret.png",
+  "ImageLink": "advancedturret.png",
   "Bullet":[
     {"MoveSpeed": 8,
     "Damage": 3,

@@ -5,8 +5,12 @@ import org.json.JSONTokener;
 
 import java.awt.*;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -24,9 +28,8 @@ public class ResourceManager {
     private ResourceManager() {
         setup();
     }
-
     //----------------------------------------------------------------------------------
-    private HashMap<String, Resource> inventory = new HashMap<String, Resource>();
+    private HashMap<String, Resource> inventory = new HashMap<>();
     ArrayList<Resource> listToDraw = new ArrayList<>();
     String tilePath = "src/Assets/Tiles/";
     String iconPath = "src/Assets/Icons/";
@@ -97,5 +100,20 @@ public class ResourceManager {
             resource.draw(g, x[0], y[0], x[1], y[1], assetManagerInstance);
         }
         listToDraw.clear();
+    }
+    public JSONObject save(){
+        JSONObject json = new JSONObject();
+        Collection<Resource> inventoryList = inventory.values();
+        for (Resource resource : inventoryList) {
+            json.put(resource.getName(),resource.getQuantity());
+        }
+        return json;
+    }
+    public void load(JSONObject jsonObject){
+        Collection<Resource> inventoryList = inventory.values();
+        for (Resource resource : inventoryList) {
+            inventory.get(resource.getName()).setQuantity(jsonObject.getInt(resource.getName()));
+
+        }
     }
 }

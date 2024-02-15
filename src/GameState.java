@@ -17,10 +17,8 @@ public class GameState {
     private GameState() {
         TowerManager.getInstance();
         BaseTower playerTower = BaseBaseTower.getInstance();
-        mapInstance = getMapInstance();
-        //mapInstance.setTower(playerTower,(int)playerTower.getPose().getX(),(int)playerTower.getPose().getY());
-        resourceManagerInstance.queryInventory("Rock").add(20);
-        getMapInstance();
+        resourceManagerInstance.queryInventory("Rock").add(50);
+         SaveHandler.getInstance().loadSave();
     }
 
     //----------------------------------------------------------------------------------
@@ -32,7 +30,8 @@ public class GameState {
     private final EnemyManager enemyManagerInstance = EnemyManager.getInstance();
     private final ProjectileManager projectileManagerInstance = ProjectileManager.getInstance();
     private final ResourceManager resourceManagerInstance = ResourceManager.getInstance();
-    private Map mapInstance = getMapInstance();
+    private final SaveHandler saveHandlerInstance = SaveHandler.getInstance();
+    private Map mapInstance;
     public boolean paused = false;
 
     int fps = 0;
@@ -45,12 +44,11 @@ public class GameState {
         tickLoop();
         actLoop();
         screenRefresher();
+        saveLoop();
     }
 
     private void actLoop() {
         Timer actTimer = new Timer();
-        //mapInstance.act();
-        //enemyManagerInstance.randomEnemyChance();
         TimerTask task = new TimerTask() {
             public static int i = 0;
 
@@ -68,6 +66,18 @@ public class GameState {
             }
         };
         actTimer.schedule(task, 1000);
+    }
+    private void saveLoop() {
+        Timer actTimer = new Timer();
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                System.out.println("save made");
+                saveHandlerInstance.saveGame();
+                saveLoop();
+            }
+        };
+        actTimer.schedule(task, 30000);
     }
 
     private void screenRefresher() {
@@ -124,15 +134,15 @@ public class GameState {
     }
 
     public Map getMapInstance() {
-
         if (mapInstance != null) {
             return mapInstance;
         } else {
-            mapInstance = mapGeneratorInstance.loadMap("src/Saves/Maps/map.json");
-            if (mapInstance == null) {
-                mapInstance = mapGeneratorInstance.createNewMap(gameConstants.mapWidth, gameConstants.mapHeight);
+            mapInstance = SaveHandler.getInstance().getMapInstance();
+            if (mapInstance==null){
+                mapInstance = mapGeneratorInstance.createNewMap(gameConstants.mapWidth,gameConstants.mapHeight);
             }
         }
         return mapInstance;
     }
+
 }

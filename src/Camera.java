@@ -50,13 +50,13 @@ public class Camera {
 
     public int[] slotOnScreen(Point p) {
 
-        if (viewableMap != null) {
+        if ((viewableMap != null)&&(p!=null)) {
             for (MapSlot slot : viewableMap) {
                 int[] xAndWidth = getOnScreenXandWidth(slot.getX());
                 int[] yAndHeight = getOnScreenYandHeight(slot.getY());
                 Rectangle2D.Double slotRectangle = new Rectangle2D.Double(xAndWidth[0], yAndHeight[0], xAndWidth[1], yAndHeight[1]);
                 if (slotRectangle.contains(p)) {
-                    return new int[]{slot.getX() - (int) x + 1, slot.getY() - (int) y + 1};
+                    return new int[]{slot.getX(),slot.getY()};
                 }
             }
         }
@@ -277,7 +277,9 @@ public class Camera {
 
     public MapSlot getMapslot(int x, int y) {
         MapSlot desiredSlot;
-        int index = ((y - 1) * numOslotsWide) + (x - 1);
+        int xonRow = x- (int)this.x;
+        int rows = y-(int)this.y;
+        int index = ((rows) * numOslotsWide) + (xonRow);
         desiredSlot = viewableMap.get(index);
         return desiredSlot;
     }
