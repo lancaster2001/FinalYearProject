@@ -30,6 +30,7 @@ public final class MainPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+
         if (StateManagerInstance.getCurrentState()!=null) {
             if (StateManagerInstance.getCurrentState().equals(gameConstants.STATE.GAME)) {
                 gameStateDrawerInstance.draw(g);

@@ -1,7 +1,7 @@
 {
   "Name": "BasicBase",
   "Type": "Base",
-  "BuildMenuList": "Support",
+  "BuildMenuList": "n/a",
   "MaxHealth": 50.0,
   "CostResource": "Rock",
   "CostQuantity": 5,

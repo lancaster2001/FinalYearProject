@@ -20,9 +20,6 @@ public class GameStateDrawer {
     private final GameStateUI gameStateUIInstance = GameStateUI.getInstance();
     private final EnemyManager enemyManagerInstance = EnemyManager.getInstance();
     private final ProjectileManager projectileManagerInstance = ProjectileManager.getInstance();
-    private Point currentMouseLocation;
-
-    //private final Map mapInstance = GameState.getInstance().getMapInstance();
     public void draw(Graphics g) {
         GameStateInputHandler.getInstance().changeMousePosition();
         cameraInstance.draw(g);

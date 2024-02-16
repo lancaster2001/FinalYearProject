@@ -1,0 +1,17 @@
+{
+  "Width": 1.0,
+  "Height": 1.0,
+  "Damage": 2.0,
+  "MaxHealth": 10,
+  "MoveSpeed": 2.5,
+  "Cooldown": 4.0,
+  "Range": 100.0,
+  "ImageLink": "soldier.png",
+  "Bullet":[
+    {"MoveSpeed": 8,
+      "Damage": 1,
+      "Width": 0.6,
+      "Height": 0.6,
+      "ImageLink": "basicbullet.png"}
+  ]
+}

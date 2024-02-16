@@ -128,4 +128,11 @@ public final class Map {
         getSlotFromCoord(x, y).setTower(newTower);
     }
 
+    public int getMapHeight() {
+        return mapHeight;
+    }
+
+    public int getMapWidth() {
+        return mapWidth;
+    }
 }

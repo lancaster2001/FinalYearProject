@@ -36,6 +36,7 @@ public class GameState {
 
     int fps = 0;
     int fpsCounter = 0;
+    int tickAccumulator = 0;
 
     private boolean start = true;
 
@@ -60,8 +61,10 @@ public class GameState {
                     start = true;
                 }
                 fpsCounter = fps;
-                System.out.println(fps);
+                System.out.println("fps:"+fps);
+                System.out.println("ticks/s:"+tickAccumulator);
                 fps = 0;
+                tickAccumulator = 0;
                 actLoop();
             }
         };
@@ -86,11 +89,11 @@ public class GameState {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                screenRefresher();
                 fps += 1;
+                screenRefresher();
             }
         };
-        screenRefreshTimer.schedule(task, 1000 / 60);
+        screenRefreshTimer.schedule(task, 1000 / 30);
     }
 
     private void tickLoop() {
@@ -101,6 +104,7 @@ public class GameState {
             enemyManagerInstance.tick(tickMultiplier);
             projectileManagerInstance.tick(tickMultiplier);
         }
+        tickAccumulator+=1;
         TimerTask task = new TimerTask() {
             public static double i = 0;
 

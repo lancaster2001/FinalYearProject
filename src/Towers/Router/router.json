@@ -7,6 +7,6 @@
   "Height": 1.0,
   "CostResource": "Rock",
   "CostQuantity": 1,
-  "Speed": 0.5,
+  "Speed": 10.0,
   "ImageLink": "router.png"
 }

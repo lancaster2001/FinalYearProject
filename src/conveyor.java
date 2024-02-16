@@ -7,7 +7,7 @@ public class conveyor extends BaseTower {
 
     public conveyor(Pose pose, TowerTemplate template) {
         super(pose, template);
-        inventorySize = 3;
+        inventorySize = 5;
         for (double index = 0; index < 4; index += 1.0) {
             if (index * (Math.PI / 2) != pose.getTheta()) {
                 inputDirections.add(index * (Math.PI / 2));
@@ -78,6 +78,14 @@ public class conveyor extends BaseTower {
             if (containsCheck) {
                 try {
                     if (slotToCheck.getTower().addToInventory((int) pose.getX(), (int) pose.getY(), resource)) {
+                        int index = 0;
+                        for (String resourceID : setDirectionList) {
+                            if(resourceID.equalsIgnoreCase(resource.getId())){
+                                break;
+                            }
+                            index+=1;
+                        }
+                        setDirectionList.remove(index);
                         return true;
                     }
                 } catch (Exception e) {

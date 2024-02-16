@@ -32,21 +32,28 @@ public class BaseDrillTower extends BaseTower {
             boolean conveyerCheck = false;
             Map mapInstance = GameState.getInstance().getMapInstance();
             MapSlot slotToCheck = null;
-
-            slotToCheck = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX(), pose.getY() - 1, 0.5, 0.5)).getFirst();
+            if (pose.getY() - 1 > 0) {
+                slotToCheck = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX(), pose.getY() - 1, 0.5, 0.5)).getFirst();
+            }
             if (slotToCheck != null) {
                 if(outputResource(inventory.getFirst())){
 
                 }else{
-                    slotToCheck = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX() + 1, pose.getY(), 0.5, 0.5)).getFirst();
+                    if (pose.getX() + 1 <= GameState.getInstance().getMapInstance().getMapWidth()) {
+                        slotToCheck = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX() + 1, pose.getY(), 0.5, 0.5)).getFirst();
+                    }
                     if(outputResource(inventory.getFirst())){
 
                     }else{
-                        slotToCheck = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX(), pose.getY() + 1, 0.5, 0.5)).getFirst();
+                        if (pose.getY() + 1 <= GameState.getInstance().getMapInstance().getMapHeight()) {
+                            slotToCheck = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX(), pose.getY() + 1, 0.5, 0.5)).getFirst();
+                        }
                         if(outputResource(inventory.getFirst())){
 
                         }else{
-                            slotToCheck = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX() - 1, pose.getY(), 0.5, 0.5)).getFirst();
+                            if (pose.getX() - 1 > 0) {
+                                slotToCheck = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX() - 1, pose.getY(), 0.5, 0.5)).getFirst();
+                            }
                         }
                     }
                 }

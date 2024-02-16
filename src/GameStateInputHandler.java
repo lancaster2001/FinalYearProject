@@ -58,10 +58,12 @@ public class GameStateInputHandler {
             check = true;
         } else {
             if (e.getButton() == MouseEvent.BUTTON3) {
-                int[] g = cameraInstance.slotOnScreen(e.getPoint());
-                MapSlot clickedSlot = cameraInstance.getMapslot(g[0], g[1]);
-                if (gameUIBuildMenuInstance.getSelectedTower() != null) {
+                if(GameUIBuildMenu.getInstance().getSelectedBuildMenuElement()==-1) {
+                    int[] g = cameraInstance.slotOnScreen(e.getPoint());
+                    MapSlot clickedSlot = cameraInstance.getMapslot(g[0], g[1]);
                     GameState.getInstance().getMapInstance().clearTower(clickedSlot.getX(), clickedSlot.getY());
+                }else{
+                    GameUIBuildMenu.getInstance().clearSelectedElement();
                 }
             } else {
                 int[] g = cameraInstance.slotOnScreen(e.getPoint());

@@ -29,6 +29,9 @@ public class EnemyManager {
     private final ArrayList<BaseEnemy> enemyList = new ArrayList<>();
     private final ArrayList<EnemyTemplate> enemyTemplates = new ArrayList<>();
     private final String enemyTemplatesPath = "src/Enemies/";
+    private double difficulty = 1;
+
+
 
     public void tick(double tickMultiplier) {
         ArrayList<Integer> enemiesToRemove = new ArrayList<Integer>();
@@ -79,10 +82,13 @@ public class EnemyManager {
                     xSpawn = gameConstants.mapWidth;
                 }
             }
-            createEnemy(xSpawn, ySpawn, "enemy1");
+            createEnemy(xSpawn, ySpawn, "soldier");
         }
-        if (rnd.nextInt(1, 100) == 50) {
-            createEnemy(1, 1, "enemy1");
+        if (rnd.nextInt(1, 100) == 5) {
+            createEnemy(1, 1, "scout");
+        }
+        if (rnd.nextInt(1, 100) == 10) {
+            createEnemy(1, 1, "soldier");
         }
     }
 
@@ -111,15 +117,15 @@ public class EnemyManager {
 
         String[] jsonsInFolder = AssetManager.getInstance().getJsonsInFolder(filePath);
         //get the towers of each type e.g. turret1, turret1, turret3, etc
-        for (String currentTower : jsonsInFolder) {
+        for (String currentEnemy : jsonsInFolder) {
 
 
-            try (FileReader reader = new FileReader(filePath + currentTower)) {
+            try (FileReader reader = new FileReader(filePath + currentEnemy)) {
                 // Using JSONTokener to parse the JSON file
                 JSONTokener tokener = new JSONTokener(reader);
                 JSONObject jsonObject = new JSONObject(tokener);
                 // Accessing values from the JSON object
-                String name = jsonObject.getString("Name");
+                String name = currentEnemy.replace(".json","");
                 double width = jsonObject.getDouble("Width");
                 double height = jsonObject.getDouble("Height");
                 double maxhealth = jsonObject.getDouble("MaxHealth");

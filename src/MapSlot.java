@@ -40,7 +40,7 @@ public class MapSlot {
     }
 
     public void tick(double tickMultiplier) {
-        if (tower != null) {
+        if(tower != null){
             tower.tick(tile, tickMultiplier);
             tower.tick(tickMultiplier);
         }
