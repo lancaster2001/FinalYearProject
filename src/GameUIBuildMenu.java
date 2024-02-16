@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.security.KeyPair;
 import java.util.ArrayList;
 
 public class GameUIBuildMenu {
@@ -21,12 +22,16 @@ public class GameUIBuildMenu {
     private final TowerManager towerManagerInstance = TowerManager.getInstance();
     private final Rectangle buildMenuBackground = new Rectangle(gameConstants.buildMenux, gameConstants.buildMenuy, gameConstants.buildMenuWidth, gameConstants.buildMenuHeight);
     private ArrayList<Rectangle> MenuListsButtons = new ArrayList<>();
+    private TowerTemplate toolTip = null;
     private boolean buildMenuState = true;
     private Rectangle buildMenuButton = new Rectangle(buildMenuBackground.width - (buildMenuBackground.width / 20), buildMenuBackground.y - (buildMenuBackground.height / 7), buildMenuBackground.width / 20, buildMenuBackground.height / 7);
     private final int numberOfElementsInBuildMenu = gameConstants.numberOfElementsInBuildMenu;
     private final int spaceBetweenBuildMenuElements = gameConstants.spaceBetweenBuildMenuElements;
     private final int buildMenuElementWidth = gameConstants.buildMenuElementWidth;
     private final int buildMenuElementHeight = gameConstants.buildMenuElementHeight;
+    private final int toolTipWidth = 300;
+    private final int toolTipHeight = 300;
+
     private ArrayList<Rectangle> buildMenuIconHitBox = new ArrayList<>();
     private ArrayList<TowerTemplate> towerArrayList = new ArrayList<>();
     private ArrayList<TowerTemplate> displayTowerArrayList = new ArrayList<>();
@@ -58,6 +63,9 @@ public class GameUIBuildMenu {
             drawBuildMenuBackground(g);
             drawBuildMenuIcons(g);
             drawMenuListsButtons(g);
+            if(checkForToolTip(GameStateInputHandler.getInstance().getCurrentMouseLocation())){
+                drawToolTip(g);
+            }
         }
         drawBuildMenuButton(g);
 
@@ -94,6 +102,7 @@ public class GameUIBuildMenu {
 
     private void setDisplayList() {
         displayTowerArrayList.clear();
+        selectedMenuElement = -1;
 
         for (TowerTemplate tower : towerArrayList) {
             if (tower.getBuildMenuList().equalsIgnoreCase(menuListsNames[selectedMenuList])) {
@@ -193,6 +202,60 @@ public class GameUIBuildMenu {
             return displayTowerArrayList.get(selectedMenuElement);
         } else {
             return null;
+        }
+    }
+    public void clearSelectedElement(){
+        selectedMenuElement = -1;
+    }
+
+    private boolean checkForToolTip(Point p){
+        if(p== null){
+            return false;
+        }
+        if(buildMenuBackground.contains(p)){
+            int index = 0;
+            for(Rectangle icon:buildMenuIconHitBox){
+                if(icon.contains(p)){
+                     toolTip = displayTowerArrayList.get(index);
+                    return true;
+                }
+                index+=1;
+            }
+        }
+        return false;
+    }
+
+    private void drawToolTip(Graphics g){
+        Point currentMouseLocation = GameStateInputHandler.getInstance().getCurrentMouseLocation();
+        if(currentMouseLocation!=null) {
+            int ySpaceLeft =toolTipHeight;
+            //background
+            g.drawImage(assetManagerInstance.getImage("Menus", "tooltipbackground.png"), currentMouseLocation.x, currentMouseLocation.y-toolTipHeight, toolTipWidth, toolTipHeight, null);
+
+            //icon
+            int iconScale = toolTipWidth/5;
+            int iconpadding = 15;
+            Rectangle icon = new Rectangle(currentMouseLocation.x+toolTipWidth/iconpadding, (currentMouseLocation.y-toolTipHeight)+toolTipWidth/iconpadding, iconScale, iconScale);
+            g.drawImage(assetManagerInstance.getImage("Towers", toolTip.getImageLink()), icon.x,icon.y,icon.width,icon.height, null);
+
+            //title
+            int titleScale = 20;
+            g.setColor(Color.black);
+            g.setFont(new Font("Arial", Font.BOLD, titleScale));
+            g.drawString(toolTip.getName(), icon.x+icon.width+toolTipWidth/10,icon.y+titleScale+icon.height/10);
+
+            //cost
+            int costIconScale = toolTipWidth/10;
+            Rectangle costIcon = new Rectangle(icon.x, icon.y+icon.height+ toolTipHeight/20,costIconScale,costIconScale );
+            g.drawImage(assetManagerInstance.getImage("icons", toolTip.getCostResource()+".png"), costIcon.x,costIcon.y,costIcon.width,costIcon.height, null);
+            int resourceCostScale = costIconScale;
+            g.setColor(Color.black);
+            g.setFont(new Font("Arial", Font.BOLD, titleScale));
+            g.drawString(toolTip.getCostQuantity()+" "+toolTip.getCostResource(), costIcon.x+costIcon.width,costIcon.y+costIcon.height);
+            ySpaceLeft = currentMouseLocation.y - costIcon.y+costIcon.height;
+
+
+
         }
     }
 }

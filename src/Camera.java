@@ -64,6 +64,7 @@ public class Camera {
     }
 
     public void draw(Graphics g) {
+        calculateValues();
         if (viewableMap != null) {
             for (MapSlot slot : viewableMap) {
                 int[] xAndWidth = getOnScreenXandWidth(slot.getX());
@@ -319,4 +320,5 @@ public class Camera {
 
         return numOslotsWide;
     }
+
 }

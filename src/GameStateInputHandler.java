@@ -23,7 +23,8 @@ public class GameStateInputHandler {
     private final GameUIBuildMenu gameUIBuildMenuInstance = GameUIBuildMenu.getInstance();
     private double buildRotation = 0;
     int titleHeight = MainFrame.getInstance().getHeight() - panelInstance.getHeight();
-    private Point previousMouseLocation;
+    private int[] previousMouseCoord;
+    private int[] currentMouseCoord;
     private Point currentMouseLocation;
 
     public void userInput(KeyEvent e) {
@@ -61,14 +62,12 @@ public class GameStateInputHandler {
                 MapSlot clickedSlot = cameraInstance.getMapslot(g[0], g[1]);
                 if (gameUIBuildMenuInstance.getSelectedTower() != null) {
                     GameState.getInstance().getMapInstance().clearTower(clickedSlot.getX(), clickedSlot.getY());
-                    //GameState.getInstance().getMapInstance().save();
                 }
             } else {
                 int[] g = cameraInstance.slotOnScreen(e.getPoint());
                 MapSlot clickedSlot = cameraInstance.getMapslot(g[0], g[1]);
                 if (gameUIBuildMenuInstance.getSelectedTower() != null) {
                     GameState.getInstance().getMapInstance().setTower(gameUIBuildMenuInstance.getSelectedTower(), new Pose(clickedSlot.getX(), clickedSlot.getY(), buildRotation));
-                    //GameState.getInstance().getMapInstance().save();
                 }
             }
         }
@@ -77,18 +76,24 @@ public class GameStateInputHandler {
         currentMouseLocation = e.getPoint();
     }
     public void changeMousePosition(){
-        if(previousMouseLocation!=null) {
-            int[] g = cameraInstance.slotOnScreen(previousMouseLocation);
-            MapSlot clickedSlot = cameraInstance.getMapslot(g[0], g[1]);
-            GameState.getInstance().getMapInstance().clearTempTower(clickedSlot.getX(), clickedSlot.getY());
+        if(currentMouseLocation!=null){
+            currentMouseCoord = cameraInstance.slotOnScreen(currentMouseLocation);
         }
-        if(currentMouseLocation!=null) {
-            previousMouseLocation = currentMouseLocation;
-            int[] slot = cameraInstance.slotOnScreen(currentMouseLocation);
-            MapSlot clickedSlot = cameraInstance.getMapslot(slot[0], slot[1]);
-            if (gameUIBuildMenuInstance.getSelectedTower() != null) {
-                GameState.getInstance().getMapInstance().setTempTower(gameUIBuildMenuInstance.getSelectedTower(), new Pose(clickedSlot.getX(), clickedSlot.getY(), buildRotation));
+        if(currentMouseCoord!=previousMouseCoord) {
+            if (previousMouseCoord != null) {
+                MapSlot clickedSlot = cameraInstance.getMapslot(previousMouseCoord[0], previousMouseCoord[1]);
+                GameState.getInstance().getMapInstance().clearTempTower(clickedSlot.getX(), clickedSlot.getY());
+            }
+            if (currentMouseLocation != null) {
+                previousMouseCoord = currentMouseCoord;
+                MapSlot clickedSlot = cameraInstance.getMapslot(currentMouseCoord[0], currentMouseCoord[1]);
+                if (gameUIBuildMenuInstance.getSelectedTower() != null) {
+                    GameState.getInstance().getMapInstance().setTempTower(gameUIBuildMenuInstance.getSelectedTower(), new Pose(clickedSlot.getX(), clickedSlot.getY(), buildRotation));
+                }
             }
         }
+    }
+    public Point getCurrentMouseLocation(){
+        return  currentMouseLocation;
     }
 }

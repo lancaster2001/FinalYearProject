@@ -72,6 +72,24 @@ public abstract class BaseTower {
         //g.drawImage(AssetManager.getInstance().getImage("Towers",imageLink), towerBox.x, towerBox.y, towerBox.width, towerBox.height, null);
         drawHealthBar(g, towerBox);
     }
+   /* protected void drawTemp(Graphics g, int x, int y, int slotWidth, int slotHeight, AssetManager assetManagerInstance) {
+        int width = (int) (this.width * slotWidth);
+        int height = (int) (this.height * slotHeight);
+        Rectangle towerBox = new Rectangle(x, y, width, height);
+        // Rotation information
+        double rotationRequired = pose.getTheta();
+        BufferedImage image = AssetManager.getInstance().getImage("Towers", imageLink);
+        Graphics2D g2d = (Graphics2D) g;
+        AffineTransform backup = g2d.getTransform();
+        BufferedImage srcImg = image.createGraphics().getDeviceConfiguration().createCompatibleImage(width, height, Transparency.TRANSLUCENT);
+        AffineTransform trans = new AffineTransform();
+        trans.rotate(rotationRequired, (x + (width / 2)), (y + (height / 2))); // the points to rotate around (the center in my example, your left side for your problem)
+        g2d.transform(trans);
+
+        g2d.drawImage(srcImg, x, y, width, height, null);  // the actual location of the sprite
+        g2d.setTransform(backup); // restore previous transform
+        //g.drawImage(AssetManager.getInstance().getImage("Towers",imageLink), towerBox.x, towerBox.y, towerBox.width, towerBox.height, null);
+    }*/
 
     protected void drawHealthBar(Graphics g, Rectangle hitbox) {
         if (maxHealth > health) {

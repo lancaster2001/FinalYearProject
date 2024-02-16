@@ -108,4 +108,8 @@ public class TowerTemplate {
     public String getBulletCostResource() {
         return BulletCostResource;
     }
+
+    public void setCostQuantity(int costQuantity) {
+        this.costQuantity = costQuantity;
+    }
 }
