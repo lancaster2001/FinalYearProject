@@ -149,7 +149,9 @@ public final class Map {
     public void setTower(BaseTower newTower, int x, int y) {
         Objects.requireNonNull(getSlotFromCoord(x, y)).setTower(newTower);
     }
-
+    public void setTowerFromTempTower(int x, int y){
+        Objects.requireNonNull(getSlotFromCoord(x, y)).setTowerFromTempTower();
+    }
     public int getMapHeight() {
         return mapHeight;
     }

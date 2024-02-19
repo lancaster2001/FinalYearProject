@@ -40,6 +40,10 @@ public class MapSlot {
             }
         }
     }
+    public void setTowerFromTempTower(){
+        setTower(tempTower);
+        tempTower = null;
+    }
 
     public void tick(double tickMultiplier) {
         if(tower != null){

@@ -230,7 +230,7 @@ public class GameStateInputHandler {
                 GameState.getInstance().getMapInstance().clearTower(Slot.getX(), Slot.getY());
 
             }else {
-                GameState.getInstance().getMapInstance().setTower(gameUIBuildMenuInstance.getSelectedTower(), new Pose(Slot.getX(), Slot.getY(), buildRotation));
+                GameState.getInstance().getMapInstance().setTowerFromTempTower(currentcoord[0],currentcoord[1]);
             }
                 GameState.getInstance().getMapInstance().clearTempTower(Slot.getX(), Slot.getY());
         }
