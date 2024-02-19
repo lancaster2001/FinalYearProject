@@ -119,7 +119,7 @@ public class MapSlot {
             } else if (newTower.getType().equalsIgnoreCase("Router")) {
                 returnTower = new Router(new Pose(x, y, theta), newTower);
             }else if (newTower.getType().equalsIgnoreCase("NonPlayer")){
-                returnTower = new BaseBlock(new Pose(x, y, 0),newTower.getImageLink());
+                returnTower = new BaseTurretTower(new Pose(x, y, 0),newTower);
             }else{
                 return null;
             }
