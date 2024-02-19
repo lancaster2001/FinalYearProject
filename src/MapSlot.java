@@ -110,14 +110,16 @@ public class MapSlot {
     private BaseTower getTowerFromTemplate(TowerTemplate newTower, double theta) {
         BaseTower returnTower;
         if (ResourceManager.getInstance().queryInventory(newTower.getCostResource()).remove(newTower.getCostQuantity())) {
-            if (newTower.getType().equals("Turret")) {
+            if (newTower.getType().equalsIgnoreCase("Turret")) {
                 returnTower = new BaseTurretTower(new Pose(x, y, theta), newTower);
-            } else if (newTower.getType().equals("Drill")) {
+            } else if (newTower.getType().equalsIgnoreCase("Drill")) {
                 returnTower = new BaseDrillTower(new Pose(x, y, theta), newTower);
-            } else if (newTower.getType().equals("Conveyors")) {
+            } else if (newTower.getType().equalsIgnoreCase("Conveyors")) {
                 returnTower = new conveyor(new Pose(x, y, theta), newTower);
-            } else if (newTower.getType().equals("Router")) {
+            } else if (newTower.getType().equalsIgnoreCase("Router")) {
                 returnTower = new Router(new Pose(x, y, theta), newTower);
+            }else if (newTower.getType().equalsIgnoreCase("NonPlayer")){
+                returnTower = new BaseBlock(new Pose(x, y, 0),newTower.getImageLink());
             }else{
                 return null;
             }
@@ -145,4 +147,5 @@ public class MapSlot {
     public BaseTower getTower() {
         return tower;
     }
+    public BaseTower getTempTower(){return  tempTower;}
 }

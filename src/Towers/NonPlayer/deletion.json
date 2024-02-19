@@ -1,0 +1,10 @@
+{
+  "MaxHealth": 1,
+  "Width": 1,
+  "Height": 1,
+  "Range": 0,
+  "Speed": 0,
+  "CostResource": "rock",
+  "CostQuantity": 0,
+  "ImageLink": "deletion.png"
+}

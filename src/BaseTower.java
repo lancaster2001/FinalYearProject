@@ -254,4 +254,7 @@ public abstract class BaseTower {
         removeListOfIndexes(index);
     }
 
+    public String getName() {
+        return name;
+    }
 }

@@ -36,12 +36,16 @@ public class InputHandler {
             menuStateInstance.userInput(e);
         }
     }
-
-    public void userInput(MouseEvent e) {
+    public void mouseReleased(MouseEvent e){
         if (stateManagerInstance.getCurrentState().equals(gameConstants.STATE.GAME)) {
-            gameStateInputHandlerInstance.userInput(e);
+            gameStateInputHandlerInstance.mouseReleased(e);
         } else if (stateManagerInstance.getCurrentState().equals(gameConstants.STATE.STARTMENU)) {
             menuStateInstance.userInput(e);
+        }
+    }
+    public void mousePressed(MouseEvent e) {
+        if (stateManagerInstance.getCurrentState().equals(gameConstants.STATE.GAME)) {
+            gameStateInputHandlerInstance.mousePressed(e);
         }
     }
     public void mouseMoved(MouseEvent e) {

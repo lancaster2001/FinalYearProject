@@ -71,11 +71,12 @@ public class MainFrame extends JFrame implements KeyListener, MouseWheelListener
 
     @Override
     public void mousePressed(MouseEvent e) {
+        InputHandler.getInstance().mousePressed(e);
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        InputHandler.getInstance().userInput(e);
+        InputHandler.getInstance().mouseReleased(e);
     }
 
     @Override

@@ -147,4 +147,8 @@ public class TowerManager {
         }
         return new TowerTemplate();
     }
+    public TowerTemplate getDeletionTower(){
+        return getTemplate("deletion");
+        //return new TowerTemplate("Deletion Template", 1, 1, "Rock", 0, "deletion.png", "Towers", 0, "null", 0);
+    }
 }
