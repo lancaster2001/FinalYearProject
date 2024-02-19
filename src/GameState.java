@@ -93,7 +93,7 @@ public class GameState {
                 screenRefresher();
             }
         };
-        screenRefreshTimer.schedule(task, 1000 / 30);
+        screenRefreshTimer.schedule(task, 1000 / 60);
     }
 
     private void tickLoop() {

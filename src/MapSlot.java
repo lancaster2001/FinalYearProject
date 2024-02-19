@@ -102,8 +102,10 @@ public class MapSlot {
         tower = getTowerFromTemplate(newTower,theta);
     }
     public void setTempTower(TowerTemplate newTower, double theta) {
+        int cost = newTower.getCostQuantity();
         newTower.setCostQuantity(0);
         tempTower = getTowerFromTemplate(newTower,theta);
+        newTower.setCostQuantity(cost);
     }
     private BaseTower getTowerFromTemplate(TowerTemplate newTower, double theta) {
         BaseTower returnTower;

@@ -49,4 +49,9 @@ public class InputHandler {
            gameStateInputHandlerInstance.mouseMoved(e);
         }
     }
+    public void mouseDragged(MouseEvent e) {
+        if (stateManagerInstance.getCurrentState().equals(gameConstants.STATE.GAME)) {
+            gameStateInputHandlerInstance.mouseDragged(e);
+        }
+    }
 }
