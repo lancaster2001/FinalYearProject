@@ -3,6 +3,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class GameStateInputHandler {
     //singleton------------------------------------------------------------------------
@@ -161,16 +162,22 @@ public class GameStateInputHandler {
     private void draggedToBuild() {
         if (currentHeldButton != 0) {
             clearDraggedTempPoints();
+            boolean onXaxis;
 
             int[] startCoord = new int[]{0,0};
             startCoord[0] = dragStartSlot[0];
             startCoord[1] = dragStartSlot[1];
             int[] endCoord = cameraInstance.slotOnScreen(new Point((int) (currentMouseLocation.getX()), (int) (currentMouseLocation.getY())));
+
             if (Math.abs(startCoord[0] - endCoord[0]) > Math.abs(startCoord[1] - endCoord[1])) {
                 endCoord[1] = startCoord[1];
+                onXaxis = true;
             } else {
                 endCoord[0] = startCoord[0];
+                onXaxis = false;
             }
+            double dragBuildRotation = getDragBuildRotation(startCoord,endCoord,onXaxis);
+
             if (startCoord[0] > endCoord[0]) {
                 int holder = startCoord[0];
                 startCoord[0] = endCoord[0];
@@ -182,13 +189,33 @@ public class GameStateInputHandler {
                 endCoord[1] = holder;
             }
 
+
             for (int indexY = startCoord[1]; indexY <= endCoord[1]; indexY++) {
                 for (int indexX = startCoord[0]; indexX <= endCoord[0]; indexX++) {
-                    GameState.getInstance().getMapInstance().setTempTower(gameUIBuildMenuInstance.getSelectedTower(), new Pose(indexX, indexY, buildRotation));
+                    GameState.getInstance().getMapInstance().setTempTower(gameUIBuildMenuInstance.getSelectedTower(), new Pose(indexX, indexY, dragBuildRotation));
                     draggedTempPoints.add(new int[]{indexX, indexY});
                 }
             }
         }
+    }
+    private double getDragBuildRotation(int[] startCoord, int[] endCoord, boolean onXaxis){
+        double dragBuildRotation = buildRotation;
+        if (!Arrays.equals(startCoord, endCoord)) {
+            if (onXaxis) {
+                if (startCoord[0] > endCoord[0]){
+                    dragBuildRotation = Math.PI*1.5;
+                }else{
+                    dragBuildRotation = Math.PI/2;
+                }
+            } else {
+                if (startCoord[1] > endCoord[1]){
+                    dragBuildRotation = 0;
+                }else{
+                    dragBuildRotation = Math.PI;
+                }
+            }
+        }
+        return dragBuildRotation;
     }
     private void clearDraggedTempPoints(){
         for(int[] currentcoord:draggedTempPoints){
