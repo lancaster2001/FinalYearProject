@@ -113,21 +113,7 @@ public class BaseTurretTower extends BaseTower {
     }
 
     public void draw(Graphics g, int x, int y, int slotWidth, int slotHeight, AssetManager assetManagerInstance) {
-        int width = (int) (this.width * slotWidth);
-        int height = (int) (this.height * slotHeight);
-        Rectangle towerBox = new Rectangle(x, y, width, height);
-        // Rotation information
-        double rotationRequired = pose.getTheta();
-        BufferedImage image = AssetManager.getInstance().getImage("Towers", imageLink);
-
-        Graphics2D g2d = (Graphics2D) g;
-        AffineTransform backup = g2d.getTransform();
-        AffineTransform trans = new AffineTransform();
-        trans.rotate(rotationRequired, (x + (width / 2)), (y + (height / 2))); // the points to rotate around (the center in my example, your left side for your problem)
-        g2d.transform(trans);
-        g2d.drawImage(image, x, y, width, height, null);// the actual location of the sprite
-        g2d.setTransform(backup); // restore previous transform
-        drawHealthBar(g, towerBox);
+        super.draw(g,x,y,slotWidth,slotHeight,assetManagerInstance);
         if((predictedEnemyPoint.x != -1)&&(predictedEnemyPoint.y != -1)&&(debugging)) {
             g.setColor(Color.red);
             g.setFont(new Font("Arial", Font.BOLD, 10));

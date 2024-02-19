@@ -58,19 +58,26 @@ public abstract class BaseTower {
     protected void draw(Graphics g, int x, int y, int slotWidth, int slotHeight, AssetManager assetManagerInstance) {
         int width = (int) (this.width * slotWidth);
         int height = (int) (this.height * slotHeight);
+
         Rectangle towerBox = new Rectangle(x, y, width, height);
         // Rotation information
         double rotationRequired = pose.getTheta();
         BufferedImage image = AssetManager.getInstance().getImage("Towers", imageLink);
+        boolean side = (Math.PI/3<Math.abs(rotationRequired)&&Math.abs(rotationRequired)<(Math.PI/3)*2);
+
+        if (side){
+            int holder = width;
+            width = height;
+            height = holder;
+        }
 
         Graphics2D g2d = (Graphics2D) g;
         AffineTransform backup = g2d.getTransform();
         AffineTransform trans = new AffineTransform();
-        trans.rotate(rotationRequired, (x + (width / 2)), (y + (height / 2))); // the points to rotate around (the center in my example, your left side for your problem)
+        trans.rotate(rotationRequired, (x + (width / 2.0)), (y + (height / 2.0)));// the points to rotate around (the center in my example, your left side for your problem)
         g2d.transform(trans);
         g2d.drawImage(image, x, y, width, height, null);  // the actual location of the sprite
         g2d.setTransform(backup); // restore previous transform
-        //g.drawImage(AssetManager.getInstance().getImage("Towers",imageLink), towerBox.x, towerBox.y, towerBox.width, towerBox.height, null);
         drawHealthBar(g, towerBox);
     }
 
@@ -159,7 +166,6 @@ public abstract class BaseTower {
             }
             index += 1;
         }
-        //todo change this to start at a different direction each time it outputs a resource
         //todo make this applicable for all output types
         ArrayList<Double> directionCheckOrder = new ArrayList<>();
         for(index = 0;index<4;index++){

@@ -79,6 +79,7 @@ public class AssetManager {
                             desiredImage = ImageIO.read(new File(imageLink));
                             ImagesArray.add(desiredImage);
                         } catch (Exception e) {
+                            //e.printStackTrace();
                             return getImage(errorImagePath);
                         }
                     } else {
