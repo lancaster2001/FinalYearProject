@@ -1,6 +1,8 @@
 import java.awt.*;
 
 public interface gameConstants {
+    boolean debugging = false;
+    boolean outlineSlots = false;
 
     //FILE LOCATIONS----------------------------------------------------------------------------------------
     String assetsPath = "src/Assets/";

@@ -8,6 +8,8 @@ public class MapSlot {
     private BaseTower tower;
     private BaseTower tempTower;
     private BaseTile tile;
+    private final boolean outlineSlots = gameConstants.outlineSlots;
+    private final boolean debugging = gameConstants.debugging;
 
     public MapSlot(int x, int y, TileTemplate tile) {
         this.x = x;
@@ -65,12 +67,15 @@ public class MapSlot {
         if (tempTower != null) {
             tempTower.draw(g, x, y, slotWidth, slotHeight, assetManagerInstance);
         }
-
-        g.setColor(Color.BLACK);
-        //g.drawRect(x, y, slotWidth, slotHeight);
-        g.setColor(Color.red);
-        g.setFont(new Font("Arial", Font.BOLD, 10));
-        g.drawString(this.x+", "+this.y, x, y + 10);
+        if(outlineSlots) {
+            g.setColor(Color.BLACK);
+            g.drawRect(x, y, slotWidth, slotHeight);
+        }
+        if(debugging) {
+            g.setColor(Color.red);
+            g.setFont(new Font("Arial", Font.BOLD, 10));
+            g.drawString(this.x + ", " + this.y, x, y + 10);
+        }
     }
 
     public boolean onScreenCheck(Camera cameraInstance) {

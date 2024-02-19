@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class BaseTurretTower extends BaseTower {
+    private final boolean debugging = gameConstants.debugging;
     private final EnemyManager enemyManagerInstance = EnemyManager.getInstance();
     private final ProjectileManager projectileManagerInstance = ProjectileManager.getInstance();
     protected double range;
@@ -127,7 +128,7 @@ public class BaseTurretTower extends BaseTower {
         g2d.drawImage(image, x, y, width, height, null);// the actual location of the sprite
         g2d.setTransform(backup); // restore previous transform
         drawHealthBar(g, towerBox);
-        if((predictedEnemyPoint.x != -1)&&(predictedEnemyPoint.y != -1)) {
+        if((predictedEnemyPoint.x != -1)&&(predictedEnemyPoint.y != -1)&&(debugging)) {
             g.setColor(Color.red);
             g.setFont(new Font("Arial", Font.BOLD, 10));
             g.drawString(predictedEnemyPoint.x + "", x, y + 20);

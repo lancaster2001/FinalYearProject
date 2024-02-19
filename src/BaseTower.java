@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public abstract class BaseTower {
+
     protected Pose pose = new Pose();
     protected String name;
     protected String imageLink = "src/Towers/Base/irondrill.png";

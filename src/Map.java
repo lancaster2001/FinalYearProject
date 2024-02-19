@@ -7,11 +7,20 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public final class Map {
     public Map(ArrayList<MapSlot> mapArray, int width, int height) {
-        //name = String.valueOf(Math.random());
-        name = "map";
+        name = String.valueOf(Math.random());
+        //name = "map";
+        mapWidth = width;
+        mapHeight = height;
+        this.mapArray = mapArray;
+        BaseBaseTower playerbase = BaseBaseTower.getInstance();
+        setTower(playerbase, (int) playerbase.getPose().getX(), (int) playerbase.getPose().getY());
+    }
+    public Map(ArrayList<MapSlot> mapArray, int width, int height, String name) {
+        this.name = name;
         mapWidth = width;
         mapHeight = height;
         this.mapArray = mapArray;
@@ -20,7 +29,7 @@ public final class Map {
     }
 
     private ArrayList<MapSlot> mapArray = new ArrayList<>();
-    private String name;
+    private final String name;
     private int mapWidth = 0;
     private int mapHeight = 0;
 
@@ -107,25 +116,32 @@ public final class Map {
     }
 
     public void clearTower(int x, int y) {
-        getSlotFromCoord(x, y).clearTower();
+        MapSlot holder = getSlotFromCoord(x, y);
+        if(holder!=null) {
+            if (holder.getTower() instanceof BaseBaseTower) {
+                StateManager.getInstance().setCurrentState(gameConstants.STATE.GAMEOVER);
+                return;
+            }
+            holder.clearTower();
+        }
     }
 
     public void setTower(TowerTemplate newTower, Pose pose) {
         if ((newTower!=null)&&(pose!=null)){
-            getSlotFromCoord((int) pose.getX(), (int) pose.getY()).setTower(newTower, pose.getTheta());
+            Objects.requireNonNull(getSlotFromCoord((int) pose.getX(), (int) pose.getY())).setTower(newTower, pose.getTheta());
         }
     }
     public void setTempTower(TowerTemplate newTower, Pose pose) {
         if ((newTower!=null)&&(pose!=null)) {
-            getSlotFromCoord((int) pose.getX(), (int) pose.getY()).setTempTower(newTower, pose.getTheta());
+            Objects.requireNonNull(getSlotFromCoord((int) pose.getX(), (int) pose.getY())).setTempTower(newTower, pose.getTheta());
         }
     }
     public void clearTempTower(int x, int y){
-        getSlotFromCoord(x,y).clearTempTower();
+        Objects.requireNonNull(getSlotFromCoord(x, y)).clearTempTower();
     }
 
     public void setTower(BaseTower newTower, int x, int y) {
-        getSlotFromCoord(x, y).setTower(newTower);
+        Objects.requireNonNull(getSlotFromCoord(x, y)).setTower(newTower);
     }
 
     public int getMapHeight() {
