@@ -271,11 +271,6 @@ public class Camera {
         return getOnScreenXandWidth(x)[1];
     }
 
-    //public int getNumOslotsWide(){return numOslotsWide;}
-    public int getNumOslotsTall() {
-        return numOslotsTall;
-    }
-
     public MapSlot getMapslot(int x, int y) {
         MapSlot desiredSlot;
         int xonRow = x- (int)this.x;

@@ -125,6 +125,12 @@ public final class Map {
             holder.clearTower();
         }
     }
+    public MapSlot getMapslot(int x, int y) {
+        MapSlot desiredSlot;
+        int index = ((y-1) * mapWidth) + (x)-1;
+        desiredSlot = mapArray.get(index);
+        return desiredSlot;
+    }
 
     public void setTower(TowerTemplate newTower, Pose pose) {
         if ((newTower!=null)&&(pose!=null)){

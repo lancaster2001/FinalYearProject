@@ -21,16 +21,16 @@ public class GameStateInputHandler {
     //----------------------------------------------------------------------------------
     private final MainPanel panelInstance = MainPanel.getInstance();
     private final Camera cameraInstance = Camera.getInstance();
+    private final Map mapInstance = GameState.getInstance().getMapInstance();
     private final GameUIBuildMenu gameUIBuildMenuInstance = GameUIBuildMenu.getInstance();
     private double buildRotation = 0;
     int titleHeight = MainFrame.getInstance().getHeight() - panelInstance.getHeight();
     private int[] previousMouseCoord;
     private int[] currentMouseCoord;
     private Point currentMouseLocation;
-    private Point lastClickedPoint;
     private int lastClickedButton;
     private int currentHeldButton;
-    private Point dragStartPoint;
+    private int[] dragStartSlot;
     private ArrayList<int[]> draggedTempPoints = new ArrayList<>();
 
     public void userInput(KeyEvent e) {
@@ -66,7 +66,6 @@ public class GameStateInputHandler {
         if(currentHeldButton==0){
             return;
         }
-        lastClickedPoint = dragStartPoint;
         lastClickedButton = currentHeldButton;
         currentHeldButton = 0;
         if (GameStateUI.getInstance().takeInput(e.getPoint())) {
@@ -87,7 +86,7 @@ public class GameStateInputHandler {
             return;
         }
         currentHeldButton = e.getButton();
-        dragStartPoint = e.getPoint();
+        dragStartSlot = cameraInstance.slotOnScreen(e.getPoint());
     }
 
     public void mouseMoved(MouseEvent e) {
@@ -134,29 +133,25 @@ public class GameStateInputHandler {
         if (currentHeldButton != 0) {
             clearDraggedTempPoints();
             gameUIBuildMenuInstance.clearSelectedElement();
-            Point startPoint = new Point((int) (dragStartPoint.getX()), (int) (dragStartPoint.getY()));
-            Point endPoint = new Point((int) (currentMouseLocation.getX()), (int) (currentMouseLocation.getY()));
-            int[] startCoord = cameraInstance.slotOnScreen(new Point((int) (startPoint.getX()), (int) (startPoint.getY())));
-            int[] endCoord = cameraInstance.slotOnScreen(new Point((int) (endPoint.getX()), (int) (endPoint.getY())));
-            MapSlot startSlot = cameraInstance.getMapslot(startCoord[0], startCoord[1]);
-            MapSlot endSlot = cameraInstance.getMapslot(endCoord[0], endCoord[1]);
-            int startX = startSlot.getX();
-            int startY = startSlot.getY();
-            int endX = endSlot.getX();
-            int endY = endSlot.getY();
 
-            if (startX > endX) {
-                int holder = startX;
-                startX = endX;
-                endX = holder;
+            int[] startCoord = new int[]{0,0};
+            startCoord[0] = dragStartSlot[0];
+            startCoord[1] = dragStartSlot[1];
+            int[] endCoord = cameraInstance.slotOnScreen(new Point((int) (currentMouseLocation.getX()), (int) (currentMouseLocation.getY())));
+
+
+            if (startCoord[0] > endCoord[0]) {
+                int holder = startCoord[0];
+                startCoord[0] = endCoord[0];
+                endCoord[0] = holder;
             }
-            if (startY > endY) {
-                int holder = startY;
-                startY = endY;
-                endY = holder;
+            if (startCoord[1] > endCoord[1]) {
+                int holder = startCoord[1];
+                startCoord[1] = endCoord[1];
+                endCoord[1] = holder;
             }
-            for (int indexY = startY; indexY <= endY; indexY++) {
-                for (int indexX = startX; indexX <= endX; indexX++) {
+            for (int indexY = startCoord[1]; indexY <= endCoord[1]; indexY++) {
+                for (int indexX = startCoord[0]; indexX <= endCoord[0]; indexX++) {
                     GameState.getInstance().getMapInstance().setTempTower(TowerManager.getInstance().getDeletionTower(), new Pose(indexX, indexY, buildRotation));
                     draggedTempPoints.add(new int[]{indexX, indexY});
                 }
@@ -166,40 +161,29 @@ public class GameStateInputHandler {
     private void draggedToBuild() {
         if (currentHeldButton != 0) {
             clearDraggedTempPoints();
-            Point startPoint;
-            Point endPoint;
-            int startX;
-            int startY;
-            int endX;
-            int endY;
-            if (Math.abs(dragStartPoint.getX() - currentMouseLocation.getX()) > Math.abs(dragStartPoint.getY() - currentMouseLocation.getY())) {
-                startPoint = new Point((int) (dragStartPoint.getX()), (int) (dragStartPoint.getY()));
-                endPoint = new Point((int) (currentMouseLocation.getX()), (int) (dragStartPoint.getY()));
-            } else {
-                startPoint = new Point((int) (dragStartPoint.getX()), (int) (dragStartPoint.getY()));
-                endPoint = new Point((int) (dragStartPoint.getX()), (int) (currentMouseLocation.getY()));
-            }
-            int[] startCoord = cameraInstance.slotOnScreen(new Point((int) (startPoint.getX()), (int) (startPoint.getY())));
-            int[] endCoord = cameraInstance.slotOnScreen(new Point((int) (endPoint.getX()), (int) (endPoint.getY())));
-            MapSlot startSlot = cameraInstance.getMapslot(startCoord[0], startCoord[1]);
-            MapSlot endSlot = cameraInstance.getMapslot(endCoord[0], endCoord[1]);
-            startX = startSlot.getX();
-            startY = startSlot.getY();
-            endX = endSlot.getX();
-            endY = endSlot.getY();
 
-            if (startX > endX) {
-                int holder = startX;
-                startX = endX;
-                endX = holder;
+            int[] startCoord = new int[]{0,0};
+            startCoord[0] = dragStartSlot[0];
+            startCoord[1] = dragStartSlot[1];
+            int[] endCoord = cameraInstance.slotOnScreen(new Point((int) (currentMouseLocation.getX()), (int) (currentMouseLocation.getY())));
+            if (Math.abs(startCoord[0] - endCoord[0]) > Math.abs(startCoord[1] - endCoord[1])) {
+                endCoord[1] = startCoord[1];
+            } else {
+                endCoord[0] = startCoord[0];
             }
-            if (startY > endY) {
-                int holder = startY;
-                startY = endY;
-                endY = holder;
+            if (startCoord[0] > endCoord[0]) {
+                int holder = startCoord[0];
+                startCoord[0] = endCoord[0];
+                endCoord[0] = holder;
             }
-            for (int indexY = startY; indexY <= endY; indexY++) {
-                for (int indexX = startX; indexX <= endX; indexX++) {
+            if (startCoord[1] > endCoord[1]) {
+                int holder = startCoord[1];
+                startCoord[1] = endCoord[1];
+                endCoord[1] = holder;
+            }
+
+            for (int indexY = startCoord[1]; indexY <= endCoord[1]; indexY++) {
+                for (int indexX = startCoord[0]; indexX <= endCoord[0]; indexX++) {
                     GameState.getInstance().getMapInstance().setTempTower(gameUIBuildMenuInstance.getSelectedTower(), new Pose(indexX, indexY, buildRotation));
                     draggedTempPoints.add(new int[]{indexX, indexY});
                 }
@@ -208,14 +192,13 @@ public class GameStateInputHandler {
     }
     private void clearDraggedTempPoints(){
         for(int[] currentcoord:draggedTempPoints){
-            MapSlot Slot = cameraInstance.getMapslot(currentcoord[0], currentcoord[1]);
-            GameState.getInstance().getMapInstance().clearTempTower(Slot.getX(), Slot.getY());
+            GameState.getInstance().getMapInstance().clearTempTower(currentcoord[0], currentcoord[1]);
         }
         draggedTempPoints.clear();
     }
     private void setTempsToPermenants(){
         for(int[] currentcoord:draggedTempPoints){
-            MapSlot Slot = cameraInstance.getMapslot(currentcoord[0], currentcoord[1]);
+            MapSlot Slot = GameState.getInstance().getMapInstance().getMapslot(currentcoord[0], currentcoord[1]);
             if(Slot.getTempTower().getName().equalsIgnoreCase("deletion")) {
                 GameState.getInstance().getMapInstance().clearTower(Slot.getX(), Slot.getY());
 
@@ -229,7 +212,7 @@ public class GameStateInputHandler {
     private void clickToBuild(){
             if (lastClickedButton == MouseEvent.BUTTON3) {
                 if(GameUIBuildMenu.getInstance().getSelectedBuildMenuElement()==-1) {
-                    int[] g = cameraInstance.slotOnScreen(dragStartPoint);
+                    int[] g = cameraInstance.slotOnScreen(currentMouseLocation);
                     MapSlot clickedSlot = cameraInstance.getMapslot(g[0], g[1]);
                     GameState.getInstance().getMapInstance().clearTower(clickedSlot.getX(), clickedSlot.getY());
                 }else{
@@ -240,7 +223,7 @@ public class GameStateInputHandler {
                     }
                 }
             } else if (lastClickedButton == MouseEvent.BUTTON1){
-                int[] g = cameraInstance.slotOnScreen(dragStartPoint);
+                int[] g = cameraInstance.slotOnScreen(currentMouseLocation);
                 MapSlot clickedSlot = cameraInstance.getMapslot(g[0], g[1]);
                 if (gameUIBuildMenuInstance.getSelectedTower() != null) {
                     GameState.getInstance().getMapInstance().setTower(gameUIBuildMenuInstance.getSelectedTower(), new Pose(clickedSlot.getX(), clickedSlot.getY(), buildRotation));

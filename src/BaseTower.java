@@ -17,8 +17,8 @@ public abstract class BaseTower {
     private double nextDirection = 0;
     protected double health;
     protected double speed;
-    protected String costResource = "Rock";
-    protected int costQuantity = 5;
+    protected String costResource;
+    protected int costQuantity;
     protected int inventorySize = 0;
     protected ArrayList<Resource> inventory = new ArrayList<>();
     protected ArrayList<Double> outputDirections = new ArrayList<>();
