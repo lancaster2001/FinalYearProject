@@ -117,7 +117,7 @@ public class MapSlot {
         if (newTower.getType().equalsIgnoreCase("Turret")) {
             returnTower = new BaseTurretTower(new Pose(x, y, theta), newTower);
         } else if (newTower.getType().equalsIgnoreCase("Drill")) {
-            returnTower = new BaseDrillTower(new Pose(x, y, theta), newTower);
+            returnTower = new BaseDrillTower(new Pose(x, y, theta), newTower, tile.getResource());
         } else if (newTower.getType().equalsIgnoreCase("Conveyors")) {
             returnTower = new conveyor(new Pose(x, y, theta), newTower);
         } else if (newTower.getType().equalsIgnoreCase("Router")) {

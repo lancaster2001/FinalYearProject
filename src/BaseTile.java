@@ -3,8 +3,8 @@ import org.json.JSONObject;
 import java.awt.*;
 
 public class BaseTile {
-    protected String imageLink;
-    protected String resource;
+    private String imageLink;
+    private String resource;
 
     public BaseTile(TileTemplate template) {
         imageLink = template.getImageLink();

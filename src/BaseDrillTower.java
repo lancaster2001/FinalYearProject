@@ -7,8 +7,9 @@ public class BaseDrillTower extends BaseTower {
     private double actAccumulator = 0.0;
     private final double actAccumulatorLimit = 1.0;
     private String spinnerLink;
+    private String tileResource = null;
 
-    public BaseDrillTower(Pose pose, TowerTemplate template) {
+    public BaseDrillTower(Pose pose, TowerTemplate template,String tileResource) {
         super(pose, template);
         imageLink = template.getImageLink();
         spinnerLink = template.getSpinnerLink();
@@ -17,12 +18,15 @@ public class BaseDrillTower extends BaseTower {
             outputDirections.add(index * (Math.PI / 2));
         }
         pose.setTheta(0);
+        this.tileResource = tileResource;
     }
     public void draw(Graphics g, int x, int y, int slotWidth, int slotHeight, AssetManager assetManagerInstance) {
         super.draw(g,x,y,slotWidth,slotHeight,assetManagerInstance);
-        /*Color resourceColour = ResourceManager.getInstance().getResource(costResource).getColor();
-        BufferedImage spinner = changeImageColor(assetManagerInstance.getImage("Towers",spinnerLink), resourceColour);
-        g.drawImage(spinner, x, y, slotWidth, slotHeight,null);*/
+        if(tileResource!=null) {
+            Color resourceColour = ResourceManager.getInstance().getResource(tileResource).getColor();
+            BufferedImage spinner = changeImageColor(assetManagerInstance.getImage("Towers", spinnerLink), resourceColour);
+            g.drawImage(spinner, x, y, slotWidth, slotHeight, null);
+        }
     }
     public void act(BaseTile tile, ResourceManager resourceManagerInstance) {
         resourceManagerInstance.queryInventory(tile.getResource()).add();
