@@ -33,8 +33,7 @@ public class MapSlot {
         if (tower != null) {
             try {
                 TowerTemplate template = TowerManager.getInstance().getTemplate(tower.getString("Name"));
-                ResourceManager.getInstance().queryInventory(template.getCostResource()).add(template.getCostQuantity());
-                setTower(template, tower.getDouble("Theta"));
+                setTower(template, tower.getDouble("Theta"),false);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -107,8 +106,17 @@ public class MapSlot {
         json.put("Tile", tile.getJsonObject());
         return json;
     }
-    public void setTower(TowerTemplate newTower, double theta) {
-        tower = getTowerFromTemplate(newTower,theta);
+    public void setTower(TowerTemplate newTower, double theta){
+        setTower(newTower,theta,true);
+    }
+    public void setTower(TowerTemplate newTower, double theta,boolean charge) {
+        if(charge){
+            if(ResourceManager.getInstance().queryInventory(newTower.getCostResource()).remove(newTower.getCostQuantity())){
+                tower = getTowerFromTemplate(newTower,theta);
+            }
+        }else{
+            tower = getTowerFromTemplate(newTower,theta);
+        }
     }
     public void setTempTower(TowerTemplate newTower, double theta) {
         int cost = newTower.getCostQuantity();
@@ -137,8 +145,17 @@ public class MapSlot {
         return null;
     }
 
-    public void setTower(BaseTower newTower) {
-        tower = newTower;
+    public void setTower(BaseTower newTower){
+        setTower(newTower,true);
+    }
+    public void setTower(BaseTower newTower,boolean charge) {
+        if(charge){
+            if(ResourceManager.getInstance().queryInventory(newTower.getTempalate().getCostResource()).remove(newTower.getTempalate().getCostQuantity())){
+                tower = newTower;
+            }
+        }else{
+            tower = newTower;
+        }
     }
 
     public int getX() {

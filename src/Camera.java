@@ -228,17 +228,13 @@ public class Camera {
     public void increaseZoom() {
         if ((x + (zoom * screenWidthProportion) < gameConstants.mapWidth - 4) && (y + (zoom * screenWidthProportion) < gameConstants.mapHeight - 4)) {
             zoom += 2;
-            // x-=1;
-            // y-=1;
             calculateValues();
         }
     }
 
     public void decreaseZoom() {
-        if (zoom > 1) {
+        if (zoom > 5) {
             zoom -= 2;
-            // x+=1;
-            // y+=1;
             calculateValues();
         }
     }
