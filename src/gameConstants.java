@@ -1,7 +1,7 @@
 import java.awt.*;
 
 public interface gameConstants {
-    boolean debugging = false;
+    boolean debugging = true;
     boolean outlineSlots = false;
 
     //FILE LOCATIONS----------------------------------------------------------------------------------------

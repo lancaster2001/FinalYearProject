@@ -17,7 +17,7 @@ public final class Map {
         mapHeight = height;
         this.mapArray = mapArray;
         BaseBaseTower playerbase = BaseBaseTower.getInstance();
-        setTower(playerbase, (int) playerbase.getPose().getX(), (int) playerbase.getPose().getY());
+        setTower(playerbase, (int) playerbase.getPose().getX(), (int) playerbase.getPose().getY(),false);
     }
     public Map(ArrayList<MapSlot> mapArray, int width, int height, String name) {
         this.name = name;
@@ -25,7 +25,7 @@ public final class Map {
         mapHeight = height;
         this.mapArray = mapArray;
         BaseBaseTower playerbase = BaseBaseTower.getInstance();
-        setTower(playerbase, (int) playerbase.getPose().getX(), (int) playerbase.getPose().getY());
+        setTower(playerbase, (int) playerbase.getPose().getX(), (int) playerbase.getPose().getY(),false);
     }
 
     private ArrayList<MapSlot> mapArray = new ArrayList<>();
@@ -131,10 +131,12 @@ public final class Map {
         desiredSlot = mapArray.get(index);
         return desiredSlot;
     }
-
     public void setTower(TowerTemplate newTower, Pose pose) {
+        setTower(newTower,pose,true);
+    }
+    public void setTower(TowerTemplate newTower, Pose pose,boolean charge) {
         if ((newTower!=null)&&(pose!=null)){
-            Objects.requireNonNull(getSlotFromCoord((int) pose.getX(), (int) pose.getY())).setTower(newTower, pose.getTheta());
+            Objects.requireNonNull(getSlotFromCoord((int) pose.getX(), (int) pose.getY())).setTower(newTower, pose.getTheta(),charge);
         }
     }
     public void setTempTower(TowerTemplate newTower, Pose pose) {
@@ -145,9 +147,11 @@ public final class Map {
     public void clearTempTower(int x, int y){
         Objects.requireNonNull(getSlotFromCoord(x, y)).clearTempTower();
     }
-
     public void setTower(BaseTower newTower, int x, int y) {
-        Objects.requireNonNull(getSlotFromCoord(x, y)).setTower(newTower);
+        setTower(newTower,x,y,true);
+    }
+    public void setTower(BaseTower newTower, int x, int y,boolean charge) {
+        Objects.requireNonNull(getSlotFromCoord(x, y)).setTower(newTower,charge);
     }
     public void setTowerFromTempTower(int x, int y){
         Objects.requireNonNull(getSlotFromCoord(x, y)).setTowerFromTempTower();

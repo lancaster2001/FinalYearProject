@@ -7,5 +7,6 @@
   "CostResource": "Rock",
   "CostQuantity": 5,
   "Speed": 5.0,
-  "ImageLink": "pneumatic-drill.png"
+  "ImageLink": "pneumatic-drill.png",
+  "SpinnerLink": "pneumatic-drill-spinner.png"
 }

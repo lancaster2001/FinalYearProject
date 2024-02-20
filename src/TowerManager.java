@@ -109,6 +109,9 @@ public class TowerManager {
                 String BulletCostResource = jsonObject.getString("BulletCostResource");
                 JSONArray bullet = jsonObject.getJSONArray("Bullet");
                 template.setupTurret(range, readBulletTemplate(bullet), BulletCostResource, BulletCostQuantity);
+            } else if (type.equals("Drill")) {
+                String spinnerLink = jsonObject.getString("SpinnerLink");
+                template.setupDrill(spinnerLink);
             }
             return template;
         } catch (JSONException e) {

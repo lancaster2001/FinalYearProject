@@ -7,5 +7,6 @@
   "CostResource": "copper",
   "CostQuantity": 5,
   "Speed": 1.5,
-  "ImageLink": "plasma-bore.png"
+  "ImageLink": "plasma-bore.png",
+  "SpinnerLink": "pneumatic-drill-spinner.png"
 }

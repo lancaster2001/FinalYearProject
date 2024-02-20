@@ -13,6 +13,7 @@ public class TowerTemplate {
     private String BuildMenuList;
     private String BulletCostResource;
     private int BulletCostQuantity;
+    private String spinnerLink;
 
     public TowerTemplate() {
     }
@@ -35,6 +36,9 @@ public class TowerTemplate {
         this.bulletTemplate = bulletTemplate;
         this.BulletCostResource = BulletCostResource;
         this.BulletCostQuantity = bulletCostQuantity;
+    }
+    public void setupDrill(String spinnerLink){
+        this.spinnerLink = spinnerLink;
     }
 
     public String getName() {
@@ -111,5 +115,9 @@ public class TowerTemplate {
 
     public void setCostQuantity(int costQuantity) {
         this.costQuantity = costQuantity;
+    }
+
+    public String getSpinnerLink() {
+        return spinnerLink;
     }
 }

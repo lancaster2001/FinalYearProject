@@ -106,18 +106,6 @@ public class MapSlot {
         json.put("Tile", tile.getJsonObject());
         return json;
     }
-    public void setTower(TowerTemplate newTower, double theta){
-        setTower(newTower,theta,true);
-    }
-    public void setTower(TowerTemplate newTower, double theta,boolean charge) {
-        if(charge){
-            if(ResourceManager.getInstance().queryInventory(newTower.getCostResource()).remove(newTower.getCostQuantity())){
-                tower = getTowerFromTemplate(newTower,theta);
-            }
-        }else{
-            tower = getTowerFromTemplate(newTower,theta);
-        }
-    }
     public void setTempTower(TowerTemplate newTower, double theta) {
         int cost = newTower.getCostQuantity();
         newTower.setCostQuantity(0);
@@ -126,29 +114,34 @@ public class MapSlot {
     }
     private BaseTower getTowerFromTemplate(TowerTemplate newTower, double theta) {
         BaseTower returnTower;
-        if (ResourceManager.getInstance().queryInventory(newTower.getCostResource()).remove(newTower.getCostQuantity())) {
-            if (newTower.getType().equalsIgnoreCase("Turret")) {
-                returnTower = new BaseTurretTower(new Pose(x, y, theta), newTower);
-            } else if (newTower.getType().equalsIgnoreCase("Drill")) {
-                returnTower = new BaseDrillTower(new Pose(x, y, theta), newTower);
-            } else if (newTower.getType().equalsIgnoreCase("Conveyors")) {
-                returnTower = new conveyor(new Pose(x, y, theta), newTower);
-            } else if (newTower.getType().equalsIgnoreCase("Router")) {
-                returnTower = new Router(new Pose(x, y, theta), newTower);
-            }else if (newTower.getType().equalsIgnoreCase("NonPlayer")){
-                returnTower = new BaseTurretTower(new Pose(x, y, 0),newTower);
-            }else{
-                return null;
-            }
-            return returnTower;
+        if (newTower.getType().equalsIgnoreCase("Turret")) {
+            returnTower = new BaseTurretTower(new Pose(x, y, theta), newTower);
+        } else if (newTower.getType().equalsIgnoreCase("Drill")) {
+            returnTower = new BaseDrillTower(new Pose(x, y, theta), newTower);
+        } else if (newTower.getType().equalsIgnoreCase("Conveyors")) {
+            returnTower = new conveyor(new Pose(x, y, theta), newTower);
+        } else if (newTower.getType().equalsIgnoreCase("Router")) {
+            returnTower = new Router(new Pose(x, y, theta), newTower);
+        }else if (newTower.getType().equalsIgnoreCase("NonPlayer")){
+            returnTower = new BaseTurretTower(new Pose(x, y, 0),newTower);
+        }else{
+            return null;
         }
-        return null;
+        return returnTower;
     }
-
+    public void setTower(TowerTemplate newTower, double theta){
+        setTower(newTower,theta,true);
+    }
+    public void setTower(TowerTemplate newTower, double theta,boolean charge) {
+        setTower(getTowerFromTemplate(newTower,theta),charge);
+    }
     public void setTower(BaseTower newTower){
         setTower(newTower,true);
     }
     public void setTower(BaseTower newTower,boolean charge) {
+        if(tower!=null) {
+            ResourceManager.getInstance().queryInventory(tower.getTempalate().getCostResource()).add(tower.getTempalate().getCostQuantity());
+        }
         if(charge){
             if(ResourceManager.getInstance().queryInventory(newTower.getTempalate().getCostResource()).remove(newTower.getTempalate().getCostQuantity())){
                 tower = newTower;
