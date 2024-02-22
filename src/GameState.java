@@ -18,7 +18,6 @@ public class GameState {
         TowerManager.getInstance();
         BaseTower playerTower = BaseBaseTower.getInstance();
         resourceManagerInstance.queryInventory("Rock").add(50);
-         SaveHandler.getInstance().loadSave();
     }
 
     //----------------------------------------------------------------------------------
@@ -45,7 +44,9 @@ public class GameState {
         tickLoop();
         actLoop();
         screenRefresher();
-        saveLoop();
+        if(gameConstants.autosave) {
+            saveLoop();
+        }
     }
 
     private void actLoop() {

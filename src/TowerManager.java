@@ -61,10 +61,10 @@ public class TowerManager {
             // Using JSONTokener to parse the JSON file
             JSONTokener tokener = new JSONTokener(reader);
             JSONObject jsonObject = new JSONObject(tokener);
-            TowerTemplate template = loadTemplateFromJsonObject(jsonObject);
             String holder = link.substring(0, link.lastIndexOf("/"));
-            template.setType(holder.substring(holder.lastIndexOf("/") + 1));
-            template.setName(link.substring(link.lastIndexOf("/") + 1, link.length() - 5));
+            String type = holder.substring(holder.lastIndexOf("/") + 1);
+            String name = link.substring(link.lastIndexOf("/") + 1, link.length() - 5);
+            TowerTemplate template = loadTemplateFromJsonObject(jsonObject,type,name);
             return template;
         } catch (IOException | JSONException e) {
             e.printStackTrace();
@@ -72,7 +72,7 @@ public class TowerManager {
         return null;
     }
 
-    public TowerTemplate loadTemplateFromJsonObject(JSONObject jsonObject) {
+    public TowerTemplate loadTemplateFromJsonObject(JSONObject jsonObject,String giventype, String givenname) {
         TowerTemplate template = new TowerTemplate();
         String type;
         String name;
@@ -80,8 +80,8 @@ public class TowerManager {
             type = jsonObject.getString("Type");
             name = jsonObject.getString("Name");
         } catch (Exception e) {
-            name = "";
-            type = "";
+            name = givenname;
+            type = giventype;
         }
         String BuildMenuList;
         try {

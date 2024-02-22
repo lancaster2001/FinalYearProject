@@ -3,6 +3,7 @@ import java.awt.*;
 public interface gameConstants {
     boolean debugging = true;
     boolean outlineSlots = false;
+    boolean autosave = false;
 
     //FILE LOCATIONS----------------------------------------------------------------------------------------
     String assetsPath = "src/Assets/";

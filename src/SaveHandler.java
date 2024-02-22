@@ -25,7 +25,7 @@ public class SaveHandler {
     //----------------------------------------------------------------------------------------
     private String saveSlot = "save1";
     private final String saveLink = "src/Saves/";
-    private Map mapInstance;
+    private Map mapInstance = null;
 
     public String getSaveSlot() {
         return saveSlot;
@@ -63,11 +63,22 @@ public class SaveHandler {
             ResourceManager.getInstance().load(inventoryJson);
             mapInstance = MapGenerator.getInstance().loadMap(mapLink);
         } catch (IOException | JSONException e) {
-            e.printStackTrace();
+            System.out.println("no save data for" + saveSlot);
         }
+    }
+    public void newSave(){
+        saveSlot = String.valueOf(Math.random());
     }
 
     public Map getMapInstance() {
-        return mapInstance;
+        if (mapInstance != null) {
+            return mapInstance;
+        } else {
+            loadSave();
+            if (mapInstance != null) {
+                return mapInstance;
+            }
+        }
+        return null;
     }
 }

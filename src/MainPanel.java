@@ -7,6 +7,7 @@ public final class MainPanel extends JPanel {
     private static MainPanel instance = new MainPanel();
 
     private MainPanel() {
+
         this.setSize(gameConstants.screenSize.width, gameConstants.screenSize.height - 500);
         this.setMinimumSize(new Dimension(600, 600));
         this.setVisible(true);
@@ -39,5 +40,4 @@ public final class MainPanel extends JPanel {
             }
         }
     }
-
 }

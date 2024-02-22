@@ -93,7 +93,11 @@ public class MenuState {
     private void selectedMenuCheck() {
         if (selectedMenu.equalsIgnoreCase("Play Game")) {
             stateManagerInstance.setCurrentState(gameConstants.STATE.GAME);
-        } else {
+        }else if(selectedMenu.equalsIgnoreCase("New Game")){
+            SaveHandler.getInstance().newSave();
+            SaveHandler.getInstance().loadSave();
+            stateManagerInstance.setCurrentState(gameConstants.STATE.GAME);
+        }else {
             loadMenu();
         }
     }

@@ -10,6 +10,7 @@ public class Launcher {
     }
 
     private Launcher() {
+        System.setProperty("sun.java2d.uiScale", "1.0");
         StateManager.getInstance().setCurrentState(gameConstants.STATE.STARTMENU);
     }
 

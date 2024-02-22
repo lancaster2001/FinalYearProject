@@ -6,9 +6,7 @@ import org.json.JSONTokener;
 import java.awt.*;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Random;
+import java.util.*;
 
 public class EnemyManager {
     //singleton------------------------------------------------------------------------
@@ -158,6 +156,22 @@ public class EnemyManager {
 
         }
         return template;
+    }
+    private void timer() {
+        Timer actTimer = new Timer();
+        TimerTask task = new TimerTask() {
+            public static int i = 0;
+
+            @Override
+            public void run() {
+                ++i;
+                timer();
+            }
+        };
+        actTimer.schedule(task, 1000);
+    }
+    public void startGame(){
+        timer();
     }
 
     public ArrayList<BaseEnemy> getEnemyList() {

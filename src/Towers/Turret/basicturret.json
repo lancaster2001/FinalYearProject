@@ -10,6 +10,7 @@
   "BulletCostQuantity": 1,
   "CostResource": "Rock",
   "CostQuantity": 5,
+  "BuildMenuList": "Turret",
   "ImageLink": "basicturret.png",
   "Bullet":[
     {"MoveSpeed": 8,

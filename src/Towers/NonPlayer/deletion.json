@@ -4,6 +4,7 @@
   "Height": 1,
   "Range": 0,
   "Speed": 0,
+  "BuildMenuList": "n/a",
   "CostResource": "rock",
   "CostQuantity": 0,
   "ImageLink": "deletion.png"

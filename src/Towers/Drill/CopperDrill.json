@@ -1,12 +1,11 @@
 {
-  "Type": "Drill",
-  "Name": "Copper Drill",
   "MaxHealth": 10.0,
   "Width": 1.0,
   "Height": 1.0,
   "CostResource": "copper",
   "CostQuantity": 5,
   "Speed": 1.5,
-  "ImageLink": "plasma-bore.png",
-  "SpinnerLink": "pneumatic-drill-spinner.png"
+  "ImageLink": "copperdrill.png",
+  "BuildMenuList": "Drill",
+  "SpinnerLink": "basicdrillspinner.png"
 }

@@ -5,6 +5,6 @@
   "Height": 1.0,
   "CostResource": "Rock",
   "CostQuantity": 1,
-  "Speed": 1.5,
-  "ImageLink": "basicconveyor.png"
+  "Speed": 2.5,
+  "ImageLink": "copperconveyor.png"
 }

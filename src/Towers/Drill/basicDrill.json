@@ -1,12 +1,11 @@
 {
-  "Type": "Drill",
-  "Name": "Basic Drill",
   "MaxHealth": 10.0,
   "Width": 1.0,
   "Height": 1.0,
   "CostResource": "Rock",
   "CostQuantity": 5,
   "Speed": 5.0,
-  "ImageLink": "pneumatic-drill.png",
-  "SpinnerLink": "pneumatic-drill-spinner.png"
+  "ImageLink": "basicdrill.png",
+  "BuildMenuList": "Drill",
+  "SpinnerLink": "basicdrillspinner.png"
 }
