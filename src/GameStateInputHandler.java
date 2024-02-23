@@ -22,7 +22,6 @@ public class GameStateInputHandler {
     //----------------------------------------------------------------------------------
     private final MainPanel panelInstance = MainPanel.getInstance();
     private final Camera cameraInstance = Camera.getInstance();
-    private final Map mapInstance = GameState.getInstance().getMapInstance();
     private final GameUIBuildMenu gameUIBuildMenuInstance = GameUIBuildMenu.getInstance();
     private double buildRotation = 0;
     int titleHeight = MainFrame.getInstance().getHeight() - panelInstance.getHeight();

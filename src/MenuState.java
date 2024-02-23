@@ -10,7 +10,7 @@ public class MenuState {
     private static MenuState instance = new MenuState();
 
     private MenuState() {
-        menues.put("main", new String[]{"Play Game", "Saves", "Options"});
+        menues.put("main", new String[]{"Play Game", "New Game", "Saves", "Options"});
         menu = new Rectangle(gameConstants.screenWidth/5, gameConstants.screenHeight/5, (gameConstants.screenWidth/5)*3, (gameConstants.screenHeight/5)*3);
         loadMenu();
     }

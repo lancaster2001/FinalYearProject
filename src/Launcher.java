@@ -16,7 +16,6 @@ public class Launcher {
 
     //----------------------------------------------------------------------------------
     private final MainFrame frameInstance = MainFrame.getInstance();
-    public final MainPanel panelInstance = frameInstance.getPanelInstance();
 
     public static void main(String[] args) {
         Launcher theLauncher = Launcher.getInstance();
