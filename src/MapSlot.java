@@ -86,6 +86,9 @@ public class MapSlot {
     }
 
     public void clearTower() {
+        if(tower!=null){
+            ResourceManager.getInstance().queryInventory(tower.getTempalate().getCostResource()).add(tower.getTempalate().getCostQuantity());
+        }
         tower = null;
     }
     public void clearTempTower() {
@@ -139,14 +142,14 @@ public class MapSlot {
         setTower(newTower,true);
     }
     public void setTower(BaseTower newTower,boolean charge) {
-        if(tower!=null) {
-            ResourceManager.getInstance().queryInventory(tower.getTempalate().getCostResource()).add(tower.getTempalate().getCostQuantity());
-        }
+
         if(charge){
             if(ResourceManager.getInstance().queryInventory(newTower.getTempalate().getCostResource()).remove(newTower.getTempalate().getCostQuantity())){
+                clearTower();
                 tower = newTower;
             }
         }else{
+            clearTower();
             tower = newTower;
         }
     }

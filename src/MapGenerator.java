@@ -37,75 +37,50 @@ public class MapGenerator {
         for (int slotNumber = 0; slotNumber < (mapWidth * mapHeight); slotNumber++) {
             int x = (slotNumber % mapWidth) + 1;
             int y = (slotNumber / mapWidth) + 1;
-            if (rnd.nextInt(1, 10) == 5) {
-                mapArray.add(new MapSlot(x, y, tileManagerInstance.creatNewTileTemplate("basalt", null)));
-            } else if (rnd.nextInt(1, 10) == 5) {
-                mapArray.add(new MapSlot(x, y, tileManagerInstance.creatNewTileTemplate("sand", null)));
-            } else if (rnd.nextInt(1, 10) == 5) {
-                mapArray.add(new MapSlot(x, y, tileManagerInstance.creatNewTileTemplate("basalt", null)));
-            } else {
-                mapArray.add(new MapSlot(x, y, tileManagerInstance.creatNewTileTemplate("basalt", null)));
+            mapArray.add(new MapSlot(x, y, tileManagerInstance.creatNewTileTemplate("basalt", null)));
+
+        }
+        for(int counter = 3; counter<=4;counter++){
+            int thisX = rnd.nextInt(1, mapWidth);
+            int thisY = rnd.nextInt(1, mapHeight);
+            createPatch(thisX, thisY, counter, mapArray, mapWidth,"sand" , null);
+            createPatch(thisX, thisY, counter-1, mapArray, mapWidth,"water" , null);
+        }
+
+        for(int counter = 2; counter<=3;counter++){
+            createPatch(rnd.nextInt(1, mapWidth), rnd.nextInt(1, mapHeight), counter, mapArray, mapWidth,null , "iron");
+        }
+        for(int counter2 = 1; counter2<=3;counter2++) {
+            for (int counter = 2; counter <= 3; counter++) {
+                createPatch(rnd.nextInt(1, mapWidth), rnd.nextInt(1, mapHeight), counter, mapArray, mapWidth, null, "copper");
             }
-        }
-        for(int counter = 1; counter<=3;counter++){
-            createResourcePatch(rnd.nextInt(1, mapWidth), rnd.nextInt(1, mapHeight), counter, "iron", mapArray, mapWidth);
-        }
-        for(int counter = 1; counter<=3;counter++){
-            createResourcePatch(rnd.nextInt(1, mapWidth), rnd.nextInt(1, mapHeight), counter, "copper", mapArray, mapWidth);
         }
 
         latestMap = new Map(mapArray, mapWidth, mapHeight);
         return latestMap;
     }
 
-    private Map generateTestMap(int mapWidth, int mapHeight) {
-        boolean check = true;
-        ArrayList<MapSlot> mapArray = new ArrayList<>();
-        for (int slotNumber = 0; slotNumber < (mapWidth * mapHeight); slotNumber++) {
-            int x = (slotNumber % mapWidth) + 1;
-            int y = (slotNumber / mapWidth) + 1;
-            if (check) {
-                check = !check;
-                mapArray.add(new MapSlot(x, y, tileManagerInstance.creatNewTileTemplate("test", null)));
-            } else {
-                check = !check;
-                mapArray.add(new MapSlot(x, y, tileManagerInstance.creatNewTileTemplate("sand", null)));
-            }
 
-        }
-        latestMap = new Map(mapArray, mapWidth, mapHeight);
-        return latestMap;
-    }
-
-    private ArrayList<MapSlot> createPatch(int x, int y, int radius, String tileImage, ArrayList<MapSlot> mapArray, int width) {
-        if (radius > 0) {
-            for (int circley = y - radius; circley < y + radius; circley++) {
-                if (circley > 0) {
-                    for (int circlex = x - radius; circlex < x + radius; circlex++) {
-                        if (circlex > 0) {
-                            int currentSlot = ((y * width) + x);
-                            mapArray.add(currentSlot, new MapSlot(x, y, tileManagerInstance.creatNewTileTemplate(tileImage, null)));
-                        }
-                    }
-                }
-            }
-        }
-
-        return mapArray;
-    }
-
-    private ArrayList<MapSlot> createResourcePatch(int x, int y, int radius, String resource, ArrayList<MapSlot> mapArray, int width) {
+    private ArrayList<MapSlot> createPatch(int x, int y, int radius, ArrayList<MapSlot> mapArray, int width,String tile, String resource) {
         if (radius > 0) {
             radius=Math.abs(radius);
             for (int circley = y - (radius-1); circley < y + radius; circley++) {
-                if (circley > 0) {
+                if (circley >= 0) {
                    // for (int circlex = x - radius; circlex < x + radius; circlex++) {
                     for (int circlex = x - ((radius-1)-Math.abs(circley-y)); circlex <= x + ((radius-1)-Math.abs(circley-y)); circlex++) {
-                        if (circlex > 0) {
+                        if (circlex >= 0) {
                             int currentSlot = ((circley * width) + circlex);
-                            //mapArray.add(currentSlot, new MapSlot(circlex, circley, tileManagerInstance.creatNewTileTemplate(mapArray.get(currentSlot).getTile().getImageLink(), resource)));
-
-                            mapArray.get(currentSlot).getTile().setResource(resource);
+                            if ((currentSlot>0)&&(currentSlot<=mapArray.size())) {
+                                //mapArray.add(currentSlot, new MapSlot(circlex, circley, tileManagerInstance.creatNewTileTemplate(mapArray.get(currentSlot).getTile().getImageLink(), resource)));
+                                if (tile != null) {
+                                    String holderResource = mapArray.get(currentSlot).getTile().getResource();
+                                    mapArray.set(currentSlot, new MapSlot(circlex+1, circley+1, tileManagerInstance.creatNewTileTemplate(tile, null)));
+                                    mapArray.get(currentSlot).getTile().setResource(holderResource);
+                                }
+                                if (resource != null) {
+                                    mapArray.get(currentSlot).getTile().setResource(resource);
+                                }
+                            }
                         }
                     }
                 }

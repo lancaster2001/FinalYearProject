@@ -145,6 +145,7 @@ public class GameState {
             mapInstance = SaveHandler.getInstance().getMapInstance();
             if (mapInstance==null){
                 mapInstance = mapGeneratorInstance.createNewMap(gameConstants.mapWidth,gameConstants.mapHeight);
+                System.out.println();
             }
         }
         return mapInstance;

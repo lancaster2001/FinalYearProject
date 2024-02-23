@@ -27,7 +27,10 @@ public class EnemyManager {
     private final ArrayList<BaseEnemy> enemyList = new ArrayList<>();
     private final ArrayList<EnemyTemplate> enemyTemplates = new ArrayList<>();
     private final String enemyTemplatesPath = "src/Enemies/";
-    private double difficulty = 1;
+    private static int spawnerCounter = 0;
+    private static boolean spawnerOn = false;
+    private double countdown = 60;
+    private double difficulty = 0;
 
 
 
@@ -41,10 +44,21 @@ public class EnemyManager {
         if (!enemiesToRemove.isEmpty()) {
             removeListOfIndexes(enemiesToRemove);
         }
+
         for (Integer index = 0; index < enemyList.size(); index++) {
             enemyList.get(index).tick(tickMultiplier);
         }
-        randomEnemyChance();
+        countdown-=tickMultiplier;
+        if(spawnerCounter>= difficulty-1) {
+            spawnerCounter = 0;
+            spawnerOn = false;
+            difficulty += 5;
+        }
+        if(countdown<=0){
+            countdown = 60;
+            spawnerOn = true;
+            spawner();
+        }
     }
 
     public void drawEnemies(Graphics g) {
@@ -60,7 +74,7 @@ public class EnemyManager {
         }
     }
 
-    public void randomEnemyChance() {
+    private void randomEnemyChance() {
         Random rnd = new Random();
         if (rnd.nextInt(1, 10) == 11) {
             int xSpawn;
@@ -101,7 +115,7 @@ public class EnemyManager {
         }
     }
 
-    public void createEnemy(double x, double y, String name) {
+    private void createEnemy(double x, double y, String name) {
         for (EnemyTemplate template : enemyTemplates) {
             if (name.equalsIgnoreCase(template.getName())) {
                 enemyList.add(new BaseEnemy(new Pose(x, y, 0), template));
@@ -157,21 +171,43 @@ public class EnemyManager {
         }
         return template;
     }
-    private void timer() {
+    /*public void timer(){
+        countdown-=;
+        if(spawnerCounter>= difficulty-1) {
+            spawnerCounter = 0;
+            spawnerOn = false;
+            difficulty += 5;
+        }
+        if(countdown<=0){
+            countdown = 60;
+            spawnerOn = true;
+            spawner();
+        }
+
+    }*/
+    private void spawner() {
+
         Timer actTimer = new Timer();
         TimerTask task = new TimerTask() {
-            public static int i = 0;
 
             @Override
             public void run() {
-                ++i;
-                timer();
+                ++spawnerCounter;
+                Random rnd = new Random();
+                int chance = rnd.nextInt(1, 3);
+                if (chance == 1) {
+                    createEnemy(1, 1, "scout");
+                }else{
+                    createEnemy(1, 1, "soldier");
+                }
+                if(spawnerOn) {
+                    spawner();
+                }
             }
         };
+
         actTimer.schedule(task, 1000);
-    }
-    public void startGame(){
-        timer();
+
     }
 
     public ArrayList<BaseEnemy> getEnemyList() {

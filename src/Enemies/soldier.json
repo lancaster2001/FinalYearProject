@@ -3,7 +3,7 @@
   "Height": 1.0,
   "Damage": 2.0,
   "MaxHealth": 10,
-  "MoveSpeed": 2.5,
+  "MoveSpeed": 1,
   "Cooldown": 4.0,
   "Range": 100.0,
   "ImageLink": "soldier.png",

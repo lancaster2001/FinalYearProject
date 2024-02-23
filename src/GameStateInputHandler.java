@@ -101,7 +101,7 @@ public class GameStateInputHandler {
                 currentMouseCoord = cameraInstance.slotOnScreen(currentMouseLocation);
             }
             if (currentMouseCoord != previousMouseCoord) {
-                if (previousMouseCoord != null) {
+                if ((previousMouseCoord != null)&&(previousMouseCoord.length!=0)) {
                     MapSlot clickedSlot = cameraInstance.getMapslot(previousMouseCoord[0], previousMouseCoord[1]);
                     GameState.getInstance().getMapInstance().clearTempTower(clickedSlot.getX(), clickedSlot.getY());
                 }
@@ -257,6 +257,4 @@ public class GameStateInputHandler {
                 }
             }
         }
-
-
 }
