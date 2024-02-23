@@ -4,15 +4,19 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MenuState {
     //singleton-------------------------------------------------------------------------
     private static MenuState instance = new MenuState();
 
     private MenuState() {
-        menues.put("main", new String[]{"Play Game", "New Game", "Saves", "Options"});
+        menues.put("main", new String[]{"Play Game", "New Game","Saves", "Options"});
+        menues.put("Saves", SaveHandler.getInstance().getSavesList());
         menu = new Rectangle(gameConstants.screenWidth/5, gameConstants.screenHeight/5, (gameConstants.screenWidth/5)*3, (gameConstants.screenHeight/5)*3);
         loadMenu();
+        screenRefresher();
     }
 
     public static MenuState getInstance() {
@@ -23,27 +27,43 @@ public class MenuState {
     }
 
     //----------------------------------------------------------------------------------------
+    private boolean onSavesMenu = false;
     private final StateManager stateManagerInstance = StateManager.getInstance();
-
+    private final MainPanel panelInstance = MainPanel.getInstance();
     private ArrayList<Rectangle> menuButtons = new ArrayList<>();
     private HashMap<String, String[]> menues = new HashMap<String, String[]>();
     private Rectangle menu;
     private String selectedMenu = "main";
+    private void screenRefresher() {
+        Timer screenRefreshTimer = new Timer();
+        panelInstance.repaint();
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                if(stateManagerInstance.currentState== gameConstants.STATE.STARTMENU) {
+                    screenRefresher();
+                }
+            }
+        };
+        screenRefreshTimer.schedule(task, 1000 / 60);
+    }
 
     private void loadMenu() {
         Rectangle placement = menu;
         int index = 0;
         String[] buttons = menues.get(selectedMenu);
-        int spaceBetweenButtonsHorizontal = (int) (placement.width * 0.2);
-        int spaceBetweenButtonsVertical = (int) ((placement.height / buttons.length) * 0.2);
-        menuButtons.clear();
-        for (String button : buttons) {
-            int x = placement.x + spaceBetweenButtonsHorizontal;
-            int y = placement.y + (index * (placement.height / buttons.length)) + spaceBetweenButtonsVertical;
-            int width = (placement.width - (2 * spaceBetweenButtonsHorizontal));
-            int height = (placement.height / buttons.length) - (2 * spaceBetweenButtonsVertical);
-            menuButtons.add(new Rectangle(x, y, width, height));
-            index += 1;
+        if(buttons != null) {
+            int spaceBetweenButtonsHorizontal = (int) (placement.width * 0.2);
+            int spaceBetweenButtonsVertical = (int) ((placement.height / buttons.length) * 0.2);
+            menuButtons.clear();
+            for (String button : buttons) {
+                int x = placement.x + spaceBetweenButtonsHorizontal;
+                int y = placement.y + (index * (placement.height / buttons.length)) + spaceBetweenButtonsVertical;
+                int width = (placement.width - (2 * spaceBetweenButtonsHorizontal));
+                int height = (placement.height / buttons.length) - (2 * spaceBetweenButtonsVertical);
+                menuButtons.add(new Rectangle(x, y, width, height));
+                index += 1;
+            }
         }
     }
 
@@ -63,7 +83,7 @@ public class MenuState {
 
             g.setColor(gameConstants.resourceMenuTitleColour);
             g.setFont(new Font("Arial", Font.BOLD, 20));
-            g.drawString(menuOptions[index], button.x, button.y + 20);
+            g.drawString(menuOptions[index].replace(".json",""), button.x, button.y + 20);
 
             index += 1;
         }
@@ -72,13 +92,15 @@ public class MenuState {
     public void userInput(MouseEvent e) {
         int index = 0;
         String[] menuOptions = menues.get(selectedMenu);
-        for (Rectangle button : menuButtons) {
-            if (button.contains(e.getPoint())) {
-                selectedMenu = menuOptions[index];
-                selectedMenuCheck();
-            }
+        if ((menuOptions!=null)&&(menuButtons!=null)) {
+            for (Rectangle button : menuButtons) {
+                if (button.contains(e.getPoint())) {
+                    selectedMenu = menuOptions[index];
+                    selectedMenuCheck();
+                }
 
-            index += 1;
+                index += 1;
+            }
         }
     }
 
@@ -97,9 +119,14 @@ public class MenuState {
             SaveHandler.getInstance().newSave();
             SaveHandler.getInstance().loadSave();
             stateManagerInstance.setCurrentState(gameConstants.STATE.GAME);
-        }else {
-            loadMenu();
+        }else if(selectedMenu.equalsIgnoreCase("Saves")) {
+            onSavesMenu = true;
+        }else if (onSavesMenu){
+            SaveHandler.getInstance().setSaveSlot(selectedMenu.replace(".json",""));
+            stateManagerInstance.setCurrentState(gameConstants.STATE.GAME);
         }
+        loadMenu();
+        MainPanel.getInstance().repaint();
     }
 
 }

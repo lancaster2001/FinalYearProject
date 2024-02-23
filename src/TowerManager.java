@@ -43,7 +43,7 @@ public class TowerManager {
         //get the directory of each tower type e.g. turret, driller, etc
         if (directories != null) {
             for (String currentTowerType : directories) {
-                String[] jsonsInFolder = AssetManager.getInstance().getJsonsInFolder(towersFolder + currentTowerType);
+                String[] jsonsInFolder = getJsonsInFolder(towersFolder + currentTowerType);
 
 
                 //get the towers of each type e.g. turret1, turret1, turret3, etc
@@ -152,5 +152,14 @@ public class TowerManager {
     }
     public TowerTemplate getDeletionTower(){
         return getTemplate("deletion");
+    }
+    public String[] getJsonsInFolder(String theLink) {
+        File dir = new File(theLink);
+        String[] files = dir.list(new FilenameFilter() {
+            public boolean accept(File dir, String name) {
+                return new File(dir, name).getName().endsWith(".json");
+            }
+        });
+        return files;
     }
 }
