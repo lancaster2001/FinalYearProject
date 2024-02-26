@@ -62,4 +62,5 @@ public interface gameConstants {
     int buildMenuElementHeight = ((buildMenuHeight / 10) * 8);
     //MAIN MENU----------------------------------------------------------------------------------------------
     Color mainMenuBackgroundColor = Color.white;
+    Color errorMessageBackgroundColor = Color.white;
 }

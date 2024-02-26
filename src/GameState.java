@@ -40,12 +40,27 @@ public class GameState {
     private boolean start = true;
 
     public void startup() {
-        cameraInstance.setPosition(cameraInstance.getX(), cameraInstance.getY());
-        tickLoop();
-        actLoop();
-        screenRefresher();
-        if(gameConstants.autosave) {
-            saveLoop();
+        try {
+            try {
+                mapInstance = SaveHandler.getInstance().getMapInstance();
+            }catch(Exception e){
+                MenuState.getInstance().showErrorMessage("error getting map instance in gamestate");
+                StateManager.getInstance().setCurrentState(gameConstants.STATE.STARTMENU);
+            }
+            cameraInstance.setPosition(cameraInstance.getX(), cameraInstance.getY());
+            tickLoop();
+            actLoop();
+            screenRefresher();
+            if (gameConstants.autosave) {
+                saveLoop();
+            }
+        }catch(Exception e){
+            MenuState.getInstance().showErrorMessage("error starting up gamestate");
+            StateManager.getInstance().setCurrentState(gameConstants.STATE.STARTMENU);
+        }
+        if(mapInstance==null){
+            MenuState.getInstance().showErrorMessage("error loading the map instance\n in gamestate startup");
+            StateManager.getInstance().setCurrentState(gameConstants.STATE.STARTMENU);
         }
     }
 
@@ -141,13 +156,8 @@ public class GameState {
     public Map getMapInstance() {
         if (mapInstance != null) {
             return mapInstance;
-        } else {
-            mapInstance = SaveHandler.getInstance().getMapInstance();
-            if (mapInstance==null){
-                mapInstance = mapGeneratorInstance.createNewMap(gameConstants.mapWidth,gameConstants.mapHeight);
-            }
         }
-        return mapInstance;
+        return null;
     }
 
 }

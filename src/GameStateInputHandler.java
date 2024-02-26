@@ -249,10 +249,14 @@ public class GameStateInputHandler {
                     }
                 }
             } else if (lastClickedButton == MouseEvent.BUTTON1){
-                int[] g = cameraInstance.slotOnScreen(currentMouseLocation);
-                MapSlot clickedSlot = cameraInstance.getMapslot(g[0], g[1]);
-                if (gameUIBuildMenuInstance.getSelectedTower() != null) {
-                    GameState.getInstance().getMapInstance().setTower(gameUIBuildMenuInstance.getSelectedTower(), new Pose(clickedSlot.getX(), clickedSlot.getY(), buildRotation));
+                try {
+                    int[] g = cameraInstance.slotOnScreen(currentMouseLocation);
+                    MapSlot clickedSlot = cameraInstance.getMapslot(g[0], g[1]);
+                    if (gameUIBuildMenuInstance.getSelectedTower() != null) {
+                        GameState.getInstance().getMapInstance().setTower(gameUIBuildMenuInstance.getSelectedTower(), new Pose(clickedSlot.getX(), clickedSlot.getY(), buildRotation));
+                    }
+                }catch(Exception e){
+                    System.out.println("gameStateInputHandler error at clickToBuild");
                 }
             }
         }

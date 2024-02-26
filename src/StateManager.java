@@ -23,7 +23,8 @@ public class StateManager {
             gameStateInstance = GameState.getInstance();
             gameStateInstance.startup();
         } else if (currentState.equals(gameConstants.STATE.STARTMENU)) {
-            MenuState.getInstance();
+            MenuState.getInstance().startup();
+
         }
     }
 

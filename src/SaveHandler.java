@@ -32,6 +32,8 @@ public class SaveHandler {
     private final String saveLink = "src/Saves/";
     private Map mapInstance = null;
     private String[] saves = new String[]{};
+    private int mapWidth = gameConstants.mapWidth;
+    private int mapHeight = gameConstants.mapHeight;
 
     public String getSaveSlot() {
         return saveSlot;
@@ -69,15 +71,12 @@ public class SaveHandler {
     }
     public void newSave(){
         saveSlot = String.valueOf(Math.random());
+        mapInstance = MapGenerator.getInstance().createNewMap(mapWidth,mapHeight);
     }
 
     public Map getMapInstance() {
         if (mapInstance != null) {
             return mapInstance;
-        } else {
-            if (mapInstance != null) {
-                return mapInstance;
-            }
         }
         return null;
     }

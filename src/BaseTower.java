@@ -166,7 +166,8 @@ public abstract class BaseTower {
             }
             index += 1;
         }
-        //todo make this applicable for all output types
+        //todo make this applicable for individual output directions
+        //sets direction to check to be every direction
         ArrayList<Double> directionCheckOrder = new ArrayList<>();
         for(index = 0;index<4;index++){
            double holder = nextDirection+((Math.PI/2)*index);
@@ -175,6 +176,7 @@ public abstract class BaseTower {
            }
             directionCheckOrder.add(holder);
         }
+        //checks each direction
         while(!directionCheckOrder.isEmpty()) {
             if (pose.getY() - 1 > 0) {
                 if (existanceCheck) {
