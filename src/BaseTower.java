@@ -117,10 +117,13 @@ public abstract class BaseTower {
         return tempalate;
     }
 
-    private Double getDirectionOfInput(int x, int y) {
+    protected Double getDirectionOfInput(int x, int y) {
         double atan2_x = (x) - pose.getX();
         double atan2_y = (y) - pose.getY();
         double rot1 = Math.atan2(atan2_y, atan2_x);
+        if(rot1 + (Math.PI / 2)>Math.PI){
+            rot1-=2*Math.PI;
+        }
         return rot1 + (Math.PI / 2);
     }
 
@@ -152,7 +155,6 @@ public abstract class BaseTower {
         }
         return false;
     }
-
     protected boolean outputResource(Resource resource) {
         Map mapInstance = GameState.getInstance().getMapInstance();
         BaseTower currentTower;
@@ -178,7 +180,7 @@ public abstract class BaseTower {
         }
         //checks each direction
         while(!directionCheckOrder.isEmpty()) {
-            if (pose.getY() - 1 > 0) {
+            if ((pose.getY() - 1 > 0)&&(outputDirections.contains(0.0))) {
                 if (existanceCheck) {
                     currentTower = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX(), pose.getY() - 1, 0.5, 0.5)).getFirst().getTower();
                     if (currentTower != null) {
@@ -193,7 +195,7 @@ public abstract class BaseTower {
                         }
                     }
                 }
-                if (pose.getX() + 1 <= GameState.getInstance().getMapInstance().getMapWidth()) {
+                if ((pose.getX() + 1 <= GameState.getInstance().getMapInstance().getMapWidth())&&(outputDirections.contains(Math.PI/2))) {
                     currentTower = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX() + 1, pose.getY(), 0.5, 0.5)).getFirst().getTower();
                     if (currentTower != null) {
                         resource.setPose(new Pose(pose.getX() + 1.0000001, pose.getY() + (0.5 - resource.getHeight() / 2), Math.PI / 2));
@@ -207,7 +209,7 @@ public abstract class BaseTower {
                         }
                     }
                 }
-                if (pose.getY() + 1 <= GameState.getInstance().getMapInstance().getMapHeight()) {
+                if ((pose.getY() + 1 <= GameState.getInstance().getMapInstance().getMapHeight())&&(outputDirections.contains(Math.PI))) {
                     currentTower = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX(), pose.getY() + 1, 0.5, 0.5)).getFirst().getTower();
                     if (currentTower != null) {
                         resource.setPose(new Pose(pose.getX() + (0.5 - resource.getWidth() / 2), pose.getY() + 1.0000001, Math.PI));
@@ -221,7 +223,7 @@ public abstract class BaseTower {
                         }
                     }
                 }
-                if (pose.getX() - 1 > 0) {
+                if ((pose.getX() - 1 > 0)&&(outputDirections.contains(-Math.PI/2))) {
                     currentTower = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX() - 1, pose.getY(), 0.5, 0.5)).getFirst().getTower();
                     if (currentTower != null) {
                         resource.setPose(new Pose(pose.getX() - 0.0000001, pose.getY() + (0.5 - resource.getHeight() / 2), Math.PI * 1.5));

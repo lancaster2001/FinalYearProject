@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainFrame extends JFrame implements KeyListener, MouseWheelListener, MouseListener,MouseMotionListener {
     //singleton-------------------------------------------------------------------------
@@ -51,6 +53,15 @@ public class MainFrame extends JFrame implements KeyListener, MouseWheelListener
     }
     private void close(){
         SaveHandler.getInstance().saveSaveSlot();
+        SaveHandler.getInstance().saveGame();
+        java.util.Timer actTimer = new Timer();
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+
+            }
+        };
+        actTimer.schedule(task, 3000);
     }
 
     @Override

@@ -44,6 +44,7 @@ public class SaveHandler {
         return saveSlot;
     }
     public void saveGame(){
+        if(StateManager.getInstance().getCurrentState()== gameSettings.STATE.GAME){
         JSONObject resourceJson =ResourceManager.getInstance().save();
         String mapLink = GameState.getInstance().getMapInstance().save();
         String fileName = saveLink + saveSlot + ".json";
@@ -55,6 +56,7 @@ public class SaveHandler {
             file.flush();
         } catch (IOException e) {
             e.fillInStackTrace();
+        }
         }
     }
 

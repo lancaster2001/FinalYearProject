@@ -1,13 +1,14 @@
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class conveyor extends BaseTower {
     ArrayList<String> setDirectionList = new ArrayList<>();
 
     public conveyor(Pose pose, TowerTemplate template) {
         super(pose, template);
-        inventorySize = 5;
+        inventorySize = 3;
         for (double index = -1; index < 3; index += 1.0) {
             if (index * (Math.PI / 2) != pose.getTheta()) {
                 inputDirections.add(index * (Math.PI / 2));
@@ -28,8 +29,16 @@ public class conveyor extends BaseTower {
                     indexesToRemove.add(index);
                 }
             } else {
-
-                resource.move(speed * tickMultiplier);
+                boolean collisioncheck = false;
+                for (int resourceIndex = index;resourceIndex>-1;resourceIndex--) {
+                    if ((!Objects.equals(resource.getId(), inventory.get(resourceIndex).getId()))&&(resource.collisionCheck(inventory.get(resourceIndex)))) {
+                        collisioncheck = true;
+                    }
+                }
+                if (!collisioncheck) {
+                    resource.move(speed * tickMultiplier);
+                }
+                outputResource(resource);
             }
 
             index += 1;
@@ -70,11 +79,19 @@ public class conveyor extends BaseTower {
         MapSlot slotToCheck = null;
         Pose resourcePose = resource.getPose();
         boolean withinSlot = new Rectangle2D.Double(pose.getX(), pose.getY(), 1, 1).intersects(resourcePose.getX(), resourcePose.getY(), resource.getWidth(), resource.getHeight());
+
         if (!withinSlot) {
             slotToCheck = mapInstance.getMapSection(new Rectangle2D.Double(resourcePose.getX(), resourcePose.getY(), 0.5, 0.5)).getFirst();
         }
         if (slotToCheck != null) {
             boolean containsCheck = new Rectangle2D.Double(slotToCheck.getX(), slotToCheck.getY(), 1, 1).contains(resource.getPose().getX(), resource.getPose().getY(), resource.getWidth(), resource.getHeight());
+            if(!containsCheck){
+                for(double direction:outputDirections){
+                    if(getDirectionOfInput((int)resourcePose.getX(),(int)resourcePose.getY())==direction){
+                        containsCheck=true;
+                    }
+                }
+            }
             if (containsCheck) {
                 try {
                     if (slotToCheck.getTower().addToInventory((int) pose.getX(), (int) pose.getY(), resource)) {

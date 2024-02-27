@@ -40,7 +40,10 @@ public class MenuState {
         resetSelectedMenu();
         screenRefresher();
         if(!menues.containsKey("Saves")){
-            menues.put("Saves", SaveHandler.getInstance().getSavesList());
+            String[] saves = SaveHandler.getInstance().getSavesList();
+            if(saves.length>0) {
+                menues.put("Saves", saves);
+            }
         }
     }
     private void screenRefresher() {
@@ -172,6 +175,8 @@ public class MenuState {
         }else if (menuPath.contains("Saves") && !Objects.equals(getSelectedMenu(), "Saves")){
             SaveHandler.getInstance().setSaveSlot(getSelectedMenu().replace(".json",""));
             stateManagerInstance.setCurrentState(gameSettings.STATE.GAME);
+        }else{
+            goToPreviousMenu();
         }
         return false;
     }

@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
@@ -32,7 +33,6 @@ public class Resource {
         int width = (int) (this.width * slotWidth);
         int height = (int) (this.height * slotHeight);
         g.drawImage(AssetManager.getInstance().getImage("Icons", iconImageLink), x, y, width, height, null);
-
     }
     private static Color getMostCommonColor(BufferedImage image) {
         int width = image.getWidth();
@@ -88,6 +88,14 @@ public class Resource {
         pose.setY(pose.getY() + targetY);
         pose.setTheta(pose.getTheta());
     }
+    public boolean collisionCheck(Resource resource){
+        if (resource.getHitBox()!=null) {
+            if (resource.getHitBox().intersects(getHitBox())) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public boolean add() {
         quantity += 1;
@@ -119,6 +127,12 @@ public class Resource {
             this.quantity -= quantity;
             return true;
         }
+    }
+    public Rectangle2D.Double getHitBox(){
+        if(pose!=null){
+            return new Rectangle2D.Double(pose.getX()+width/4,pose.getY()+height/4,width/2,height/2);
+        }
+        return null;
     }
 
     public int getQuantity() {

@@ -8,8 +8,8 @@ public class Camera {
 
     private Camera() {
         zoom = 5;
-        x = 2;
-        y = 2;
+        x = 1;
+        y = 1;
         screenWidthProportion = (double) gameSettings.getInstance().getScreenWidth() / (double) gameSettings.getInstance().getScreenHeight();
     }
 
@@ -37,6 +37,7 @@ public class Camera {
     public void setPosition(double x, double y) {
         this.x = x;
         this.y = y;
+        outOfBoundsCheck();
         calculateValues();
     }
 
@@ -226,7 +227,7 @@ public class Camera {
     }
 
     public void increaseZoom() {
-        if ((x + (zoom * screenWidthProportion) < GameState.getInstance().getMapInstance().getMapWidth() - 4) && (y + (zoom * screenWidthProportion) < GameState.getInstance().getMapInstance().getMapHeight() - 4)) {
+        if ((x + (zoom * screenWidthProportion) < GameState.getInstance().getMapInstance().getMapWidth() - 4) && (y + (zoom * screenWidthProportion) < GameState.getInstance().getMapInstance().getMapHeight() - 4)&&(zoom<50)) {
             zoom += 2;
             calculateValues();
         }

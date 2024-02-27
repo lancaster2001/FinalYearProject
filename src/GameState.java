@@ -51,6 +51,7 @@ public class GameState {
             if (gameSettings.getInstance().isAutosave()) {
                 saveLoop();
             }
+            cameraInstance.setPosition((mapInstance.getMapWidth()/2)-(cameraInstance.getZoom()/2), (mapInstance.getMapHeight()/2)-(cameraInstance.getZoom()/2));
         }catch(Exception e){
             MenuState.getInstance().showErrorMessage("error starting up gamestate");
             StateManager.getInstance().setCurrentState(gameSettings.STATE.STARTMENU);
