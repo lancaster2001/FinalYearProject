@@ -9,14 +9,12 @@ public class TileManager {
     private TileManager() {
         //loadTiles();
     }
-
     public static TileManager getInstance() {
         if (instance == null) {
             instance = new TileManager();
         }
         return instance;
     }
-
     //----------------------------------------------------------------------------------------
     private final ArrayList<TileTemplate> tileArrayList = new ArrayList<TileTemplate>();
     private final String assetFoldername = "Tiles";

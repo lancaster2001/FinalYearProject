@@ -8,11 +8,8 @@ public interface gameConstants {
     //FILE LOCATIONS----------------------------------------------------------------------------------------
     String assetsPath = "src/Assets/";
     String errorImagePath = "src/Assets/error.png";
-    String towersPath = "src/Assets/Towers/";
-    String iconsPath = "src/Assets/Icons/";
-    String projectilesPath = "src/Assets/Projectiles/";
-    String enemiesPath = "src/Assets/Units/";
-    String blocksPath = "src/Assets/Blocks/";
+    String savesPath= "src/Saves/";
+    String saveSlotFileLocation = "src/Settings/menuSettings.json";
     //FRAME-------------------------------------------------------------------------------------------------
     GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
     int screenWidth = gd.getDisplayMode().getWidth();

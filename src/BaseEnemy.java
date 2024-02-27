@@ -52,8 +52,6 @@ public class BaseEnemy {
         g2d.transform(trans);
         g2d.drawImage(image, x, y, width, height, null);  // the actual location of the sprite
         g2d.setTransform(backup);
-
-        //g.drawImage(AssetManager.getInstance().getImage("Units",imageLink), x, y, width, height, null);
         drawHealthBar(g, new Rectangle(x, y, width, height));
     }
 

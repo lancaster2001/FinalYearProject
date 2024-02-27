@@ -42,8 +42,15 @@ public class MainFrame extends JFrame implements KeyListener, MouseWheelListener
         addMouseMotionListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                close();
+            }});
         this.add(PanelInstance);
         this.setVisible(true);
+    }
+    private void close(){
+        SaveHandler.getInstance().saveSaveSlot();
     }
 
     @Override

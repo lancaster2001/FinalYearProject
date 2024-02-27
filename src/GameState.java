@@ -24,7 +24,6 @@ public class GameState {
     private int tickRate = gameConstants.gameTickRate;
     private final MainFrame frameInstance = MainFrame.getInstance();
     public final MainPanel panelInstance = frameInstance.getPanelInstance();
-    private final MapGenerator mapGeneratorInstance = MapGenerator.getInstance();
     private final Camera cameraInstance = Camera.getInstance();
     private final EnemyManager enemyManagerInstance = EnemyManager.getInstance();
     private final ProjectileManager projectileManagerInstance = ProjectileManager.getInstance();
@@ -32,7 +31,6 @@ public class GameState {
     private final SaveHandler saveHandlerInstance = SaveHandler.getInstance();
     private Map mapInstance;
     public boolean paused = false;
-
     int fps = 0;
     int fpsCounter = 0;
     int tickAccumulator = 0;

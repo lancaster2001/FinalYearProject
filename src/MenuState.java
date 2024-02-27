@@ -1,11 +1,12 @@
+import org.json.JSONObject;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.*;
 
 public class MenuState {
     //singleton-------------------------------------------------------------------------
@@ -13,9 +14,7 @@ public class MenuState {
 
     private MenuState() {
         menues.put("main", new String[]{"Play Game", "New Game","Saves", "Options"});
-        menues.put("Saves", SaveHandler.getInstance().getSavesList());
         menu = new Rectangle(gameConstants.screenWidth/5, gameConstants.screenHeight/5, (gameConstants.screenWidth/5)*3, (gameConstants.screenHeight/5)*3);
-        loadMenu();
         screenRefresher();
     }
 
@@ -27,20 +26,22 @@ public class MenuState {
     }
 
     //----------------------------------------------------------------------------------------
-    private boolean onSavesMenu = false;
     private final StateManager stateManagerInstance = StateManager.getInstance();
     private final MainPanel panelInstance = MainPanel.getInstance();
-    private ArrayList<Rectangle> menuButtons = new ArrayList<>();
-    private HashMap<String, String[]> menues = new HashMap<String, String[]>();
+    private HashMap<String, Rectangle> menuButtons = new HashMap<>();
+    private HashMap<String, String[]> menues = new HashMap<>();
+    private ArrayList<String> menuPath = new ArrayList<>();
     private Rectangle menu;
     private boolean errorMessageDisplay = false;
     private String errorMessage;
-    private String selectedMenu = "main";
-    Rectangle errorMessageHitbox;
+    private Rectangle errorMessageHitBox;
 
     public void startup(){
-        selectedMenu = "main";
+        resetSelectedMenu();
         screenRefresher();
+        if(!menues.containsKey("Saves")){
+            menues.put("Saves", SaveHandler.getInstance().getSavesList());
+        }
     }
     private void screenRefresher() {
         Timer screenRefreshTimer = new Timer();
@@ -55,26 +56,6 @@ public class MenuState {
         };
         screenRefreshTimer.schedule(task, 1000 / 60);
     }
-
-    private void loadMenu() {
-        Rectangle placement = menu;
-        int index = 0;
-        String[] buttons = menues.get(selectedMenu);
-        if(buttons != null) {
-            int spaceBetweenButtonsHorizontal = (int) (placement.width * 0.2);
-            int spaceBetweenButtonsVertical = (int) ((placement.height / buttons.length) * 0.2);
-            menuButtons.clear();
-            for (String button : buttons) {
-                int x = placement.x + spaceBetweenButtonsHorizontal;
-                int y = placement.y + (index * (placement.height / buttons.length)) + spaceBetweenButtonsVertical;
-                int width = (placement.width - (2 * spaceBetweenButtonsHorizontal));
-                int height = (placement.height / buttons.length) - (2 * spaceBetweenButtonsVertical);
-                menuButtons.add(new Rectangle(x, y, width, height));
-                index += 1;
-            }
-        }
-    }
-
     public void draw(Graphics g) {
         if(errorMessageDisplay){
             drawErrorMessage(g);
@@ -83,14 +64,14 @@ public class MenuState {
         }
 
     }
-    public void drawMenu(Graphics g) {
+    private void drawMenu(Graphics g) {
         g.setColor(Color.BLACK);
         g.drawRect(menu.x, menu.y, menu.width, menu.height);
         g.setColor(gameConstants.mainMenuBackgroundColor);
         g.fill3DRect(menu.x, menu.y, menu.width, menu.height, true);
-        int index = 0;
-        String[] menuOptions = menues.get(selectedMenu);
-        for (Rectangle button : menuButtons) {
+
+        for (String buttonOptions : menuButtons.keySet()) {
+            Rectangle button = menuButtons.get(buttonOptions);
             g.setColor(Color.BLACK);
             g.drawRect(button.x, button.y, button.width, button.height);
             g.setColor(gameConstants.mainMenuBackgroundColor);
@@ -100,19 +81,18 @@ public class MenuState {
             g.setColor(gameConstants.resourceMenuTitleColour);
             g.setFont(new Font("Arial", Font.BOLD, 20));
             try {
-                g.drawString(menuOptions[index].replace(".json", ""), button.x, button.y + 20);
+                g.drawString(buttonOptions.replace(".json", ""), button.x, button.y + 20);
             }catch (Exception e){
                 e.printStackTrace();
             }
-            index += 1;
         }
     }
-    public void drawErrorMessage(Graphics g) {
-        errorMessageHitbox = new Rectangle(menu.x+(menu.width/6),menu.y+((menu.height/10)*4),(menu.width/6)*4,((menu.height/10)*2));
+    private void drawErrorMessage(Graphics g) {
+        errorMessageHitBox = new Rectangle(menu.x+(menu.width/6),menu.y+((menu.height/10)*4),(menu.width/6)*4,((menu.height/10)*2));
         g.setColor(Color.BLACK);
-        g.drawRect(errorMessageHitbox.x, errorMessageHitbox.y, errorMessageHitbox.width, errorMessageHitbox.height);
+        g.drawRect(errorMessageHitBox.x, errorMessageHitBox.y, errorMessageHitBox.width, errorMessageHitBox.height);
         g.setColor(gameConstants.errorMessageBackgroundColor);
-        g.fill3DRect(errorMessageHitbox.x, errorMessageHitbox.y, errorMessageHitbox.width, errorMessageHitbox.height, true);
+        g.fill3DRect(errorMessageHitBox.x, errorMessageHitBox.y, errorMessageHitBox.width, errorMessageHitBox.height, true);
         g.setColor(Color.BLACK);
 
         g.setColor(gameConstants.resourceMenuTitleColour);
@@ -120,9 +100,8 @@ public class MenuState {
         if(errorMessage==null){
             errorMessage = "error message was null";
         }
-        g.drawString(errorMessage, errorMessageHitbox.x, errorMessageHitbox.y + 20);
+        g.drawString(errorMessage, errorMessageHitBox.x, errorMessageHitBox.y + 20);
     }
-
     public void userInput(MouseEvent e) {
         if (errorMessageDisplay){
             userInputErrorMessage(e);
@@ -131,17 +110,16 @@ public class MenuState {
         }
     }
     public void userInputErrorMessage(MouseEvent e) {
-        if(errorMessageHitbox!=null){
+        if(errorMessageHitBox !=null){
             closeErrorMessage();
         }
     }
     public void userInputMenu(MouseEvent e) {
-        String[] menuOptions = menues.get(selectedMenu);
+        String[] menuOptions = menues.get(getSelectedMenu());
         if ((menuOptions != null) && (menuButtons != null)) {
-            for (int buttonIndex = 0; buttonIndex<menuButtons.size(); buttonIndex++) {
-                if (menuButtons.get(buttonIndex).contains(e.getPoint())) {
-                    selectedMenu = menuOptions[buttonIndex];
-                    selectedMenuCheck();
+            for (String buttonOptions : menuButtons.keySet()) {
+                if (menuButtons.get(buttonOptions).contains(e.getPoint())) {
+                    setSelectedMenu(buttonOptions);
                 }
             }
         }
@@ -151,33 +129,78 @@ public class MenuState {
     }
 
     public void userInput(KeyEvent e) {
-
+        if (e.getKeyChar()==KeyEvent.VK_ESCAPE){
+            if (errorMessageDisplay){
+                closeErrorMessage();
+            }else {
+                goToPreviousMenu();
+            }
+        }
+    }
+    private void loadMenu() {
+        selectedMenuCheck();
+        Rectangle placement = menu;
+        int index = 0;
+        String[] buttons = menues.get(getSelectedMenu());
+        if(buttons != null) {
+            int spaceBetweenButtonsHorizontal = (int) (placement.width * 0.2);
+            int spaceBetweenButtonsVertical = (int) ((placement.height / buttons.length) * 0.2);
+            menuButtons.clear();
+            for (String button : buttons) {
+                int x = placement.x + spaceBetweenButtonsHorizontal;
+                int y = placement.y + (index * (placement.height / buttons.length)) + spaceBetweenButtonsVertical;
+                int width = (placement.width - (2 * spaceBetweenButtonsHorizontal));
+                int height = (placement.height / buttons.length) - (2 * spaceBetweenButtonsVertical);
+                menuButtons.put(button,new Rectangle(x, y, width, height));
+                index += 1;
+            }
+        }
     }
     private void closeErrorMessage(){
-        selectedMenu = "main";
+        resetSelectedMenu();
         errorMessageDisplay = false;
     }
-    private void selectedMenuCheck() {
-        if (selectedMenu.equalsIgnoreCase("Play Game")) {
+    private boolean selectedMenuCheck() {
+        if (getSelectedMenu().equalsIgnoreCase("Play Game")) {
             SaveHandler.getInstance().loadSave();
             stateManagerInstance.setCurrentState(gameConstants.STATE.GAME);
-        }else if(selectedMenu.equalsIgnoreCase("New Game")){
+            return true;
+        }else if(getSelectedMenu().equalsIgnoreCase("New Game")){
             SaveHandler.getInstance().newSave();
             stateManagerInstance.setCurrentState(gameConstants.STATE.GAME);
-        }else if(selectedMenu.equalsIgnoreCase("Saves")) {
-            onSavesMenu = true;
-        }else if (onSavesMenu){
-            SaveHandler.getInstance().setSaveSlot(selectedMenu.replace(".json",""));
+            return true;
+        }else if (menuPath.contains("Saves") && !Objects.equals(getSelectedMenu(), "Saves")){
+            SaveHandler.getInstance().setSaveSlot(getSelectedMenu().replace(".json",""));
             stateManagerInstance.setCurrentState(gameConstants.STATE.GAME);
-        }else{
-            selectedMenu = "main";
         }
-        loadMenu();
-        MainPanel.getInstance().repaint();
+        return false;
     }
     public void showErrorMessage(String errorMessage){
         this.errorMessage = errorMessage;
         errorMessageDisplay = true;
     }
-
+    public void resetSelectedMenu(){
+        if(menuPath.size()>0){
+            menuPath.clear();
+        }
+        menuPath.add("main");
+        loadMenu();
+    }
+    private void goToPreviousMenu(){
+        if((menuPath!=null)&&(!menuPath.isEmpty())&&(!Objects.equals(getSelectedMenu(), "main"))) {
+            menuPath.removeLast();
+            loadMenu();
+        }
+    }
+    public void setSelectedMenu(String selectedMenu) {
+        menuPath.add(selectedMenu);
+        loadMenu();
+    }
+    public String getSelectedMenu() {
+        try {
+            return menuPath.getLast();
+        }catch(Exception e){
+            return "";
+        }
+    }
 }

@@ -14,10 +14,15 @@ public class SaveHandler {
     private SaveHandler() {
         try {
             Files.createDirectories(Paths.get(saveLink));
+            Files.createDirectories(Paths.get(saveSlotFileLocation.substring(0,saveSlotFileLocation.lastIndexOf("/"))));
+            saves = getJsonsInFolder(saveLink);
+            loadSaveSlot();
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        loadListofSaves();
+
+
     }
 
     public static SaveHandler getInstance() {
@@ -28,8 +33,9 @@ public class SaveHandler {
     }
 
     //----------------------------------------------------------------------------------------
-    private String saveSlot = "save1";
-    private final String saveLink = "src/Saves/";
+    String saveSlotFileLocation = gameConstants.saveSlotFileLocation;
+    private String saveSlot;
+    private final String saveLink = gameConstants.savesPath;
     private Map mapInstance = null;
     private String[] saves = new String[]{};
     private int mapWidth = gameConstants.mapWidth;
@@ -66,7 +72,7 @@ public class SaveHandler {
             ResourceManager.getInstance().load(inventoryJson);
             mapInstance = MapGenerator.getInstance().loadMap(mapLink);
         } catch (IOException | JSONException e) {
-            System.out.println("no save data for" + saveSlot);
+            System.out.println("no save data for " + saveSlot);
         }
     }
     public void newSave(){
@@ -80,9 +86,6 @@ public class SaveHandler {
         }
         return null;
     }
-    private void loadListofSaves() {
-        saves = getJsonsInFolder(saveLink);
-    }
     public String[] getJsonsInFolder(String theLink) {
         File dir = new File(theLink);
         String[] files = dir.list(new FilenameFilter() {
@@ -92,13 +95,43 @@ public class SaveHandler {
         });
         return files;
     }
-
     public String[] getSavesList() {
+        if(saves == null){
+            saves = getJsonsInFolder(saveLink);
+        }
         return saves;
     }
 
     public void setSaveSlot(String saveSlot) {
         this.saveSlot = saveSlot;
         loadSave();
+    }
+    public void saveSaveSlot (){
+        String fileName = saveSlotFileLocation;
+        JSONObject json = new JSONObject();
+        json.put("saveSlot", saveSlot);
+        try (FileWriter file = new FileWriter(fileName)) {
+            file.write(json.toString());
+            file.flush();
+        } catch (IOException e) {
+            e.fillInStackTrace();
+        }
+    }
+    private void loadSaveSlot (){
+        String link = saveSlotFileLocation;
+        try (FileReader reader = new FileReader(link)) {
+            // Using JSONTokener to parse the JSON file
+            JSONTokener tokener = new JSONTokener(reader);
+            JSONObject jsonObject = new JSONObject(tokener);
+            saveSlot = jsonObject.getString("saveSlot");
+        } catch (IOException | JSONException e) {
+            System.out.print("save slot didnt load from persistent storage resetting to first available slot");
+            if(getSavesList()!=null) {
+                saveSlot = getSavesList()[0];
+            }else{
+                System.out.print("no slots found setting save slot to fall back slot: save1");
+                saveSlot = "save1";
+            }
+        }
     }
 }

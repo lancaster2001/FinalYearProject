@@ -55,7 +55,6 @@ public class TowerManager {
     }
 
     private TowerTemplate readTowerTemplate(String link) {
-        // Replace "path/to/your/file.json" with the actual path to your JSON file
         String filePath = link;
         try (FileReader reader = new FileReader(filePath)) {
             // Using JSONTokener to parse the JSON file
