@@ -21,27 +21,30 @@ public class conveyor extends BaseTower {
         int index = 0;
         ArrayList<Integer> indexesToRemove = new ArrayList<>();
         setDirectionOfResources(tickMultiplier);
-        for (Resource resource : inventory) {
-            Pose resourcePose = resource.getPose();
-            boolean withinSlot = new Rectangle2D.Double(pose.getX(), pose.getY(), 1, 1).intersects(resourcePose.getX(), resourcePose.getY(), resource.getWidth(), resource.getHeight());
-            if (!withinSlot) {
-                if (moveResourceToOtherSlots(resource)) {
-                    indexesToRemove.add(index);
-                }
-            } else {
-                boolean collisioncheck = false;
-                for (int resourceIndex = index;resourceIndex>-1;resourceIndex--) {
-                    if ((!Objects.equals(resource.getId(), inventory.get(resourceIndex).getId()))&&(resource.collisionCheck(inventory.get(resourceIndex)))) {
-                        collisioncheck = true;
+        try {
+            for (Resource resource : inventory) {
+                Pose resourcePose = resource.getPose();
+                boolean withinSlot = new Rectangle2D.Double(pose.getX(), pose.getY(), 1, 1).intersects(resourcePose.getX(), resourcePose.getY(), resource.getWidth(), resource.getHeight());
+                if (!withinSlot) {
+                    if (moveResourceToOtherSlots(resource)) {
+                        indexesToRemove.add(index);
                     }
+                } else {
+                    boolean collisioncheck = false;
+                    for (int resourceIndex = index; resourceIndex > -1; resourceIndex--) {
+                        if ((!Objects.equals(resource.getId(), inventory.get(resourceIndex).getId())) && (resource.collisionCheck(inventory.get(resourceIndex)))) {
+                            collisioncheck = true;
+                        }
+                    }
+                    if (!collisioncheck) {
+                        resource.move(speed * tickMultiplier);
+                    }
+                    //outputResource(resource);
                 }
-                if (!collisioncheck) {
-                    resource.move(speed * tickMultiplier);
-                }
-                outputResource(resource);
+                index += 1;
             }
-
-            index += 1;
+        }catch (Exception e){
+            e.printStackTrace();
         }
         removeListOfIndexes(indexesToRemove);
     }

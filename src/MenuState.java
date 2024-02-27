@@ -119,12 +119,16 @@ public class MenuState {
     }
     public void userInputMenu(MouseEvent e) {
         String[] menuOptions = menues.get(getSelectedMenu());
-        if ((menuOptions != null) && (menuButtons != null)) {
-            for (String buttonOptions : menuButtons.keySet()) {
-                if (menuButtons.get(buttonOptions).contains(e.getPoint())) {
-                    setSelectedMenu(buttonOptions);
+        try {
+            if ((menuOptions != null) && (menuButtons != null)) {
+                for (String buttonOptions : menuButtons.keySet()) {
+                    if (menuButtons.get(buttonOptions).contains(e.getPoint())) {
+                        setSelectedMenu(buttonOptions);
+                    }
                 }
             }
+        }catch (ConcurrentModificationException exception){
+
         }
     }
     public void userInput(MouseWheelEvent e) {
