@@ -1,11 +1,7 @@
-import org.json.JSONObject;
-
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.*;
 
 public class MenuState {
@@ -14,7 +10,7 @@ public class MenuState {
 
     private MenuState() {
         menues.put("main", new String[]{"Play Game", "New Game","Saves", "Options"});
-        menu = new Rectangle(gameConstants.screenWidth/5, gameConstants.screenHeight/5, (gameConstants.screenWidth/5)*3, (gameConstants.screenHeight/5)*3);
+        menu = new Rectangle(screenWidth/5, screenHeight/5, (screenWidth/5)*3, (screenHeight/5)*3);
         screenRefresher();
     }
 
@@ -26,6 +22,10 @@ public class MenuState {
     }
 
     //----------------------------------------------------------------------------------------
+    private int screenWidth = gameSettings.getInstance().getScreenWidth();
+    private int screenHeight = gameSettings.getInstance().getScreenHeight();
+    Color BackgroundColor = Color.white;
+    Color titleColor = Color.BLACK;
     private final StateManager stateManagerInstance = StateManager.getInstance();
     private final MainPanel panelInstance = MainPanel.getInstance();
     private HashMap<String, Rectangle> menuButtons = new HashMap<>();
@@ -49,7 +49,7 @@ public class MenuState {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                if(stateManagerInstance.currentState== gameConstants.STATE.STARTMENU) {
+                if(stateManagerInstance.currentState== gameSettings.STATE.STARTMENU) {
                     screenRefresher();
                 }
             }
@@ -67,18 +67,18 @@ public class MenuState {
     private void drawMenu(Graphics g) {
         g.setColor(Color.BLACK);
         g.drawRect(menu.x, menu.y, menu.width, menu.height);
-        g.setColor(gameConstants.mainMenuBackgroundColor);
+        g.setColor(BackgroundColor);
         g.fill3DRect(menu.x, menu.y, menu.width, menu.height, true);
 
         for (String buttonOptions : menuButtons.keySet()) {
             Rectangle button = menuButtons.get(buttonOptions);
             g.setColor(Color.BLACK);
             g.drawRect(button.x, button.y, button.width, button.height);
-            g.setColor(gameConstants.mainMenuBackgroundColor);
+            g.setColor(BackgroundColor);
             g.fill3DRect(button.x, button.y, button.width, button.height, true);
             g.setColor(Color.BLACK);
 
-            g.setColor(gameConstants.resourceMenuTitleColour);
+            g.setColor(titleColor);
             g.setFont(new Font("Arial", Font.BOLD, 20));
             try {
                 g.drawString(buttonOptions.replace(".json", ""), button.x, button.y + 20);
@@ -91,11 +91,11 @@ public class MenuState {
         errorMessageHitBox = new Rectangle(menu.x+(menu.width/6),menu.y+((menu.height/10)*4),(menu.width/6)*4,((menu.height/10)*2));
         g.setColor(Color.BLACK);
         g.drawRect(errorMessageHitBox.x, errorMessageHitBox.y, errorMessageHitBox.width, errorMessageHitBox.height);
-        g.setColor(gameConstants.errorMessageBackgroundColor);
+        g.setColor(BackgroundColor);
         g.fill3DRect(errorMessageHitBox.x, errorMessageHitBox.y, errorMessageHitBox.width, errorMessageHitBox.height, true);
         g.setColor(Color.BLACK);
 
-        g.setColor(gameConstants.resourceMenuTitleColour);
+        g.setColor(titleColor);
         g.setFont(new Font("Arial", Font.BOLD, 20));
         if(errorMessage==null){
             errorMessage = "error message was null";
@@ -163,15 +163,15 @@ public class MenuState {
     private boolean selectedMenuCheck() {
         if (getSelectedMenu().equalsIgnoreCase("Play Game")) {
             SaveHandler.getInstance().loadSave();
-            stateManagerInstance.setCurrentState(gameConstants.STATE.GAME);
+            stateManagerInstance.setCurrentState(gameSettings.STATE.GAME);
             return true;
         }else if(getSelectedMenu().equalsIgnoreCase("New Game")){
             SaveHandler.getInstance().newSave();
-            stateManagerInstance.setCurrentState(gameConstants.STATE.GAME);
+            stateManagerInstance.setCurrentState(gameSettings.STATE.GAME);
             return true;
         }else if (menuPath.contains("Saves") && !Objects.equals(getSelectedMenu(), "Saves")){
             SaveHandler.getInstance().setSaveSlot(getSelectedMenu().replace(".json",""));
-            stateManagerInstance.setCurrentState(gameConstants.STATE.GAME);
+            stateManagerInstance.setCurrentState(gameSettings.STATE.GAME);
         }
         return false;
     }

@@ -7,10 +7,10 @@ public class Camera {
     private static Camera instance = new Camera();
 
     private Camera() {
-        zoom = gameConstants.defaultZoom;
-        x = gameConstants.defaultCameraCoordinates[0];
-        y = gameConstants.defaultCameraCoordinates[1];
-        screenWidthProportion = (double) gameConstants.screenWidth / (double) gameConstants.screenHeight;
+        zoom = 5;
+        x = 2;
+        y = 2;
+        screenWidthProportion = (double) gameSettings.getInstance().getScreenWidth() / (double) gameSettings.getInstance().getScreenHeight();
     }
 
     public static Camera getInstance() {
@@ -22,7 +22,7 @@ public class Camera {
 
     //-----------------------------------------------------------------
     private final ResourceManager resourceManagerInstance = ResourceManager.getInstance();
-    private int zoom = gameConstants.defaultZoom;//number of tiles in width
+    private int zoom = gameSettings.getInstance().defaultZoom;//number of tiles in width
     double screenWidthProportion = 0.0;
     private int numOslotsWide = zoom;
     private int numOslotsTall = zoom;
@@ -30,8 +30,8 @@ public class Camera {
     private double y;
     private int widthOfSlot;
     private int heightOfslot;
-    private final int screenWidth = gameConstants.screenWidth;
-    private final int screenHeight = gameConstants.screenHeight;
+    private final int screenWidth = gameSettings.getInstance().getScreenWidth();
+    private final int screenHeight = gameSettings.getInstance().getScreenHeight();
     private ArrayList<MapSlot> viewableMap = new ArrayList<MapSlot>();
 
     public void setPosition(double x, double y) {
@@ -72,7 +72,7 @@ public class Camera {
                 slot.draw(g, xAndWidth[0], yAndHeight[0], xAndWidth[1], yAndHeight[1], AssetManager.getInstance());
             }
         } else {
-            g.setColor(gameConstants.resourceMenuTitleColour);
+            g.setColor(Color.BLACK);
             g.setFont(new Font("Arial", Font.BOLD, 100));
             g.drawString("NO MAP", 100, 100);
         }
@@ -226,7 +226,7 @@ public class Camera {
     }
 
     public void increaseZoom() {
-        if ((x + (zoom * screenWidthProportion) < gameConstants.mapWidth - 4) && (y + (zoom * screenWidthProportion) < gameConstants.mapHeight - 4)) {
+        if ((x + (zoom * screenWidthProportion) < GameState.getInstance().getMapInstance().getMapWidth() - 4) && (y + (zoom * screenWidthProportion) < GameState.getInstance().getMapInstance().getMapHeight() - 4)) {
             zoom += 2;
             calculateValues();
         }
@@ -281,7 +281,7 @@ public class Camera {
         return viewableMap;
     }
 
-    public void move(gameConstants.DIRECTION direction) {
+    public void move(gameSettings.DIRECTION direction) {
         switch (direction) {
             case UP:
                 y -= 1;

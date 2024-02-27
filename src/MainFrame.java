@@ -29,8 +29,8 @@ public class MainFrame extends JFrame implements KeyListener, MouseWheelListener
     private void setup() {
         this.setTitle("Resource Management and Tower Defence Game");
         this.setResizable(false);
-        this.setSize(gameConstants.screenSize.width, gameConstants.screenSize.height);
-        this.setMinimumSize(new Dimension(gameConstants.screenSize.width, gameConstants.screenSize.height));
+        this.setSize(gameSettings.getInstance().getScreenWidth(), gameSettings.getInstance().getScreenHeight());
+        this.setMinimumSize(new Dimension(gameSettings.getInstance().getScreenWidth(), gameSettings.getInstance().getScreenHeight()));
         this.setUndecorated(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.getContentPane().add(this.draw);

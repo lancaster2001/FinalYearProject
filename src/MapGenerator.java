@@ -57,6 +57,7 @@ public class MapGenerator {
         }
 
         latestMap = new Map(mapArray, mapWidth, mapHeight);
+        latestMap.setTower(TowerManager.getInstance().getTemplate("BasicBase"),new Pose(mapWidth / 2, mapHeight / 2, 0), false);
         return latestMap;
     }
 

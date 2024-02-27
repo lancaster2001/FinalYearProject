@@ -75,23 +75,25 @@ public class EnemyManager {
     }
 
     private void randomEnemyChance() {
+        int mapWidth = GameState.getInstance().getMapInstance().getMapWidth();
+        int mapHeight = GameState.getInstance().getMapInstance().getMapHeight();
         Random rnd = new Random();
         if (rnd.nextInt(1, 10) == 11) {
             int xSpawn;
             int ySpawn;
             if (rnd.nextInt(1, 2) == 1) {
-                xSpawn = rnd.nextInt(1, gameConstants.mapWidth);
+                xSpawn = rnd.nextInt(1, mapWidth);
                 if (rnd.nextInt(1, 2) == 1) {
                     ySpawn = 0;
                 } else {
-                    ySpawn = gameConstants.mapHeight;
+                    ySpawn = mapHeight;
                 }
             } else {
-                ySpawn = rnd.nextInt(1, gameConstants.mapHeight);
+                ySpawn = rnd.nextInt(1, mapHeight);
                 if (rnd.nextInt(1, 2) == 1) {
                     xSpawn = 0;
                 } else {
-                    xSpawn = gameConstants.mapWidth;
+                    xSpawn = mapWidth;
                 }
             }
             createEnemy(xSpawn, ySpawn, "soldier");

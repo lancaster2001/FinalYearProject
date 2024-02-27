@@ -14,21 +14,21 @@ public class StateManager {
     }
 
     //----------------------------------------------------------------------------------
-    gameConstants.STATE currentState;
+    gameSettings.STATE currentState;
     GameState gameStateInstance;
 
-    public void setCurrentState(gameConstants.STATE givenState) {
+    public void setCurrentState(gameSettings.STATE givenState) {
         currentState = givenState;
-        if (currentState.equals(gameConstants.STATE.GAME)) {
+        if (currentState.equals(gameSettings.STATE.GAME)) {
             gameStateInstance = GameState.getInstance();
             gameStateInstance.startup();
-        } else if (currentState.equals(gameConstants.STATE.STARTMENU)) {
+        } else if (currentState.equals(gameSettings.STATE.STARTMENU)) {
             MenuState.getInstance().startup();
 
         }
     }
 
-    public gameConstants.STATE getCurrentState() {
+    public gameSettings.STATE getCurrentState() {
         return currentState;
     }
 }

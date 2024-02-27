@@ -8,7 +8,7 @@ public class conveyor extends BaseTower {
     public conveyor(Pose pose, TowerTemplate template) {
         super(pose, template);
         inventorySize = 5;
-        for (double index = 0; index < 4; index += 1.0) {
+        for (double index = -1; index < 3; index += 1.0) {
             if (index * (Math.PI / 2) != pose.getTheta()) {
                 inputDirections.add(index * (Math.PI / 2));
             }
@@ -19,7 +19,7 @@ public class conveyor extends BaseTower {
     public void tick(double tickMultiplier) {
         int index = 0;
         ArrayList<Integer> indexesToRemove = new ArrayList<>();
-        setDirectionOfResources();
+        setDirectionOfResources(tickMultiplier);
         for (Resource resource : inventory) {
             Pose resourcePose = resource.getPose();
             boolean withinSlot = new Rectangle2D.Double(pose.getX(), pose.getY(), 1, 1).intersects(resourcePose.getX(), resourcePose.getY(), resource.getWidth(), resource.getHeight());
@@ -37,13 +37,13 @@ public class conveyor extends BaseTower {
         removeListOfIndexes(indexesToRemove);
     }
 
-    protected void setDirectionOfResources() {
+    protected void setDirectionOfResources(double tickMultiplier) {
         for (Resource resource : inventory) {
             boolean setDirectionCheck = false;
             Pose resourcePose = resource.getPose();
             double xCentre = pose.getX() + (0.5);
             double yCentre = pose.getY() + (0.5);
-            double bounds = (((double) gameConstants.gameTickRate) * speed) / 1000;
+            double bounds = ((tickMultiplier) * speed);
             boolean xBound = (xCentre - bounds < resourcePose.getX() + (resource.getWidth() / 2)) && (xCentre + bounds > resourcePose.getX() + (resource.getWidth() / 2));
             boolean yBound = (yCentre - bounds < resourcePose.getY() + (resource.getHeight() / 2)) && (yCentre + bounds > resourcePose.getY() + (resource.getHeight() / 2));
             boolean centreCheck = false;

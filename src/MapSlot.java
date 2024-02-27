@@ -8,8 +8,8 @@ public class MapSlot {
     private BaseTower tower;
     private BaseTower tempTower;
     private BaseTile tile;
-    private final boolean outlineSlots = gameConstants.outlineSlots;
-    private final boolean debugging = gameConstants.debugging;
+    private final boolean outlineSlots = gameSettings.getInstance().isOutlineSlots();
+    private final boolean debugging = gameSettings.getInstance().isDebugging();
 
     public MapSlot(int x, int y, TileTemplate tile) {
         this.x = x;
@@ -127,6 +127,8 @@ public class MapSlot {
             returnTower = new Router(new Pose(x, y, theta), newTower);
         }else if (newTower.getType().equalsIgnoreCase("NonPlayer")){
             returnTower = new BaseTurretTower(new Pose(x, y, 0),newTower);
+        }else if (newTower.getType().equalsIgnoreCase("Base")){
+            returnTower = new BaseBaseTower(new Pose(x, y, 0),newTower);
         }else{
             return null;
         }

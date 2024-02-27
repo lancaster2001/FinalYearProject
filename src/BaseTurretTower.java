@@ -1,11 +1,9 @@
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class BaseTurretTower extends BaseTower {
-    private final boolean debugging = gameConstants.debugging;
+    private final boolean debugging = gameSettings.getInstance().isDebugging();
     private final EnemyManager enemyManagerInstance = EnemyManager.getInstance();
     private final ProjectileManager projectileManagerInstance = ProjectileManager.getInstance();
     protected double range;

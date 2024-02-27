@@ -5,7 +5,6 @@ import org.json.JSONTokener;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 
 public class SaveHandler {
     //singleton-------------------------------------------------------------------------
@@ -33,13 +32,13 @@ public class SaveHandler {
     }
 
     //----------------------------------------------------------------------------------------
-    String saveSlotFileLocation = gameConstants.saveSlotFileLocation;
+    String saveSlotFileLocation = gameSettings.getInstance().saveSlotFileLocation;
     private String saveSlot;
-    private final String saveLink = gameConstants.savesPath;
+    private final String saveLink = gameSettings.getInstance().savesPath;
     private Map mapInstance = null;
     private String[] saves = new String[]{};
-    private int mapWidth = gameConstants.mapWidth;
-    private int mapHeight = gameConstants.mapHeight;
+    private int mapWidth = gameSettings.getInstance().getMapWidth();
+    private int mapHeight = gameSettings.getInstance().getMapHeight();
 
     public String getSaveSlot() {
         return saveSlot;

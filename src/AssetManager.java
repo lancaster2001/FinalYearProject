@@ -24,8 +24,8 @@ public class AssetManager {
 
     private final ArrayList<String> ImageLinksArray = new ArrayList<String>();
     private final ArrayList<BufferedImage> ImagesArray = new ArrayList<BufferedImage>();
-    private final String assetsPath = gameConstants.assetsPath;
-    private final String errorImagePath = gameConstants.errorImagePath;
+    private final String assetsPath = gameSettings.getInstance().assetsPath;
+    private final String errorImagePath = gameSettings.getInstance().errorImagePath;
 
     public BufferedImage getImage(String type, String image) {
         return getImage(assetsPath + type + "/" + image);

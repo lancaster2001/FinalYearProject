@@ -12,20 +12,15 @@ import java.util.Objects;
 public final class Map {
     public Map(ArrayList<MapSlot> mapArray, int width, int height) {
         name = String.valueOf(Math.random());
-        //name = "map";
         mapWidth = width;
         mapHeight = height;
         this.mapArray = mapArray;
-        BaseBaseTower playerbase = BaseBaseTower.getInstance();
-        setTower(playerbase, (int) playerbase.getPose().getX(), (int) playerbase.getPose().getY(),false);
     }
     public Map(ArrayList<MapSlot> mapArray, int width, int height, String name) {
         this.name = name;
         mapWidth = width;
         mapHeight = height;
         this.mapArray = mapArray;
-        BaseBaseTower playerbase = BaseBaseTower.getInstance();
-        setTower(playerbase, (int) playerbase.getPose().getX(), (int) playerbase.getPose().getY(),false);
     }
 
     private ArrayList<MapSlot> mapArray = new ArrayList<>();
@@ -119,7 +114,7 @@ public final class Map {
         MapSlot holder = getSlotFromCoord(x, y);
         if(holder!=null) {
             if (holder.getTower() instanceof BaseBaseTower) {
-                StateManager.getInstance().setCurrentState(gameConstants.STATE.GAMEOVER);
+                StateManager.getInstance().setCurrentState(gameSettings.STATE.GAMEOVER);
                 return;
             }
             holder.clearTower();
@@ -162,5 +157,13 @@ public final class Map {
 
     public int getMapWidth() {
         return mapWidth;
+    }
+    public Pose getBasePose(){
+        for(MapSlot currentSlot: mapArray){
+            if(currentSlot.getTower() instanceof BaseBaseTower){
+                return currentSlot.getTower().getPose();
+            }
+        }
+        return null;
     }
 }

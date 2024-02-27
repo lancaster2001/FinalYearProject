@@ -19,7 +19,7 @@ public class Router extends conveyor {
 
     public void tick(double tickMultiplier) {
         if (!inventory.isEmpty()) {
-            setDirectionOfResources();
+            setDirectionOfResources(tickMultiplier);
             setDirectionCheckScammer(inventory.getFirst());
             if(!inventory.isEmpty()) {
                 outputResource(inventory.getFirst());

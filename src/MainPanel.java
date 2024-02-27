@@ -8,7 +8,7 @@ public final class MainPanel extends JPanel {
 
     private MainPanel() {
 
-        this.setSize(gameConstants.screenSize.width, gameConstants.screenSize.height - 500);
+        this.setSize(gameSettings.getInstance().getScreenWidth(), gameSettings.getInstance().getScreenHeight() - 500);
         this.setMinimumSize(new Dimension(600, 600));
         this.setVisible(true);
         this.setOpaque(false);
@@ -33,9 +33,9 @@ public final class MainPanel extends JPanel {
         super.paintComponent(g);
 
         if (StateManagerInstance.getCurrentState()!=null) {
-            if (StateManagerInstance.getCurrentState().equals(gameConstants.STATE.GAME)) {
+            if (StateManagerInstance.getCurrentState().equals(gameSettings.STATE.GAME)) {
                 gameStateDrawerInstance.draw(g);
-            } else if (StateManagerInstance.getCurrentState().equals(gameConstants.STATE.STARTMENU)) {
+            } else if (StateManagerInstance.getCurrentState().equals(gameSettings.STATE.STARTMENU)) {
                 MenuState.getInstance().draw(g);
             }
         }

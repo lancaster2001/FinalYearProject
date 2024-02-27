@@ -19,10 +19,16 @@ public class GameUIResourceMenu {
     //----------------------------------------------------------------------------------------
     private final AssetManager assetManagerInstance = AssetManager.getInstance();
     private boolean resourceMenuState = true;
-    private int sizeOfTitle = gameConstants.ResourcesMenuTitleSize;
-    private int sizeOfResourceName = gameConstants.ResourcesMenuSizeOfResourceName;
-    private Rectangle resourceMenuBackground = new Rectangle(gameConstants.resourcesMenuX, gameConstants.resourcesMenuY, gameConstants.resourcesMenuWidth, gameConstants.resourcesMenuHeight);
-    private Rectangle resourceMenuButton = new Rectangle(gameConstants.resourcesMenuX - (gameConstants.resourcesMenuWidth / 10), gameConstants.resourcesMenuY + (gameConstants.resourcesMenuHeight / 10), gameConstants.resourcesMenuWidth / 10, gameConstants.resourcesMenuHeight / 7);
+    private int menuWidth = gameSettings.getInstance().getScreenWidth() / 9;
+    private int menuHeight = gameSettings.getInstance().getScreenHeight() / 4;
+    private int sizeOfTitle = 20;
+    private int sizeOfResourceName = 30;
+    private int menuX = gameSettings.getInstance().getScreenWidth() - menuWidth;
+    private int menuY = 0;
+    private Color BackgroundColour = Color.WHITE;
+    private Color TitleColour = Color.black;
+    private Rectangle resourceMenuBackground = new Rectangle(menuX, menuY, menuWidth, menuHeight);
+    private Rectangle resourceMenuButton = new Rectangle(menuX - (menuWidth / 10), menuY + (menuHeight / 10), menuWidth / 10, menuHeight / 7);
 
     public void drawResourcesMenu(Graphics g) {
         if (resourceMenuState) {
@@ -34,14 +40,14 @@ public class GameUIResourceMenu {
     }
 
     private void drawResourcesMenuBackground(Graphics g) {
-        g.setColor(gameConstants.resourceMenuBackgroundColour);
+        g.setColor(BackgroundColour);
         g.drawImage(assetManagerInstance.getImage("Menus", "resourceMenuBackground.png"), resourceMenuBackground.x, resourceMenuBackground.y, resourceMenuBackground.width, resourceMenuBackground.height, null);
     }
 
     private void drawResourcesMenuTitle(Graphics g) {
-        g.setColor(gameConstants.resourceMenuTitleColour);
+        g.setColor(TitleColour);
         g.setFont(new Font("Arial", Font.BOLD, sizeOfTitle));
-        g.drawString("Resources:", gameConstants.resourcesMenuX, gameConstants.resourcesMenuY + gameConstants.ResourcesMenuTitleSize);
+        g.drawString("Resources:", menuX, menuY + sizeOfTitle);
     }
 
     private void drawResourcesMenuResources(Graphics g) {
@@ -59,7 +65,7 @@ public class GameUIResourceMenu {
     }
 
     private void drawResourceMenuButton(Graphics g) {
-        g.setColor(gameConstants.buildMenuBackgroundColour);
+        g.setColor(BackgroundColour);
         g.drawImage(assetManagerInstance.getImage("Menus", "resourceMenuButton.png"), resourceMenuButton.x, resourceMenuButton.y, resourceMenuButton.width, resourceMenuButton.height, null);
     }
 

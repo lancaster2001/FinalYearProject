@@ -36,13 +36,13 @@ public class GameStateInputHandler {
     public void userInput(KeyEvent e) {
         if (GameState.getInstance().userInput(e)) {
 
-        } else if (e.getKeyChar() == 'r') {
+        } else if (e.getKeyChar() == gameSettings.getInstance().rotateTower) {
             buildRotation += Math.PI / 2;
             if (buildRotation >= 2 * Math.PI) {
                 buildRotation -= 2 * Math.PI;
             }
             draggedToBuild();
-        } else if (e.getKeyChar() == ' ') {
+        } else if (e.getKeyChar() == gameSettings.getInstance().pauseButton) {
             GameState.getInstance().paused = !GameState.getInstance().paused;
         } else if (e.getKeyChar() == 'p') {
             SaveHandler.getInstance().saveGame();

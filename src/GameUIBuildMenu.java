@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.security.KeyPair;
 import java.util.ArrayList;
 
 public class GameUIBuildMenu {
@@ -20,18 +19,22 @@ public class GameUIBuildMenu {
     //----------------------------------------------------------------------------------------
     private final AssetManager assetManagerInstance = AssetManager.getInstance();
     private final TowerManager towerManagerInstance = TowerManager.getInstance();
-    private final Rectangle buildMenuBackground = new Rectangle(gameConstants.buildMenux, gameConstants.buildMenuy, gameConstants.buildMenuWidth, gameConstants.buildMenuHeight);
+    private int buildMenuWidth = gameSettings.getInstance().getScreenWidth();
+    private int buildMenuHeight = gameSettings.getInstance().getScreenHeight() / 7;
+    private int buildMenux = 0;
+    private int buildMenuy = gameSettings.getInstance().getScreenHeight() - buildMenuHeight;
+    private final Rectangle buildMenuBackground = new Rectangle(buildMenux, buildMenuy, buildMenuWidth, buildMenuHeight);
     private ArrayList<Rectangle> MenuListsButtons = new ArrayList<>();
     private TowerTemplate toolTip = null;
     private boolean buildMenuState = true;
     private Rectangle buildMenuButton = new Rectangle(buildMenuBackground.width - (buildMenuBackground.width / 20), buildMenuBackground.y - (buildMenuBackground.height / 7), buildMenuBackground.width / 20, buildMenuBackground.height / 7);
-    private final int numberOfElementsInBuildMenu = gameConstants.numberOfElementsInBuildMenu;
-    private final int spaceBetweenBuildMenuElements = gameConstants.spaceBetweenBuildMenuElements;
-    private final int buildMenuElementWidth = gameConstants.buildMenuElementWidth;
-    private final int buildMenuElementHeight = gameConstants.buildMenuElementHeight;
+    private final int numberOfElementsInBuildMenu = buildMenuWidth / ((buildMenuHeight / 10) * 12);
+    private final int spaceBetweenBuildMenuElements = (buildMenuHeight / 10);
+    private final int buildMenuElementWidth = ((buildMenuHeight / 10) * 8);
+    private final int buildMenuElementHeight = ((buildMenuHeight / 10) * 8);
+    private Color backgroundColour = Color.white;
     private final int toolTipWidth = 300;
     private final int toolTipHeight = 300;
-
     private ArrayList<Rectangle> buildMenuIconHitBox = new ArrayList<>();
     private ArrayList<TowerTemplate> towerArrayList = new ArrayList<>();
     private ArrayList<TowerTemplate> displayTowerArrayList = new ArrayList<>();
@@ -90,13 +93,13 @@ public class GameUIBuildMenu {
     }
 
     private void drawBuildMenuButton(Graphics g) {
-        g.setColor(gameConstants.buildMenuBackgroundColour);
+        g.setColor(backgroundColour);
         g.fill3DRect(buildMenuButton.x, buildMenuButton.y, buildMenuButton.width, buildMenuButton.height, true);
         g.drawImage(assetManagerInstance.getImage("Menus", "buildmenuButton.png"), buildMenuButton.x, buildMenuButton.y, buildMenuButton.width, buildMenuButton.height, null);
     }
 
     private void drawBuildMenuBackground(Graphics g) {
-        g.setColor(gameConstants.buildMenuBackgroundColour);
+        g.setColor(backgroundColour);
         g.drawImage(assetManagerInstance.getImage("Menus", "buildmenubackground.png"), buildMenuBackground.x, buildMenuBackground.y, buildMenuBackground.width, buildMenuBackground.height, null);
     }
 

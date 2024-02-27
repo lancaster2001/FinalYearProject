@@ -16,12 +16,11 @@ public class GameState {
 
     private GameState() {
         TowerManager.getInstance();
-        BaseTower playerTower = BaseBaseTower.getInstance();
         resourceManagerInstance.queryInventory("Rock").add(50);
     }
 
     //----------------------------------------------------------------------------------
-    private int tickRate = gameConstants.gameTickRate;
+    private int tickRate = gameSettings.getInstance().getGameTickRate();
     private final MainFrame frameInstance = MainFrame.getInstance();
     public final MainPanel panelInstance = frameInstance.getPanelInstance();
     private final Camera cameraInstance = Camera.getInstance();
@@ -43,22 +42,22 @@ public class GameState {
                 mapInstance = SaveHandler.getInstance().getMapInstance();
             }catch(Exception e){
                 MenuState.getInstance().showErrorMessage("error getting map instance in gamestate");
-                StateManager.getInstance().setCurrentState(gameConstants.STATE.STARTMENU);
+                StateManager.getInstance().setCurrentState(gameSettings.STATE.STARTMENU);
             }
             cameraInstance.setPosition(cameraInstance.getX(), cameraInstance.getY());
             tickLoop();
             actLoop();
             screenRefresher();
-            if (gameConstants.autosave) {
+            if (gameSettings.getInstance().isAutosave()) {
                 saveLoop();
             }
         }catch(Exception e){
             MenuState.getInstance().showErrorMessage("error starting up gamestate");
-            StateManager.getInstance().setCurrentState(gameConstants.STATE.STARTMENU);
+            StateManager.getInstance().setCurrentState(gameSettings.STATE.STARTMENU);
         }
         if(mapInstance==null){
             MenuState.getInstance().showErrorMessage("error loading the map instance\n in gamestate startup");
-            StateManager.getInstance().setCurrentState(gameConstants.STATE.STARTMENU);
+            StateManager.getInstance().setCurrentState(gameSettings.STATE.STARTMENU);
         }
     }
 
@@ -125,7 +124,7 @@ public class GameState {
             @Override
             public void run() {
                 tickLoop();
-                i += gameConstants.gameTickRate / 1000.0;
+                i += gameSettings.getInstance().getGameTickRate() / 1000.0;
             }
         };
         tickTimer.schedule(task, tickRate);
@@ -133,14 +132,14 @@ public class GameState {
 
     public boolean userInput(KeyEvent e) {
         boolean check = true;
-        if (e.getKeyChar() == gameConstants.moveCameraUp) {
-            cameraInstance.move(gameConstants.DIRECTION.UP);
-        } else if (e.getKeyChar() == gameConstants.moveCameraDown) {
-            cameraInstance.move(gameConstants.DIRECTION.DOWN);
-        } else if (e.getKeyChar() == gameConstants.moveCameraLeft) {
-            cameraInstance.move(gameConstants.DIRECTION.LEFT);
-        } else if (e.getKeyChar() == gameConstants.moveCameraRight) {
-            cameraInstance.move(gameConstants.DIRECTION.RIGHT);
+        if (e.getKeyChar() == gameSettings.getInstance().moveCameraUp) {
+            cameraInstance.move(gameSettings.DIRECTION.UP);
+        } else if (e.getKeyChar() == gameSettings.getInstance().moveCameraDown) {
+            cameraInstance.move(gameSettings.DIRECTION.DOWN);
+        } else if (e.getKeyChar() == gameSettings.getInstance().moveCameraLeft) {
+            cameraInstance.move(gameSettings.DIRECTION.LEFT);
+        } else if (e.getKeyChar() == gameSettings.getInstance().moveCameraRight) {
+            cameraInstance.move(gameSettings.DIRECTION.RIGHT);
         } else {
             check = false;
         }
