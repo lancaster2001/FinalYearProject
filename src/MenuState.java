@@ -173,7 +173,7 @@ public class MenuState {
             stateManagerInstance.setCurrentState(gameSettings.STATE.GAME);
             return true;
         }else if(Objects.equals(getSelectedMenu(), "Saves")){
-            if (!menuPath.contains("Saves")){
+            if (!menues.containsKey("Saves")){
                 showErrorMessage("there are no saves currently available");
             }
         }else if (menuPath.contains("Saves") && !Objects.equals(getSelectedMenu(), "Saves")){
