@@ -7,9 +7,10 @@ public class Router extends conveyor {
     double nextDirection;
     public Router(Pose pose, TowerTemplate template) {
         super(pose, template);
+        outputDirections.clear();
         nextDirection = pose.getTheta();
-        for (double index = 0; index < 4; index += 1.0) {
-            inputDirections.add(index * (Math.PI / 2));
+        for (double index = -1; index < 3; index += 1.0) {
+            outputDirections.add(index * (Math.PI / 2));
         }
     }
 
