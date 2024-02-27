@@ -168,10 +168,14 @@ public class MenuState {
             SaveHandler.getInstance().loadSave();
             stateManagerInstance.setCurrentState(gameSettings.STATE.GAME);
             return true;
-        }else if(getSelectedMenu().equalsIgnoreCase("New Game")){
+        }else if(getSelectedMenu().equalsIgnoreCase("New Game")) {
             SaveHandler.getInstance().newSave();
             stateManagerInstance.setCurrentState(gameSettings.STATE.GAME);
             return true;
+        }else if(Objects.equals(getSelectedMenu(), "Saves")){
+            if (!menuPath.contains("Saves")){
+                showErrorMessage("there are no saves currently available");
+            }
         }else if (menuPath.contains("Saves") && !Objects.equals(getSelectedMenu(), "Saves")){
             SaveHandler.getInstance().setSaveSlot(getSelectedMenu().replace(".json",""));
             stateManagerInstance.setCurrentState(gameSettings.STATE.GAME);
