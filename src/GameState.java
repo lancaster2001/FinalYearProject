@@ -20,7 +20,8 @@ public class GameState {
     }
 
     //----------------------------------------------------------------------------------
-    private int tickRate = gameSettings.getInstance().getGameTickRate();
+    private int targettickRate = gameSettings.getInstance().getGameTickRate();
+    private int tickRate = targettickRate;
     private final MainFrame frameInstance = MainFrame.getInstance();
     public final MainPanel panelInstance = frameInstance.getPanelInstance();
     private final Camera cameraInstance = Camera.getInstance();
@@ -77,6 +78,7 @@ public class GameState {
                 fpsCounter = fps;
                 System.out.println("fps:"+fps);
                 System.out.println("ticks/s:"+tickAccumulator);
+
                 fps = 0;
                 tickAccumulator = 0;
                 actLoop();
@@ -107,16 +109,16 @@ public class GameState {
                 screenRefresher();
             }
         };
-        screenRefreshTimer.schedule(task, 1000 / 60);
+        screenRefreshTimer.schedule(task, 1000 / 30);
     }
 
     private void tickLoop() {
         Timer tickTimer = new Timer();
         if (!paused) {
             double tickMultiplier = tickRate / 1000.0;
-            mapInstance.tick(tickMultiplier);
             enemyManagerInstance.tick(tickMultiplier);
             projectileManagerInstance.tick(tickMultiplier);
+            mapInstance.tick(tickMultiplier);
         }
         tickAccumulator+=1;
         TimerTask task = new TimerTask() {

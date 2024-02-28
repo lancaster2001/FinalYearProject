@@ -104,10 +104,11 @@ public class TowerManager {
             template = new TowerTemplate(name, width, height, costResource, costQuantity, imageLink, type, maxhealth, BuildMenuList, speed);
             if (type.equals("Turret")) {
                 double range = jsonObject.getDouble("Range");
+                int magsize = jsonObject.getInt("MagSize");
                 int BulletCostQuantity = jsonObject.getInt("BulletCostQuantity");
                 String BulletCostResource = jsonObject.getString("BulletCostResource");
                 JSONArray bullet = jsonObject.getJSONArray("Bullet");
-                template.setupTurret(range, readBulletTemplate(bullet), BulletCostResource, BulletCostQuantity);
+                template.setupTurret(range, readBulletTemplate(bullet), BulletCostResource, BulletCostQuantity,magsize);
             } else if (type.equals("Drill")) {
                 String spinnerLink = jsonObject.getString("SpinnerLink");
                 template.setupDrill(spinnerLink);

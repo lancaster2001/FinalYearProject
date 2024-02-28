@@ -50,10 +50,14 @@ public class ProjectileManager {
     }
 
     public void draw(Graphics g, Camera cameraInstance, AssetManager assetManagerInstance) {
-        for (Bullet bullet : bullets) {
-            if (bullet.onScreenCheck(cameraInstance)) {
-                bullet.draw(g, cameraInstance, assetManagerInstance);
+        try {
+            for (Bullet bullet : bullets) {
+                if (bullet.onScreenCheck(cameraInstance)) {
+                    bullet.draw(g, cameraInstance, assetManagerInstance);
+                }
             }
+        }catch (Exception e){
+
         }
     }
 }

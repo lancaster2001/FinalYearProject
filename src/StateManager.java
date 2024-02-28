@@ -25,6 +25,9 @@ public class StateManager {
         } else if (currentState.equals(gameSettings.STATE.STARTMENU)) {
             MenuState.getInstance().startup();
 
+        } else if (currentState.equals(gameSettings.STATE.GAMEOVER)) {
+            MenuState.getInstance().showErrorMessage("Game Over");
+            currentState = gameSettings.STATE.STARTMENU;
         }
     }
 

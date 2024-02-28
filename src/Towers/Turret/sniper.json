@@ -6,10 +6,11 @@
   "Speed": 5,
   "BulletCostResource": "Rock",
   "BulletCostQuantity": 1,
-  "CostResource": "Rock",
-  "CostQuantity": 10,
+  "CostResource": "titanium",
+  "CostQuantity": 3,
   "BuildMenuList": "Turret",
   "ImageLink": "sniper.png",
+  "MagSize": 1,
   "Bullet":[
     {"MoveSpeed": 30,
     "Damage": 10,

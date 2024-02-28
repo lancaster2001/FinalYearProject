@@ -12,6 +12,7 @@
   "CostQuantity": 5,
   "BuildMenuList": "Turret",
   "ImageLink": "basicturret.png",
+  "MagSize": 4,
   "Bullet":[
     {"MoveSpeed": 8,
     "Damage": 1,

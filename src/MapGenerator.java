@@ -55,6 +55,11 @@ public class MapGenerator {
                 createPatch(rnd.nextInt(1, mapWidth), rnd.nextInt(1, mapHeight), counter, mapArray, mapWidth, null, "copper");
             }
         }
+        for(int counter2 = 1; counter2<=3;counter2++) {
+            for (int counter = 2; counter <= 3; counter++) {
+                createPatch(rnd.nextInt(1, mapWidth), rnd.nextInt(1, mapHeight), counter, mapArray, mapWidth, null, "titanium");
+            }
+        }
 
         latestMap = new Map(mapArray, mapWidth, mapHeight);
         latestMap.setTower(TowerManager.getInstance().getTemplate("BasicBase"),new Pose(mapWidth / 2, mapHeight / 2, 0), false);

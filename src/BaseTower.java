@@ -54,33 +54,33 @@ public abstract class BaseTower {
     public Pose getPose() {
         return pose;
     }
+   protected void draw(Graphics g, int x, int y, int slotWidth, int slotHeight, AssetManager assetManagerInstance) {
+       int width = (int) (this.width * slotWidth);
+       int height = (int) (this.height * slotHeight);
 
-    protected void draw(Graphics g, int x, int y, int slotWidth, int slotHeight, AssetManager assetManagerInstance) {
-        int width = (int) (this.width * slotWidth);
-        int height = (int) (this.height * slotHeight);
+       Rectangle towerBox = new Rectangle(x, y, width, height);
+       double rotationRequired = pose.getTheta();
+       BufferedImage image = AssetManager.getInstance().getImage("Towers", imageLink);
+       boolean isRotated = (Math.PI/2 == rotationRequired || -Math.PI/2 == rotationRequired);
+       double rotationX = x + width / 2.0;
+       double rotationY = y + height / 2.0;
+       Graphics2D g2d = (Graphics2D) g;
+       AffineTransform backup = g2d.getTransform();
+       AffineTransform trans = new AffineTransform();
+       trans.rotate(rotationRequired, rotationX, rotationY);
+       g2d.transform(trans);
 
-        Rectangle towerBox = new Rectangle(x, y, width, height);
-        // Rotation information
-        double rotationRequired = pose.getTheta();
-        BufferedImage image = AssetManager.getInstance().getImage("Towers", imageLink);
-        boolean side = (Math.PI/3<Math.abs(rotationRequired)&&Math.abs(rotationRequired)<(Math.PI/3)*2);
+       if (isRotated) {
+            int centredX = (int)(x+(width-height)/2.0);
+            int centredY = (int)(y+(height-width)/2.0);
+           g2d.drawImage(image, centredX, centredY, height, width, null);
+       } else {
+           g2d.drawImage(image,x,y,width,height, null);
+       }
 
-        if (side){
-            int holder = width;
-            width = height;
-            height = holder;
-        }
-
-        Graphics2D g2d = (Graphics2D) g;
-        AffineTransform backup = g2d.getTransform();
-        AffineTransform trans = new AffineTransform();
-        trans.rotate(rotationRequired, (x + (width / 2.0)), (y + (height / 2.0)));// the points to rotate around (the center in my example, your left side for your problem)
-        g2d.transform(trans);
-        g2d.drawImage(image, x, y, width, height, null);  // the actual location of the sprite
-        g2d.setTransform(backup); // restore previous transform
-        drawHealthBar(g, towerBox);
-    }
-
+       g2d.setTransform(backup); // restore previous transform
+       drawHealthBar(g, towerBox);
+   }
     protected void drawHealthBar(Graphics g, Rectangle hitbox) {
         if (maxHealth > health) {
             int height = hitbox.height / 10;

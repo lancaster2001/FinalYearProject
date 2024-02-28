@@ -6,15 +6,16 @@
   "Speed": 0.2,
   "BulletCostResource": "Rock",
   "BulletCostQuantity": 1,
-  "CostResource": "Rock",
+  "CostResource": "titanium",
   "CostQuantity": 10,
   "BuildMenuList": "Turret",
   "ImageLink": "spitfire.png",
+  "MagSize": 10,
   "Bullet":[
     {"MoveSpeed": 12,
-    "Damage": 1,
-    "Width": 0.2,
-    "Height": 0.6,
+    "Damage": 0.15,
+    "Width": 0.1,
+    "Height": 0.3,
     "ImageLink": "basicbullet.png"}
   ]
 }

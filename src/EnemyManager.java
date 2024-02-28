@@ -29,7 +29,8 @@ public class EnemyManager {
     private final String enemyTemplatesPath = "src/Enemies/";
     private static int spawnerCounter = 0;
     private static boolean spawnerOn = false;
-    private double countdown = 60;
+    private double waveCountdown = 10;
+    private double countdown = waveCountdown;
     private double difficulty = 0;
 
 
@@ -40,13 +41,10 @@ public class EnemyManager {
             if (!enemyList.get(index).getAlive()) {
                 enemiesToRemove.add(index);
             }
+            enemyList.get(index).tick(tickMultiplier);
         }
         if (!enemiesToRemove.isEmpty()) {
             removeListOfIndexes(enemiesToRemove);
-        }
-
-        for (Integer index = 0; index < enemyList.size(); index++) {
-            enemyList.get(index).tick(tickMultiplier);
         }
         countdown-=tickMultiplier;
         if(spawnerCounter>= difficulty-1) {
@@ -55,7 +53,7 @@ public class EnemyManager {
             difficulty += 5;
         }
         if(countdown<=0){
-            countdown = 60;
+            countdown = waveCountdown;
             spawnerOn = true;
             spawner();
         }
@@ -173,20 +171,6 @@ public class EnemyManager {
         }
         return template;
     }
-    /*public void timer(){
-        countdown-=;
-        if(spawnerCounter>= difficulty-1) {
-            spawnerCounter = 0;
-            spawnerOn = false;
-            difficulty += 5;
-        }
-        if(countdown<=0){
-            countdown = 60;
-            spawnerOn = true;
-            spawner();
-        }
-
-    }*/
     private void spawner() {
 
         Timer actTimer = new Timer();

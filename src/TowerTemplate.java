@@ -14,6 +14,7 @@ public class TowerTemplate {
     private String BulletCostResource;
     private int BulletCostQuantity;
     private String spinnerLink;
+    private int magSize;
 
     public TowerTemplate() {
     }
@@ -31,11 +32,12 @@ public class TowerTemplate {
         this.speed = speed;
     }
 
-    public void setupTurret(double range, BulletTemplate bulletTemplate, String BulletCostResource, int bulletCostQuantity) {
+    public void setupTurret(double range, BulletTemplate bulletTemplate, String BulletCostResource, int bulletCostQuantity,int magSize) {
         this.range = range;
         this.bulletTemplate = bulletTemplate;
         this.BulletCostResource = BulletCostResource;
         this.BulletCostQuantity = bulletCostQuantity;
+        this.magSize = magSize;
     }
     public void setupDrill(String spinnerLink){
         this.spinnerLink = spinnerLink;
@@ -67,10 +69,6 @@ public class TowerTemplate {
 
     public BulletTemplate getBulletTemplate() {
         return bulletTemplate;
-    }
-
-    public double getCooldown() {
-        return speed;
     }
 
     public double getRange() {
@@ -119,5 +117,9 @@ public class TowerTemplate {
 
     public String getSpinnerLink() {
         return spinnerLink;
+    }
+
+    public int getMagSize() {
+        return magSize;
     }
 }

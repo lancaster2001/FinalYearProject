@@ -10,6 +10,8 @@ public class BaseTurretTower extends BaseTower {
     private String BulletCostResource;
     private int BulletCostQuantity;
     private double cooldown;
+    private int magsize;
+    private int magazine;
     private BulletTemplate bullet;
     BaseEnemy previousEnemy;
     private double targetPreviousX = -1;
@@ -28,6 +30,8 @@ public class BaseTurretTower extends BaseTower {
         for (double index = 0; index < 4; index += 1.0) {
             inputDirections.add(index * (Math.PI / 2));
         }
+        magazine = 0;
+        magsize = template.getMagSize();
     }
 
     private boolean checkForEnemies(double tickMultiplier) {
@@ -91,20 +95,26 @@ public class BaseTurretTower extends BaseTower {
 
     public void shoot() {
         int counter = 0;
-        for (Resource resource : inventory) {
-            if (resource.getName().equalsIgnoreCase(BulletCostResource)) {
-                counter += 1;
-            }
-        }
-        if ((shootAccumulator == cooldown) && (counter >= BulletCostQuantity)) {
-            shootAccumulator -= cooldown;
-            int counter2 = BulletCostQuantity;
-            for (int index = inventory.size() - 1; index >= 0; index--) {
-                if ((inventory.get(index).getName().equalsIgnoreCase(BulletCostResource)) && (counter2 > 0)) {
-                    counter2 -= 1;
-                    inventory.remove(index);
+        if(magazine<=0){
+            for (Resource resource : inventory) {
+                if (resource.getName().equalsIgnoreCase(BulletCostResource)) {
+                    counter += 1;
                 }
             }
+            if ((shootAccumulator == cooldown) && (counter >= BulletCostQuantity)) {
+                shootAccumulator -= cooldown;
+                int counter2 = BulletCostQuantity;
+                for (int index = inventory.size() - 1; index >= 0; index--) {
+                    if ((inventory.get(index).getName().equalsIgnoreCase(BulletCostResource)) && (counter2 > 0)) {
+                        counter2 -= 1;
+                        inventory.remove(index);
+                        magazine+=magsize;
+                    }
+                }
+            }
+        }
+        if(magazine>0) {
+            magazine -= 1;
             projectileManagerInstance.addBullet(pose.getX(), pose.getY(), pose.getTheta(), "player", range, bullet);
         }
     }
