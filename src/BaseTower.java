@@ -170,6 +170,7 @@ public abstract class BaseTower {
         }
         //todo make this applicable for individual output directions
         //sets direction to check to be every direction
+        //todo bug with touters outputting to the left
         ArrayList<Double> directionCheckOrder = new ArrayList<>();
         for(index = 0;index<4;index++){
            double holder = nextDirection+((Math.PI/2)*index);

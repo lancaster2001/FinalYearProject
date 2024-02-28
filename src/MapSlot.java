@@ -8,8 +8,6 @@ public class MapSlot {
     private BaseTower tower;
     private BaseTower tempTower;
     private BaseTile tile;
-    private final boolean outlineSlots = gameSettings.getInstance().isOutlineSlots();
-    private final boolean debugging = gameSettings.getInstance().isDebugging();
 
     public MapSlot(int x, int y, TileTemplate tile) {
         this.x = x;
@@ -70,11 +68,11 @@ public class MapSlot {
         if (tempTower != null) {
             tempTower.draw(g, x, y, slotWidth, slotHeight, assetManagerInstance);
         }
-        if(outlineSlots) {
+        if(gameSettings.getInstance().isOutlineSlots()) {
             g.setColor(Color.BLACK);
             g.drawRect(x, y, slotWidth, slotHeight);
         }
-        if(debugging) {
+        if(gameSettings.getInstance().isDebugging()) {
             g.setColor(Color.red);
             g.setFont(new Font("Arial", Font.BOLD, 10));
             g.drawString(this.x + ", " + this.y, x, y + 10);

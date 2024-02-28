@@ -3,7 +3,6 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 public class BaseTurretTower extends BaseTower {
-    private final boolean debugging = gameSettings.getInstance().isDebugging();
     private final EnemyManager enemyManagerInstance = EnemyManager.getInstance();
     private final ProjectileManager projectileManagerInstance = ProjectileManager.getInstance();
     protected double range;
@@ -112,7 +111,7 @@ public class BaseTurretTower extends BaseTower {
 
     public void draw(Graphics g, int x, int y, int slotWidth, int slotHeight, AssetManager assetManagerInstance) {
         super.draw(g,x,y,slotWidth,slotHeight,assetManagerInstance);
-        if((predictedEnemyPoint.x != -1)&&(predictedEnemyPoint.y != -1)&&(debugging)) {
+        if((predictedEnemyPoint.x != -1)&&(predictedEnemyPoint.y != -1)&&(gameSettings.getInstance().isDebugging())) {
             g.setColor(Color.red);
             g.setFont(new Font("Arial", Font.BOLD, 10));
             g.drawString(predictedEnemyPoint.x + "", x, y + 20);

@@ -13,7 +13,7 @@
   "Bullet":[
     {"MoveSpeed": 8,
     "Damage": 3,
-    "Width": 0.6,
+    "Width": 0.20,
     "Height": 0.6,
     "ImageLink": "basicbullet.png"}
   ]

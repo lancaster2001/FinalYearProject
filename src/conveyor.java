@@ -8,7 +8,7 @@ public class conveyor extends BaseTower {
 
     public conveyor(Pose pose, TowerTemplate template) {
         super(pose, template);
-        inventorySize = 3;
+        inventorySize = 4;
         for (double index = -1; index < 3; index += 1.0) {
             if (index * (Math.PI / 2) != pose.getTheta()) {
                 inputDirections.add(index * (Math.PI / 2));
@@ -39,7 +39,7 @@ public class conveyor extends BaseTower {
                     if (!collisioncheck) {
                         resource.move(speed * tickMultiplier);
                     }
-                    //outputResource(resource);
+
                 }
                 index += 1;
             }

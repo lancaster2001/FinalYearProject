@@ -44,7 +44,10 @@ public class GameStateInputHandler {
             draggedToBuild();
         } else if (e.getKeyChar() == gameSettings.getInstance().pauseButton) {
             GameState.getInstance().paused = !GameState.getInstance().paused;
-        } else if (e.getKeyChar() == 'p') {
+        } else if (e.getKeyChar() == gameSettings.getInstance().debugKey) {
+            gameSettings.getInstance().toggledebug();
+        }
+        else if (e.getKeyChar() == 'p') {
             SaveHandler.getInstance().saveGame();
         }
     }

@@ -24,6 +24,9 @@ public class gameSettings {
     public boolean isAutosave() {
         return autosave;
     }
+    public void toggledebug(){
+        debugging= !debugging;
+    }
 
     //FILE LOCATIONS----------------------------------------------------------------------------------------
     final String assetsPath = "src/Assets/";
@@ -47,6 +50,7 @@ public class gameSettings {
     final char moveCameraRight = 'd';
     final char pauseButton = ' ';
     final char rotateTower = 'r';
+    final char debugKey = ';';
     //CAMERA-------------------------------------------------------------------------------------------------
     final int defaultZoom = 5;
     final int[] defaultCameraCoordinates = {2, 2};
