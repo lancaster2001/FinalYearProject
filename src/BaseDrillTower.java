@@ -1,13 +1,16 @@
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class BaseDrillTower extends BaseTower {
     private double actAccumulator = 0.0;
     private final double actAccumulatorLimit = 1.0;
     private String spinnerLink;
     private String tileResource = null;
+    double checkerthing = 0;
 
     public BaseDrillTower(Pose pose, TowerTemplate template,String tileResource) {
         super(pose, template);
@@ -33,6 +36,7 @@ public class BaseDrillTower extends BaseTower {
     }
 
     public void tick(BaseTile tile, double tickMultiplier) {
+        super.tick(tickMultiplier);
         actAccumulator += tickMultiplier / speed;
         if (actAccumulator >= actAccumulatorLimit) {
             actAccumulator -= actAccumulatorLimit;
@@ -42,37 +46,38 @@ public class BaseDrillTower extends BaseTower {
                 inventory.add(resource);
             }
         }
+
         if (!inventory.isEmpty()) {
-            boolean conveyerCheck = false;
+            outputResource(inventory.getFirst());
+        }
+        /*
+        if (!inventory.isEmpty()) {
+
             Map mapInstance = GameState.getInstance().getMapInstance();
-            MapSlot slotToCheck = null;
-            if (pose.getY() - 1 > 0) {
-                slotToCheck = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX(), pose.getY() - 1, 0.5, 0.5)).getFirst();
-            }
-            if (slotToCheck != null) {
-                if(outputResource(inventory.getFirst())){
+            ArrayList<Point2D.Double> adjacentPoints = new ArrayList<>(Arrays.asList(
+                    new Point2D.Double(pose.getX(), pose.getY() - 1),
+                    new Point2D.Double(pose.getX() + 1, pose.getY()),
+                    new Point2D.Double(pose.getX(), pose.getY() + 1),
+                    new Point2D.Double(pose.getX() - 1, pose.getY())
+            ));
 
-                }else{
-                    if (pose.getX() + 1 <= GameState.getInstance().getMapInstance().getMapWidth()) {
-                        slotToCheck = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX() + 1, pose.getY(), 0.5, 0.5)).getFirst();
-                    }
-                    if(outputResource(inventory.getFirst())){
+            for (Point2D.Double adjacentPoint : adjacentPoints) {
+                if (adjacentPoint.getX() >= 0 && adjacentPoint.getY() >= 0 &&
+                        adjacentPoint.getX() < mapInstance.getMapWidth() &&
+                        adjacentPoint.getY() < mapInstance.getMapHeight()) {
 
-                    }else{
-                        if (pose.getY() + 1 <= GameState.getInstance().getMapInstance().getMapHeight()) {
-                            slotToCheck = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX(), pose.getY() + 1, 0.5, 0.5)).getFirst();
-                        }
-                        if(outputResource(inventory.getFirst())){
-
-                        }else{
-                            if (pose.getX() - 1 > 0) {
-                                slotToCheck = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX() - 1, pose.getY(), 0.5, 0.5)).getFirst();
-                            }
+                    MapSlot slotToCheck = mapInstance.getMapSection(new Rectangle2D.Double(adjacentPoint.getX(), adjacentPoint.getY(), 0.5, 0.5)).getFirst();
+                    checkerthing+=tickMultiplier;
+                    if(checkerthing>1) {
+                        checkerthing-=1;
+                        if (outputResource(inventory.getFirst())) {
+                            // Resource output successful, exit loop
+                            break;
                         }
                     }
                 }
             }
-        }
+        }*/
     }
     private static BufferedImage changeImageColor(BufferedImage image, Color color) {
         // Create a new BufferedImage with the same dimensions and type as the original image

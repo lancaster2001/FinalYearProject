@@ -13,9 +13,6 @@ public class EnemyManager {
     private static EnemyManager instance = new EnemyManager();
 
     public static EnemyManager getInstance() {
-        if (instance == null) {
-            instance = new EnemyManager();
-        }
         return instance;
     }
 
@@ -63,11 +60,6 @@ public class EnemyManager {
         for (int index = 0; index < enemyList.size(); index++) {
             if (enemyList.get(index).onScreenCheck()) {
                 enemyList.get(index).draw(g);
-            }
-        }
-        for (BaseEnemy enemy : enemyList) {
-            if (enemy.onScreenCheck()) {
-                enemy.draw(g);
             }
         }
     }

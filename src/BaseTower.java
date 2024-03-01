@@ -24,11 +24,17 @@ public abstract class BaseTower {
     protected ArrayList<Double> outputDirections = new ArrayList<>();
     protected ArrayList<Double> inputDirections = new ArrayList<>();
     private final TowerTemplate tempalate;
+    double outputAccumulator = 0;
+    double outputAccumulatorLimit = 0.25;
 
     public void tick(BaseTile tile, double tickMultiplier) {
     }
 
     public void tick(double tickMultiplier) {
+        outputAccumulator+=tickMultiplier;
+        if (outputAccumulator>outputAccumulatorLimit){
+            outputAccumulator = outputAccumulatorLimit;
+        }
     }
 
     public BaseTower(Pose pose, TowerTemplate template) {
@@ -171,79 +177,83 @@ public abstract class BaseTower {
         //todo make this applicable for individual output directions
         //sets direction to check to be every direction
         //todo bug with touters outputting to the left
-        ArrayList<Double> directionCheckOrder = new ArrayList<>();
-        for(index = 0;index<4;index++){
-           double holder = nextDirection+((Math.PI/2)*index);
-           if(holder>=2*Math.PI){
-               holder-=2*Math.PI;
-           }
-            directionCheckOrder.add(holder);
-        }
-        //checks each direction
-        while(!directionCheckOrder.isEmpty()) {
-            if ((pose.getY() - 1 > 0)&&(outputDirections.contains(0.0))) {
-                if (existanceCheck) {
-                    currentTower = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX(), pose.getY() - 1, 0.5, 0.5)).getFirst().getTower();
-                    if (currentTower != null) {
-                        resource.setPose(new Pose(pose.getX() + (0.5 - resource.getWidth() / 2), pose.getY() - 0.0000001, 0));
-                        if (directionCheckOrder.getFirst() == 0 && currentTower.addToInventory((int) pose.getX(), (int) pose.getY(), resource)) {
-                            nextDirection += Math.PI / 2;
-                            while (nextDirection >= (Math.PI * 2) - 0.1) {
-                                nextDirection -= Math.PI * 2;
-                            }
-                            removeListOfIndexes(outputIndex);
-                            return true;
-                        }
-                    }
+        if ((!inventory.isEmpty())&&(outputAccumulator>=outputAccumulatorLimit)) {
+            outputAccumulator-=outputAccumulatorLimit;
+            ArrayList<Double> directionCheckOrder = new ArrayList<>();
+            for (index = 0; index < 4; index++) {
+                double holder = nextDirection + ((Math.PI / 2) * index);
+                if (holder >= 2 * Math.PI) {
+                    holder -= 2 * Math.PI;
                 }
-                if ((pose.getX() + 1 <= GameState.getInstance().getMapInstance().getMapWidth())&&(outputDirections.contains(Math.PI/2))) {
-                    currentTower = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX() + 1, pose.getY(), 0.5, 0.5)).getFirst().getTower();
-                    if (currentTower != null) {
-                        resource.setPose(new Pose(pose.getX() + 1.0000001, pose.getY() + (0.5 - resource.getHeight() / 2), Math.PI / 2));
-                        if (directionCheckOrder.getFirst() == Math.PI/2 && currentTower.addToInventory((int) pose.getX(), (int) pose.getY(), resource)) {
-                            nextDirection += Math.PI / 2;
-                            while (nextDirection >= (Math.PI * 2) - 0.1) {
-                                nextDirection -= Math.PI * 2;
-                            }
-                            removeListOfIndexes(outputIndex);
-                            return true;
-                        }
-                    }
-                }
-                if ((pose.getY() + 1 <= GameState.getInstance().getMapInstance().getMapHeight())&&(outputDirections.contains(Math.PI))) {
-                    currentTower = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX(), pose.getY() + 1, 0.5, 0.5)).getFirst().getTower();
-                    if (currentTower != null) {
-                        resource.setPose(new Pose(pose.getX() + (0.5 - resource.getWidth() / 2), pose.getY() + 1.0000001, Math.PI));
-                        if (directionCheckOrder.getFirst() == Math.PI && currentTower.addToInventory((int) pose.getX(), (int) pose.getY(), resource)) {
-                            nextDirection += Math.PI / 2;
-                            while (nextDirection >= (Math.PI * 2) - 0.1) {
-                                nextDirection -= Math.PI * 2;
-                            }
-                            removeListOfIndexes(outputIndex);
-                            return true;
-                        }
-                    }
-                }
-                if ((pose.getX() - 1 > 0)&&(outputDirections.contains(-Math.PI/2))) {
-                    currentTower = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX() - 1, pose.getY(), 0.5, 0.5)).getFirst().getTower();
-                    if (currentTower != null) {
-                        resource.setPose(new Pose(pose.getX() - 0.0000001, pose.getY() + (0.5 - resource.getHeight() / 2), Math.PI * 1.5));
-                        if (directionCheckOrder.getFirst() == Math.PI*1.5 && currentTower.addToInventory((int) pose.getX(), (int) pose.getY(), resource)) {
-                            nextDirection += Math.PI / 2;
-                            while (nextDirection >= (Math.PI * 2) - 0.1) {
-                                nextDirection -= Math.PI * 2;
-                            }
-                            removeListOfIndexes(outputIndex);
-                            return true;
-                        }
-                    }
-                }
-                nextDirection += Math.PI / 2;
-                while (nextDirection >= (Math.PI * 2) - 0.1) {
-                    nextDirection -= Math.PI * 2;
-                }
+                directionCheckOrder.add(holder);
             }
-            directionCheckOrder.removeFirst();
+            //checks each direction
+
+            while (!directionCheckOrder.isEmpty()) {
+                if ((pose.getY() - 1 > 0) && (outputDirections.contains(0.0))) {
+                    if (existanceCheck) {
+                        currentTower = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX(), pose.getY() - 1, 0.5, 0.5)).getFirst().getTower();
+                        if (currentTower != null) {
+                            resource.setPose(new Pose(pose.getX() + (0.5 - resource.getWidth() / 2), pose.getY() - 0.0000001, 0));
+                            if (directionCheckOrder.getFirst() == 0 && currentTower.addToInventory((int) pose.getX(), (int) pose.getY(), resource)) {
+                                nextDirection += Math.PI / 2;
+                                while (nextDirection >= (Math.PI * 2) - 0.1) {
+                                    nextDirection -= Math.PI * 2;
+                                }
+                                removeListOfIndexes(outputIndex);
+                                return true;
+                            }
+                        }
+                    }
+                    if ((pose.getX() + 1 <= GameState.getInstance().getMapInstance().getMapWidth()) && (outputDirections.contains(Math.PI / 2))) {
+                        currentTower = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX() + 1, pose.getY(), 0.5, 0.5)).getFirst().getTower();
+                        if (currentTower != null) {
+                            resource.setPose(new Pose(pose.getX() + 1.0000001, pose.getY() + (0.5 - resource.getHeight() / 2), Math.PI / 2));
+                            if (directionCheckOrder.getFirst() == Math.PI / 2 && currentTower.addToInventory((int) pose.getX(), (int) pose.getY(), resource)) {
+                                nextDirection += Math.PI / 2;
+                                while (nextDirection >= (Math.PI * 2) - 0.1) {
+                                    nextDirection -= Math.PI * 2;
+                                }
+                                removeListOfIndexes(outputIndex);
+                                return true;
+                            }
+                        }
+                    }
+                    if ((pose.getY() + 1 <= GameState.getInstance().getMapInstance().getMapHeight()) && (outputDirections.contains(Math.PI))) {
+                        currentTower = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX(), pose.getY() + 1, 0.5, 0.5)).getFirst().getTower();
+                        if (currentTower != null) {
+                            resource.setPose(new Pose(pose.getX() + (0.5 - resource.getWidth() / 2), pose.getY() + 1.0000001, Math.PI));
+                            if (directionCheckOrder.getFirst() == Math.PI && currentTower.addToInventory((int) pose.getX(), (int) pose.getY(), resource)) {
+                                nextDirection += Math.PI / 2;
+                                while (nextDirection >= (Math.PI * 2) - 0.1) {
+                                    nextDirection -= Math.PI * 2;
+                                }
+                                removeListOfIndexes(outputIndex);
+                                return true;
+                            }
+                        }
+                    }
+                    if ((pose.getX() - 1 > 0) && (outputDirections.contains(-Math.PI / 2))) {
+                        currentTower = mapInstance.getMapSection(new Rectangle2D.Double(pose.getX() - 1, pose.getY(), 0.5, 0.5)).getFirst().getTower();
+                        if (currentTower != null) {
+                            resource.setPose(new Pose(pose.getX() - 0.0000001, pose.getY() + (0.5 - resource.getHeight() / 2), Math.PI * 1.5));
+                            if (directionCheckOrder.getFirst() == Math.PI * 1.5 && currentTower.addToInventory((int) pose.getX(), (int) pose.getY(), resource)) {
+                                nextDirection += Math.PI / 2;
+                                while (nextDirection >= (Math.PI * 2) - 0.1) {
+                                    nextDirection -= Math.PI * 2;
+                                }
+                                removeListOfIndexes(outputIndex);
+                                return true;
+                            }
+                        }
+                    }
+                    nextDirection += Math.PI / 2;
+                    while (nextDirection >= (Math.PI * 2) - 0.1) {
+                        nextDirection -= Math.PI * 2;
+                    }
+                }
+                directionCheckOrder.removeFirst();
+            }
         }
         return false;
     }

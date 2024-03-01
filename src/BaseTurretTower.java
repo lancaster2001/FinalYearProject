@@ -26,7 +26,7 @@ public class BaseTurretTower extends BaseTower {
         this.bullet = template.getBulletTemplate();
         this.BulletCostQuantity = template.getBulletCostQuantity();
         this.BulletCostResource = template.getBulletCostResource();
-        inventorySize = 10;
+        inventorySize = 5;
         for (double index = 0; index < 4; index += 1.0) {
             inputDirections.add(index * (Math.PI / 2));
         }

@@ -9,6 +9,7 @@ public class conveyor extends BaseTower {
     public conveyor(Pose pose, TowerTemplate template) {
         super(pose, template);
         inventorySize = 4;
+        outputAccumulatorLimit =0;
         for (double index = -1; index < 3; index += 1.0) {
             if (index * (Math.PI / 2) != pose.getTheta()) {
                 inputDirections.add(index * (Math.PI / 2));
@@ -18,6 +19,7 @@ public class conveyor extends BaseTower {
     }
 
     public void tick(double tickMultiplier) {
+        super.tick(tickMultiplier);
         int index = 0;
         ArrayList<Integer> indexesToRemove = new ArrayList<>();
         setDirectionOfResources(tickMultiplier);
@@ -126,17 +128,4 @@ public class conveyor extends BaseTower {
     protected void drawNoResources(Graphics g, int x, int y, int slotWidth, int slotHeight, AssetManager assetManagerInstance) {
         super.draw(g, x, y, slotWidth, slotHeight, assetManagerInstance);
     }
-    /*public boolean addResource(Resource resource){
-        boolean check = true;
-        for(Resource resource1:inventory){
-            if(resource1.getId().equals(resource.getId())){
-                check = false;
-            }
-        }
-        if(check &&(inventory.size()<1)){
-                inventory.add(resource);
-                return true;
-        }
-        return false;
-    }*/
 }

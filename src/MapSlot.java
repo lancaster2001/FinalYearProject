@@ -48,7 +48,7 @@ public class MapSlot {
                 tower.tick(tile, tickMultiplier);
                 tower.tick(tickMultiplier);
             }catch (Exception e){
-
+                e.printStackTrace();
             }
         }
     }

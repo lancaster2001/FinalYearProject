@@ -2,6 +2,9 @@ import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class GameState {
     //singleton------------------------------------------------------------------------
@@ -62,75 +65,63 @@ public class GameState {
             StateManager.getInstance().setCurrentState(gameSettings.STATE.STARTMENU);
         }
     }
+    private final Runnable actTask = () -> {
+        System.out.println("Timer ran");
+        if (!start) {
+            tickLoop();
+            start = true;
+        }
+        fpsCounter = fps;
+        System.out.println("fps:" + fps);
+        System.out.println("ticks/s:" + tickAccumulator);
 
-    private void actLoop() {
-        Timer actTimer = new Timer();
-        TimerTask task = new TimerTask() {
-            public static int i = 0;
+        fps = 0;
+        tickAccumulator = 0;
+    };
 
-            @Override
-            public void run() {
-                System.out.println("Timer ran " + ++i);
-                if (!start) {
-                    tickLoop();
-                    start = true;
-                }
-                fpsCounter = fps;
-                System.out.println("fps:"+fps);
-                System.out.println("ticks/s:"+tickAccumulator);
+    private final Runnable saveTask = () -> {
+        System.out.println("save made");
+        saveHandlerInstance.saveGame();
+    };
 
-                fps = 0;
-                tickAccumulator = 0;
-                actLoop();
-            }
-        };
-        actTimer.schedule(task, 1000);
-    }
-    private void saveLoop() {
-        Timer actTimer = new Timer();
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                System.out.println("save made");
-                saveHandlerInstance.saveGame();
-                saveLoop();
-            }
-        };
-        actTimer.schedule(task, 30000);
-    }
-
-    private void screenRefresher() {
-        Timer screenRefreshTimer = new Timer();
-        panelInstance.repaint();
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                fps += 1;
-                screenRefresher();
-            }
-        };
-        screenRefreshTimer.schedule(task, 1000 / 30);
-    }
-
-    private void tickLoop() {
-        Timer tickTimer = new Timer();
-        if (!paused) {
+    private final Runnable tickTask = () -> {
+        if(!paused) {
             double tickMultiplier = tickRate / 1000.0;
             enemyManagerInstance.tick(tickMultiplier);
             projectileManagerInstance.tick(tickMultiplier);
             mapInstance.tick(tickMultiplier);
         }
-        tickAccumulator+=1;
-        TimerTask task = new TimerTask() {
-            public static double i = 0;
+            tickAccumulator++;
 
-            @Override
-            public void run() {
-                tickLoop();
-                i += gameSettings.getInstance().getGameTickRate() / 1000.0;
-            }
-        };
-        tickTimer.schedule(task, tickRate);
+    };
+
+    private final Runnable screenRefreshTask = () -> {
+        panelInstance.repaint();
+        fps += 1;
+    };
+
+    // ScheduledExecutorService for scheduling tasks
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(4);
+
+    // Other code remains unchanged...
+
+    private void actLoop() {
+        // Schedule actTask to run every 1 second
+        scheduler.scheduleAtFixedRate(actTask, 0, 1, TimeUnit.SECONDS);
+    }
+
+    private void saveLoop() {
+        // Schedule saveTask to run every 30 seconds
+        scheduler.scheduleAtFixedRate(saveTask, 0, 30, TimeUnit.SECONDS);
+    }
+
+    private void tickLoop() {
+        // Schedule tickTask to run every tickRate milliseconds
+        scheduler.scheduleAtFixedRate(tickTask, 0, tickRate, TimeUnit.MILLISECONDS);
+    }
+
+    private void screenRefresher() {
+        scheduler.scheduleAtFixedRate(screenRefreshTask, 0, 1000 / 60, TimeUnit.MILLISECONDS);
     }
 
     public boolean userInput(KeyEvent e) {

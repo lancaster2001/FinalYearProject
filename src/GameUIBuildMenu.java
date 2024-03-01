@@ -261,4 +261,10 @@ public class GameUIBuildMenu {
 
         }
     }
+    public boolean hasSelectedTower(){
+        if(selectedMenuElement<=0){
+            return false;
+        }
+        return true;
+    }
 }

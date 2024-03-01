@@ -37,10 +37,7 @@ public class GameStateInputHandler {
         if (GameState.getInstance().userInput(e)) {
 
         } else if (e.getKeyChar() == gameSettings.getInstance().rotateTower) {
-            buildRotation += Math.PI / 2;
-            if (buildRotation >= 2 * Math.PI) {
-                buildRotation -= 2 * Math.PI;
-            }
+            rotateBuildClockwise();
             draggedToBuild();
         } else if (e.getKeyChar() == gameSettings.getInstance().pauseButton) {
             GameState.getInstance().paused = !GameState.getInstance().paused;
@@ -56,11 +53,18 @@ public class GameStateInputHandler {
         if (GameStateUI.getInstance().takeInput(e.getPoint())) {
             return;
         }
-
-        if (e.getWheelRotation() < 0) {
-            cameraInstance.decreaseZoom();
-        } else {
-            cameraInstance.increaseZoom();
+        if(gameUIBuildMenuInstance.hasSelectedTower()){
+            if (e.getWheelRotation() < 0) {
+                rotateBuildClockwise();
+            } else {
+                rotateBuildAntiClockwise();
+            }
+        }else {
+            if (e.getWheelRotation() < 0) {
+                cameraInstance.decreaseZoom();
+            } else {
+                cameraInstance.increaseZoom();
+            }
         }
         panelInstance.repaint();
     }
@@ -234,33 +238,45 @@ public class GameStateInputHandler {
             }else {
                 GameState.getInstance().getMapInstance().setTowerFromTempTower(currentcoord[0],currentcoord[1]);
             }
-                GameState.getInstance().getMapInstance().clearTempTower(Slot.getX(), Slot.getY());
+            GameState.getInstance().getMapInstance().clearTempTower(Slot.getX(), Slot.getY());
         }
         draggedTempPoints.clear();
     }
     private void clickToBuild(){
-            if (lastClickedButton == MouseEvent.BUTTON3) {
-                if(GameUIBuildMenu.getInstance().getSelectedBuildMenuElement()==-1) {
-                    int[] g = cameraInstance.slotOnScreen(currentMouseLocation);
-                    MapSlot clickedSlot = cameraInstance.getMapslot(g[0], g[1]);
-                    GameState.getInstance().getMapInstance().clearTower(clickedSlot.getX(), clickedSlot.getY());
-                }else{
-                    if(!draggedTempPoints.isEmpty()){
-                        clearDraggedTempPoints();
-                    }else {
-                        GameUIBuildMenu.getInstance().clearSelectedElement();
-                    }
-                }
-            } else if (lastClickedButton == MouseEvent.BUTTON1){
-                try {
-                    int[] g = cameraInstance.slotOnScreen(currentMouseLocation);
-                    MapSlot clickedSlot = cameraInstance.getMapslot(g[0], g[1]);
-                    if (gameUIBuildMenuInstance.getSelectedTower() != null) {
-                        GameState.getInstance().getMapInstance().setTower(gameUIBuildMenuInstance.getSelectedTower(), new Pose(clickedSlot.getX(), clickedSlot.getY(), buildRotation));
-                    }
-                }catch(Exception e){
-                    System.out.println("gameStateInputHandler error at clickToBuild");
+        if (lastClickedButton == MouseEvent.BUTTON3) {
+            if(GameUIBuildMenu.getInstance().getSelectedBuildMenuElement()==-1) {
+                int[] g = cameraInstance.slotOnScreen(currentMouseLocation);
+                MapSlot clickedSlot = cameraInstance.getMapslot(g[0], g[1]);
+                GameState.getInstance().getMapInstance().clearTower(clickedSlot.getX(), clickedSlot.getY());
+            }else{
+                if(!draggedTempPoints.isEmpty()){
+                    clearDraggedTempPoints();
+                }else {
+                    GameUIBuildMenu.getInstance().clearSelectedElement();
                 }
             }
+        } else if (lastClickedButton == MouseEvent.BUTTON1){
+            try {
+                int[] g = cameraInstance.slotOnScreen(currentMouseLocation);
+                MapSlot clickedSlot = cameraInstance.getMapslot(g[0], g[1]);
+                if (gameUIBuildMenuInstance.getSelectedTower() != null) {
+                    GameState.getInstance().getMapInstance().setTower(gameUIBuildMenuInstance.getSelectedTower(), new Pose(clickedSlot.getX(), clickedSlot.getY(), buildRotation));
+                }
+            }catch(Exception e){
+                System.out.println("gameStateInputHandler error at clickToBuild");
+            }
         }
+    }
+    private void rotateBuildClockwise(){
+        buildRotation += Math.PI / 2;
+        if (buildRotation >= 2 * Math.PI) {
+            buildRotation -= 2 * Math.PI;
+        }
+    }
+    private void rotateBuildAntiClockwise(){
+        buildRotation -= Math.PI / 2;
+        if (buildRotation <= 0) {
+            buildRotation += 2 * Math.PI;
+        }
+    }
 }
