@@ -5,95 +5,74 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class BaseDrillTower extends BaseTower {
-    private double actAccumulator = 0.0;
-    private final double actAccumulatorLimit = 1.0;
-    private String spinnerLink;
-    private String tileResource = null;
-    double checkerthing = 0;
+/*this class is used for constructing drill towers*/
+public final class BaseDrillTower extends BaseTower {
+    private double actAccumulator = 0.0;//accumulator for drilling
+    private final double actAccumulatorLimit = 1.0;//how long it takes to drill a resource
+    private String spinnerLink;// link for the image of the spinner on top of the drill (note: this does not spin due to concerns over performance)
+    private String tileResource = null;//resource that the drill is mining
 
+    //constructor
     public BaseDrillTower(Pose pose, TowerTemplate template,String tileResource) {
         super(pose, template);
         imageLink = template.getImageLink();
         spinnerLink = template.getSpinnerLink();
         inventorySize = 5;
+        //makes all side output directions
         for (double index = 0; index < 4; index += 1.0) {
             outputDirections.add(index * (Math.PI / 2));
         }
         pose.setTheta(0);
         this.tileResource = tileResource;
     }
-    public void draw(Graphics g, int x, int y, int slotWidth, int slotHeight, AssetManager assetManagerInstance) {
-        super.draw(g,x,y,slotWidth,slotHeight,assetManagerInstance);
+    //display drill
+    public void draw(Graphics g, Rectangle rectangle, AssetManager assetManagerInstance) {
+        super.draw(g,rectangle,assetManagerInstance);
         if(tileResource!=null) {
             Color resourceColour = ResourceManager.getInstance().getResource(tileResource).getColor();
             BufferedImage spinner = changeImageColor(assetManagerInstance.getImage("Towers", spinnerLink), resourceColour);
-            g.drawImage(spinner, x, y, slotWidth, slotHeight, null);
+            g.drawImage(spinner,rectangle.x, rectangle.y, rectangle.width, rectangle.height, null);
         }
     }
-    public void act(BaseTile tile, ResourceManager resourceManagerInstance) {
-        resourceManagerInstance.queryInventory(tile.getResource()).add();
-    }
 
+    //method for what should happen each tick
     public void tick(BaseTile tile, double tickMultiplier) {
         super.tick(tickMultiplier);
+        //add to cooldown
         actAccumulator += tickMultiplier / speed;
+        //check if cooldown is over
         if (actAccumulator >= actAccumulatorLimit) {
+            //reset cooldown
             actAccumulator -= actAccumulatorLimit;
+            //generate resource
             Resource resource = ResourceManager.getInstance().getResource(tile.getResource());
             resource.add();
+            //check inventory is not full and added resource to it if so
             if (inventory.size() < inventorySize) {
                 inventory.add(resource);
             }
         }
-
+        //attempt to output any items in inventory
         if (!inventory.isEmpty()) {
             outputResource(inventory.getFirst());
         }
-        /*
-        if (!inventory.isEmpty()) {
-
-            Map mapInstance = GameState.getInstance().getMapInstance();
-            ArrayList<Point2D.Double> adjacentPoints = new ArrayList<>(Arrays.asList(
-                    new Point2D.Double(pose.getX(), pose.getY() - 1),
-                    new Point2D.Double(pose.getX() + 1, pose.getY()),
-                    new Point2D.Double(pose.getX(), pose.getY() + 1),
-                    new Point2D.Double(pose.getX() - 1, pose.getY())
-            ));
-
-            for (Point2D.Double adjacentPoint : adjacentPoints) {
-                if (adjacentPoint.getX() >= 0 && adjacentPoint.getY() >= 0 &&
-                        adjacentPoint.getX() < mapInstance.getMapWidth() &&
-                        adjacentPoint.getY() < mapInstance.getMapHeight()) {
-
-                    MapSlot slotToCheck = mapInstance.getMapSection(new Rectangle2D.Double(adjacentPoint.getX(), adjacentPoint.getY(), 0.5, 0.5)).getFirst();
-                    checkerthing+=tickMultiplier;
-                    if(checkerthing>1) {
-                        checkerthing-=1;
-                        if (outputResource(inventory.getFirst())) {
-                            // Resource output successful, exit loop
-                            break;
-                        }
-                    }
-                }
-            }
-        }*/
     }
     private static BufferedImage changeImageColor(BufferedImage image, Color color) {
-        // Create a new BufferedImage with the same dimensions and type as the original image
+        // Create a copy of the buffered image for the resource colour
         BufferedImage modifiedImage = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
 
-        // Copy the pixels of the original image to the modified image while changing the color
+        // copy each pixel of the original image and set it to the new image and change the colour of any non-transparent pixels
         for (int x = 0; x < image.getWidth(); x++) {
             for (int y = 0; y < image.getHeight(); y++) {
-                int rgb = image.getRGB(x, y);
-                if ((rgb & 0x00FFFFFF) != 0) { // Check if the pixel is not transparent
-                    modifiedImage.setRGB(x, y, color.getRGB()); // Set the color of the pixel in the modified image
+                int rgb = image.getRGB(x, y);//get original pixel
+                if ((rgb & 0x00FFFFFF) != 0) { // check for transparency
+                    modifiedImage.setRGB(x, y, color.getRGB()); // copy coloured pixel and set it colour to the provided colour
                 } else {
-                    modifiedImage.setRGB(x, y, rgb); // Copy transparent pixels as is
+                    modifiedImage.setRGB(x, y, rgb); // Copy transparent pixel
                 }
             }
         }
+        //return change image
         return modifiedImage;
     }
 }

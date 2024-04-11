@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 
-public class TowerManager {
+public final class TowerManager {
     //singleton-------------------------------------------------------------------------
     private static TowerManager instance = new TowerManager();
 
@@ -24,9 +24,8 @@ public class TowerManager {
     }
 
     //----------------------------------------------------------------------------------------
-    private final ArrayList<TowerTemplate> towerArrayList = new ArrayList<TowerTemplate>();
+    private final ArrayList<TowerTemplate> towerArrayList = new ArrayList<>();
     private final String towersLink = "src/Towers/";
-    private final String bulletsImagesLink = "src/Bullets/";
 
     private void loadTowers() {
         loadListOfTowers(towersLink);
@@ -121,7 +120,6 @@ public class TowerManager {
     }
 
     private BulletTemplate readBulletTemplate(JSONArray bullet) {
-        // Replace "path/to/your/file.json" with the actual path to your JSON file
         BulletTemplate template = new BulletTemplate();
 
         Iterator<Object> iterator = bullet.iterator();
@@ -155,11 +153,7 @@ public class TowerManager {
     }
     public String[] getJsonsInFolder(String theLink) {
         File dir = new File(theLink);
-        String[] files = dir.list(new FilenameFilter() {
-            public boolean accept(File dir, String name) {
-                return new File(dir, name).getName().endsWith(".json");
-            }
-        });
+        String[] files = dir.list((dir1, name) -> new File(dir1, name).getName().endsWith(".json"));
         return files;
     }
 }

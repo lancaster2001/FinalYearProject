@@ -1,3 +1,4 @@
+/*this class was created and provided by Dr Terry Payne*/
 public final class Pose {
     private double x;
     private double y;
@@ -69,4 +70,3 @@ public final class Pose {
         return d;
     }
 }
-

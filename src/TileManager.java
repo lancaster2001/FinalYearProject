@@ -2,7 +2,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class TileManager {
+public final class TileManager {
     //singleton-------------------------------------------------------------------------
     private static TileManager instance = new TileManager();
 

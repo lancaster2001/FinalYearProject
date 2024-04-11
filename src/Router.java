@@ -1,19 +1,17 @@
 import java.awt.*;
 
-public class Router extends conveyor {
-    double nextDirection;
+public final class Router extends Conveyor {
     public Router(Pose pose, TowerTemplate template) {
         super(pose, template);
         outputAccumulatorLimit =0;
         outputDirections.clear();
-        nextDirection = pose.getTheta();
         for (double index = -1; index < 4; index += 1.0) {
             outputDirections.add(index * (Math.PI / 2));
         }
     }
 
-    public void draw(Graphics g, int x, int y, int slotWidth, int slotHeight, AssetManager assetManagerInstance) {
-        super.draw(g, x, y, slotWidth, slotHeight, assetManagerInstance);
+    public void draw(Graphics g, Rectangle rectangle, AssetManager assetManagerInstance) {
+        super.draw(g,rectangle,assetManagerInstance);
     }
 
     public void tick(double tickMultiplier) {
@@ -31,7 +29,7 @@ public class Router extends conveyor {
     }
 
     private void setDirectionCheckScammer(Resource resource) {
-        //trollolololoolooloolololololololollool
+        //this was a temporary fix for an issue of inheriting from conveyor that I intended to replace but ran out of time for
         boolean setDirectionCheck = false;
         for (String resourceID : setDirectionList) {
             if (resource.getId().equalsIgnoreCase(resourceID)) {

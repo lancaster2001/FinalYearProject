@@ -4,7 +4,7 @@ import java.awt.event.*;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainFrame extends JFrame implements KeyListener, MouseWheelListener, MouseListener,MouseMotionListener {
+public final class MainFrame extends JFrame implements KeyListener, MouseWheelListener, MouseListener,MouseMotionListener {
     //singleton-------------------------------------------------------------------------
     private static MainFrame instance = new MainFrame();
 
@@ -31,8 +31,8 @@ public class MainFrame extends JFrame implements KeyListener, MouseWheelListener
     private void setup() {
         this.setTitle("Resource Management and Tower Defence Game");
         this.setResizable(false);
-        this.setSize(gameSettings.getInstance().getScreenWidth(), gameSettings.getInstance().getScreenHeight());
-        this.setMinimumSize(new Dimension(gameSettings.getInstance().getScreenWidth(), gameSettings.getInstance().getScreenHeight()));
+        this.setSize(GameSettings.getInstance().getScreenWidth(), GameSettings.getInstance().getScreenHeight());
+        this.setMinimumSize(new Dimension(GameSettings.getInstance().getScreenWidth(), GameSettings.getInstance().getScreenHeight()));
         this.setUndecorated(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.getContentPane().add(this.draw);

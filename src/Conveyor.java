@@ -3,10 +3,10 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class conveyor extends BaseTower {
-    ArrayList<String> setDirectionList = new ArrayList<>();
+public class Conveyor extends BaseTower {
+    protected ArrayList<String> setDirectionList = new ArrayList<>();
 
-    public conveyor(Pose pose, TowerTemplate template) {
+    public Conveyor(Pose pose, TowerTemplate template) {
         super(pose, template);
         inventorySize = 4;
         outputAccumulatorLimit =0;
@@ -118,14 +118,10 @@ public class conveyor extends BaseTower {
         return false;
     }
 
-    public void draw(Graphics g, int x, int y, int slotWidth, int slotHeight, AssetManager assetManagerInstance) {
-        super.draw(g, x, y, slotWidth, slotHeight, assetManagerInstance);
+    public void draw(Graphics g, Rectangle rectangle, AssetManager assetManagerInstance) {
+        super.draw(g, rectangle, assetManagerInstance);
         for (Resource resource : inventory) {
             ResourceManager.getInstance().addToDrawList(resource);
         }
-    }
-
-    protected void drawNoResources(Graphics g, int x, int y, int slotWidth, int slotHeight, AssetManager assetManagerInstance) {
-        super.draw(g, x, y, slotWidth, slotHeight, assetManagerInstance);
     }
 }

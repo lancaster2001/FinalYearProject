@@ -4,11 +4,13 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.awt.*;
+import java.io.File;
 import java.io.FileReader;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.*;
 
-public class EnemyManager {
+public final class EnemyManager {
     //singleton------------------------------------------------------------------------
     private static EnemyManager instance = new EnemyManager();
 
@@ -41,6 +43,7 @@ public class EnemyManager {
             enemyList.get(index).tick(tickMultiplier);
         }
         if (!enemiesToRemove.isEmpty()) {
+            //todo: remove this method and replace with remove collection
             removeListOfIndexes(enemiesToRemove);
         }
         countdown-=tickMultiplier;
@@ -64,7 +67,7 @@ public class EnemyManager {
         }
     }
 
-    private void randomEnemyChance() {
+    private void randomEnemySpawnChance() {
         int mapWidth = GameState.getInstance().getMapInstance().getMapWidth();
         int mapHeight = GameState.getInstance().getMapInstance().getMapHeight();
         Random rnd = new Random();
@@ -116,14 +119,12 @@ public class EnemyManager {
     }
 
     private void loadEnemyTemplates(String enemyTemplatesPath) {
-        // Replace "path/to/your/file.json" with the actual path to your JSON file
+        //todo:make this methods return an array of templates instead of loading them directly into the public array
         String filePath = enemyTemplatesPath;
-
-        String[] jsonsInFolder = AssetManager.getInstance().getJsonsInFolder(filePath);
-        //get the towers of each type e.g. turret1, turret1, turret3, etc
+        //get list of jsons in the folder
+        String[] jsonsInFolder = getJsonsInFolder(filePath);
+        //load the template into template class for each json
         for (String currentEnemy : jsonsInFolder) {
-
-
             try (FileReader reader = new FileReader(filePath + currentEnemy)) {
                 // Using JSONTokener to parse the JSON file
                 JSONTokener tokener = new JSONTokener(reader);
@@ -133,13 +134,12 @@ public class EnemyManager {
                 double width = jsonObject.getDouble("Width");
                 double height = jsonObject.getDouble("Height");
                 double maxhealth = jsonObject.getDouble("MaxHealth");
-                double damage = jsonObject.getDouble("Damage");
                 double movespeed = jsonObject.getDouble("MoveSpeed");
                 String imageLink = jsonObject.getString("ImageLink");
                 double range = jsonObject.getDouble("Range");
                 double cooldown = jsonObject.getDouble("Cooldown");
                 JSONArray bullet = jsonObject.getJSONArray("Bullet");
-                enemyTemplates.add(new EnemyTemplate(name, width, height, damage, maxhealth, movespeed, imageLink, range, cooldown, readBulletTemplate(bullet)));
+                enemyTemplates.add(new EnemyTemplate(name, width, height, maxhealth, movespeed, imageLink, range, cooldown, readBulletTemplate(bullet)));
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
@@ -187,7 +187,16 @@ public class EnemyManager {
         actTimer.schedule(task, 1000);
 
     }
-
+    //returns a list of all the directory paths for jsons in a provided directory
+    public String[] getJsonsInFolder(String theLink) {
+        File dir = new File(theLink);
+        String[] files = dir.list(new FilenameFilter() {
+            public boolean accept(File dir, String name) {
+                return new File(dir, name).getName().endsWith(".json");
+            }
+        });
+        return files;
+    }
     public ArrayList<BaseEnemy> getEnemyList() {
         return enemyList;
     }

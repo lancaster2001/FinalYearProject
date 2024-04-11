@@ -14,7 +14,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
-public class ResourceManager {
+public final class ResourceManager {
     //singleton------------------------------------------------------------------------
     private static ResourceManager instance = new ResourceManager();
 

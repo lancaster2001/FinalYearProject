@@ -1,7 +1,6 @@
 {
   "Width": 0.7,
   "Height": 0.7,
-  "Damage": 1.0,
   "MaxHealth": 5,
   "MoveSpeed": 1.5,
   "Cooldown": 4.0,

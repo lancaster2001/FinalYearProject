@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class MapGenerator {
+public final class MapGenerator {
     //singleton------------------------------------------------------------------------
     private static MapGenerator instance = new MapGenerator();
 
@@ -107,7 +107,7 @@ public class MapGenerator {
                 JSONObject mapslotjson = jsonObject.getJSONObject("" + index);
                 mapArray.add(new MapSlot(mapslotjson));
             }
-            return new Map(mapArray, mapWidth, mapHeight,link.substring(link.lastIndexOf("/") + 1, link.length() - 5));
+            return new Map(mapArray, mapWidth, mapHeight,link.substring(link.lastIndexOf("\\") + 1, link.length() - 5));
         } catch (IOException | JSONException e) {
             e.fillInStackTrace();
             return null;

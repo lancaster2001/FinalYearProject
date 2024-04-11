@@ -1,14 +1,12 @@
-public class BulletTemplate {
-    double moveSpeed = 3.0;
-    double damage = 1.0;
-    double width = 1.0;
-    double height = 1.0;
-    String imageLink = "src/Bullets/base.png";
-
-    BulletTemplate() {
-    }
-
+public final class BulletTemplate {
+    private double moveSpeed = 3.0;
+    private double damage = 1.0;
+    private double width = 0.6;
+    private double height = 0.6;
+    private String imageLink = "src/Bullets/base.png";
+    BulletTemplate(){}
     BulletTemplate(double moveSpeed, double damage, double width, double height, String imageLink) {
+        //todo: make sure the data is clean
         this.moveSpeed = moveSpeed;
         this.damage = damage;
         this.width = width;

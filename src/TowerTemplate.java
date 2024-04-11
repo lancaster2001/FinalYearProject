@@ -1,4 +1,4 @@
-public class TowerTemplate {
+public final class TowerTemplate {
     private String name;
     private double maxHealth;
     private String type;

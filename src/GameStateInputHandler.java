@@ -5,7 +5,7 @@ import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class GameStateInputHandler {
+public final class GameStateInputHandler {
     //singleton------------------------------------------------------------------------
     private static GameStateInputHandler instance = new GameStateInputHandler();
 
@@ -24,7 +24,7 @@ public class GameStateInputHandler {
     private final Camera cameraInstance = Camera.getInstance();
     private final GameUIBuildMenu gameUIBuildMenuInstance = GameUIBuildMenu.getInstance();
     private double buildRotation = 0;
-    int titleHeight = MainFrame.getInstance().getHeight() - panelInstance.getHeight();
+    //todo: these mouse coords and points need to be change to just be current and previous mouse point (no clue why its like this)
     private int[] previousMouseCoord;
     private int[] currentMouseCoord;
     private Point currentMouseLocation;
@@ -32,17 +32,17 @@ public class GameStateInputHandler {
     private int currentHeldButton;
     private int[] dragStartSlot;
     private ArrayList<int[]> draggedTempPoints = new ArrayList<>();
-
+    //todo: turn all the user inputs into actual methods for specific user inputs to differentiate between user actions
     public void userInput(KeyEvent e) {
         if (GameState.getInstance().userInput(e)) {
 
-        } else if (e.getKeyChar() == gameSettings.getInstance().rotateTower) {
+        } else if (e.getKeyChar() == GameSettings.getInstance().rotateTower) {
             rotateBuildClockwise();
             draggedToBuild();
-        } else if (e.getKeyChar() == gameSettings.getInstance().pauseButton) {
-            GameState.getInstance().paused = !GameState.getInstance().paused;
-        } else if (e.getKeyChar() == gameSettings.getInstance().debugKey) {
-            gameSettings.getInstance().toggledebug();
+        } else if (e.getKeyChar() == GameSettings.getInstance().pauseButton) {
+            GameState.getInstance().togglePaused();
+        } else if (e.getKeyChar() == GameSettings.getInstance().debugKey) {
+            GameSettings.getInstance().toggledebug();
         }
         else if (e.getKeyChar() == 'p') {
             SaveHandler.getInstance().saveGame();

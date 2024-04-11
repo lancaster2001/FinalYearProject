@@ -1,7 +1,11 @@
 import java.awt.*;
 import java.util.ArrayList;
 
-public class GameUIBuildMenu {
+public final class GameUIBuildMenu {
+    /*todo: massive overhaul so tht the menu can acts like a slider and be dragged along with the mouse
+    this will require a method that will check if an icon is on screen at all and then a method that will fully display an icon and a method that will partially display an icon however
+    this be also be doable by simply displaying the full icon and having part of it go off screen but for the sake of making good code i will try to avoid this as it could result in
+    an icon going off the menu if the width of the menu is shorter than the width of the display*/
     //singleton-------------------------------------------------------------------------
     private static GameUIBuildMenu instance = new GameUIBuildMenu();
 
@@ -19,10 +23,10 @@ public class GameUIBuildMenu {
     //----------------------------------------------------------------------------------------
     private final AssetManager assetManagerInstance = AssetManager.getInstance();
     private final TowerManager towerManagerInstance = TowerManager.getInstance();
-    private int buildMenuWidth = gameSettings.getInstance().getScreenWidth();
-    private int buildMenuHeight = gameSettings.getInstance().getScreenHeight() / 7;
+    private int buildMenuWidth = GameSettings.getInstance().getScreenWidth();
+    private int buildMenuHeight = GameSettings.getInstance().getScreenHeight() / 7;
     private int buildMenux = 0;
-    private int buildMenuy = gameSettings.getInstance().getScreenHeight() - buildMenuHeight;
+    private int buildMenuy = GameSettings.getInstance().getScreenHeight() - buildMenuHeight;
     private final Rectangle buildMenuBackground = new Rectangle(buildMenux, buildMenuy, buildMenuWidth, buildMenuHeight);
     private ArrayList<Rectangle> MenuListsButtons = new ArrayList<>();
     private TowerTemplate toolTip = null;
@@ -33,6 +37,7 @@ public class GameUIBuildMenu {
     private final int buildMenuElementWidth = ((buildMenuHeight / 10) * 8);
     private final int buildMenuElementHeight = ((buildMenuHeight / 10) * 8);
     private Color backgroundColour = Color.white;
+    //todo change tool tips to dynamically resize its bounds based on the display size
     private final int toolTipWidth = 300;
     private final int toolTipHeight = 300;
     private ArrayList<Rectangle> buildMenuIconHitBox = new ArrayList<>();
@@ -47,10 +52,10 @@ public class GameUIBuildMenu {
         towerArrayList = towerManagerInstance.getTowerArrayList();
         selectedMenuList = 0;
         setDisplayList();
-        MenuListsButtons();
+        loadMenuListsButtons();
     }
 
-    private void MenuListsButtons() {
+    private void loadMenuListsButtons() {
         for (int index = 0; index < menuListsNames.length; index++) {
             int width = ((buildMenuBackground.width - buildMenuButton.width) / menuListsNames.length);
             int height = buildMenuButton.height;

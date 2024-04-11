@@ -4,8 +4,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-public class Bullet {
-    private final EnemyManager enemyManagerInstance = EnemyManager.getInstance();
+public final class Bullet {
     private boolean exists = true;
     private String type;
     private Pose pose;
@@ -13,17 +12,17 @@ public class Bullet {
     private double damage;
     private double width;
     private double height;
-    private double totalDistance = 0;
+    private double DistanceTravelled = 0;
     private double range;
-    private String imageLink = "src/Towers/Tower1/irondrill.png";
+    private String imageLink;
 
     Bullet(double x, double y, double theta, String type, double range, BulletTemplate template) {
         pose = new Pose(x, y, theta);
-        this.moveSpeed = template.moveSpeed;
-        this.damage = template.damage;
-        this.width = template.width;
-        this.height = template.height;
-        this.imageLink = template.imageLink;
+        this.moveSpeed = template.getMoveSpeed();
+        this.damage = template.getDamage();
+        this.width = template.getWidth();
+        this.height = template.getHeight();
+        this.imageLink = template.getImageLink();
         this.type = type;
         this.range = range;
     }
@@ -38,7 +37,7 @@ public class Bullet {
     }
 
     private void makeMovement(double tickMultiplier) {
-        if (totalDistance >= range) {
+        if (DistanceTravelled >= range) {
             exists = false;
         } else {
             double distanceToTravel = moveSpeed * tickMultiplier;
@@ -46,12 +45,12 @@ public class Bullet {
             double targetY = (distanceToTravel * Math.sin(pose.getTheta() - (Math.PI / 2)));
             pose.setX(pose.getX() + targetX);
             pose.setY(pose.getY() + targetY);
-            totalDistance += distanceToTravel;
+            DistanceTravelled += distanceToTravel;
         }
     }
 
     private boolean checkForEnemyCollision() {
-        ArrayList<BaseEnemy> enemyList = enemyManagerInstance.getEnemyList();
+        ArrayList<BaseEnemy> enemyList = EnemyManager.getInstance().getEnemyList();
         for (BaseEnemy enemy : enemyList) {
             int numberOfSigFigs = 5;
             int enemyX = (int) (enemy.getPose().getX() * 100000.0);

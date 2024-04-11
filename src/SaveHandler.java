@@ -6,7 +6,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class SaveHandler {
+public final class SaveHandler {
     //singleton-------------------------------------------------------------------------
     private static SaveHandler instance = new SaveHandler();
 
@@ -32,19 +32,19 @@ public class SaveHandler {
     }
 
     //----------------------------------------------------------------------------------------
-    String saveSlotFileLocation = gameSettings.getInstance().saveSlotFileLocation;
+    String saveSlotFileLocation = GameSettings.getInstance().saveSlotFileLocation;
     private String saveSlot;
-    private final String saveLink = gameSettings.getInstance().savesPath;
+    private final String saveLink = GameSettings.getInstance().savesPath;
     private Map mapInstance = null;
     private String[] saves = new String[]{};
-    private int mapWidth = gameSettings.getInstance().getMapWidth();
-    private int mapHeight = gameSettings.getInstance().getMapHeight();
+    private int mapWidth = GameSettings.getInstance().getMapWidth();
+    private int mapHeight = GameSettings.getInstance().getMapHeight();
 
     public String getSaveSlot() {
         return saveSlot;
     }
     public void saveGame(){
-        if(StateManager.getInstance().getCurrentState()== gameSettings.STATE.GAME){
+        if(StateManager.getInstance().getCurrentState()== GameSettings.STATE.GAME){
         JSONObject resourceJson =ResourceManager.getInstance().save();
         String mapLink = GameState.getInstance().getMapInstance().save();
         String fileName = saveLink + saveSlot + ".json";

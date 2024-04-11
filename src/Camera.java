@@ -2,7 +2,7 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
-public class Camera {
+public final class Camera {
     //singleton------------------------------------------------------
     private static Camera instance = new Camera();
 
@@ -10,7 +10,7 @@ public class Camera {
         zoom = 5;
         x = 1;
         y = 1;
-        screenWidthProportion = (double) gameSettings.getInstance().getScreenWidth() / (double) gameSettings.getInstance().getScreenHeight();
+        screenWidthProportion = (double) GameSettings.getInstance().getScreenWidth() / (double) GameSettings.getInstance().getScreenHeight();
     }
 
     public static Camera getInstance() {
@@ -21,8 +21,7 @@ public class Camera {
     }
 
     //-----------------------------------------------------------------
-    private final ResourceManager resourceManagerInstance = ResourceManager.getInstance();
-    private int zoom = gameSettings.getInstance().defaultZoom;//number of tiles in width
+    private int zoom = GameSettings.getInstance().defaultZoom;//number of tiles in width
     double screenWidthProportion = 0.0;
     private int numOslotsWide = zoom;
     private int numOslotsTall = zoom;
@@ -30,8 +29,8 @@ public class Camera {
     private double y;
     private int widthOfSlot;
     private int heightOfslot;
-    private final int screenWidth = gameSettings.getInstance().getScreenWidth();
-    private final int screenHeight = gameSettings.getInstance().getScreenHeight();
+    private final int screenWidth = GameSettings.getInstance().getScreenWidth();
+    private final int screenHeight = GameSettings.getInstance().getScreenHeight();
     private ArrayList<MapSlot> viewableMap = new ArrayList<MapSlot>();
 
     public void setPosition(double x, double y) {
@@ -242,7 +241,7 @@ public class Camera {
 
     private boolean outOfBoundsCheck() {
         Rectangle2D.Double original = new Rectangle2D.Double(x, y, numOslotsWide, numOslotsTall);
-        Rectangle2D.Double placement = GameState.getInstance().outOfBoundsCheck(new Rectangle2D.Double(x, y, numOslotsWide, numOslotsTall));
+        Rectangle2D.Double placement = GameState.getInstance().getMapInstance().sectionOutOfBoundsCheck(new Rectangle2D.Double(x, y, numOslotsWide, numOslotsTall), false);
         x = placement.x;
         y = placement.y;
         numOslotsWide = (int) placement.width;
@@ -273,7 +272,12 @@ public class Camera {
         int xonRow = x- (int)this.x;
         int rows = y-(int)this.y;
         int index = ((rows) * numOslotsWide) + (xonRow);
-        desiredSlot = viewableMap.get(index);
+        try {
+            desiredSlot = viewableMap.get(index);
+        }catch(IndexOutOfBoundsException e){
+            calculateValues();
+            desiredSlot = viewableMap.get(index);
+        }
         return desiredSlot;
     }
 
@@ -282,7 +286,7 @@ public class Camera {
         return viewableMap;
     }
 
-    public void move(gameSettings.DIRECTION direction) {
+    public void move(GameSettings.DIRECTION direction) {
         switch (direction) {
             case UP:
                 y -= 1;

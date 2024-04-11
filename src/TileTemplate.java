@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Random;
 
-public class TileTemplate {
+public final class TileTemplate {
     private String name;
     private ArrayList<String> imageLinks = new ArrayList<>();
     private String resource;

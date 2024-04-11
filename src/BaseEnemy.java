@@ -5,40 +5,38 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-public class BaseEnemy {
+public final class BaseEnemy {
     private Camera cameraInstance = Camera.getInstance();
     private final ProjectileManager projectileManagerInstance = ProjectileManager.getInstance();
     private boolean alive = true;
-    protected Pose pose = new Pose();
-    protected double width;//relative to size of slot
-    protected double height;//relative to size of slot
-    protected double damage;
-    protected double maxHealth;
-    protected double health;
-    protected double moveSpeed;
+    private Pose pose = new Pose();
+    private double width;//relative to size of slot
+    private double height;//relative to size of slot
+    private double maxHealth;
+    private double health;
+    private double moveSpeed;
     private double range;
     private double shootAccumulator = 0.0;
     private double cooldown = 1.0;
     private BulletTemplate bullet;
-    protected String imageLink = "src/Assets/Units/enemy1.png";
+    private String imageLink = "src/Assets/Units/enemy1.png";
     private Point2D.Double targetLocation = new Point2D.Double(50, 50);
     private final Point2D.Double playerBasePoint = new Point2D.Double(GameState.getInstance().getMapInstance().getBasePose().getX(),GameState.getInstance().getMapInstance().getBasePose().getX());
 
     public BaseEnemy(Pose pose, EnemyTemplate template) {
         this.pose = pose;
-        width = template.getWidth();
-        height = template.getHeight();
-        damage = template.getDamage();
-        maxHealth = template.getMaxHealth();
-        health = maxHealth;
-        moveSpeed = template.getMoveSpeed();
-        imageLink = template.getImageLink();
-        range = template.getRange();
-        cooldown = template.getCooldown();
-        bullet = template.getBullet();
+        this.width = template.getWidth();
+        this.height = template.getHeight();
+        this.maxHealth = template.getMaxHealth();
+        this.health = maxHealth;
+        this.moveSpeed = template.getMoveSpeed();
+        this.imageLink = template.getImageLink();
+        this.range = template.getRange();
+        this.cooldown = template.getCooldown();
+        this.bullet = template.getBullet();
     }
 
-    protected void draw(Graphics g) {
+    public void draw(Graphics g) {
         int x = cameraInstance.getOnScreenX(pose.getX());
         int y = cameraInstance.getOnScreenY(pose.getY());
         int width = (int) (cameraInstance.getwidthOfslot(pose.getX()) * this.width);
@@ -65,7 +63,7 @@ public class BaseEnemy {
         }
     }
 
-    protected void tick(double tickMultiplier) {
+    public void tick(double tickMultiplier) {
         if (alive) {
             shootAccumulator += tickMultiplier;
             if (shootAccumulator >= cooldown) {
@@ -79,14 +77,15 @@ public class BaseEnemy {
     private void calculateDirection() {
         pose.setTheta(calculateDirectionToTarget());
     }
-
+    //calculate the angle the enemy needs to be at to face its target
     private double calculateDirectionToTarget() {
         double atan2_x = (targetLocation.x) - pose.getX();
         double atan2_y = (targetLocation.y) - pose.getY();
         double rot1 = Math.atan2(atan2_y, atan2_x);
         return (Math.PI / 2) + rot1;
     }
-
+    /*method to move the enemy to where it should be based on tick multiplier so that if the ticks per second is decreased
+    the enemy's movements shouldn't be affected*/
     private void makeMovement(double tickMultiplier) {
         double directionToTarget = calculateDirectionToTarget();
         double distanceToTravel = moveSpeed * tickMultiplier;
@@ -106,7 +105,7 @@ public class BaseEnemy {
         onScreenCheck();
         outOfBoundsCheck();
     }
-
+    //check for collision with any obstacles on the map
     private MapSlot checkForCollision(double x, double y) {
         Rectangle2D.Double slotToCheck = new Rectangle2D.Double(x, y, width, height);
         ArrayList<MapSlot> intersectedSlots = GameState.getInstance().getMapInstance().getMapSection(slotToCheck);
@@ -118,13 +117,13 @@ public class BaseEnemy {
         return null;
     }
 
-    public void shoot() {
+    private void shoot() {
         if (shootAccumulator == cooldown) {
             shootAccumulator -= cooldown;
             projectileManagerInstance.addBullet(pose.getX(), pose.getY(), pose.getTheta(), "enemy", range, bullet);
         }
     }
-
+    //check the enemy is within the bounds of the map
     private void outOfBoundsCheck() {
         Rectangle2D.Double placement = GameState.getInstance().getMapInstance().sectionOutOfBoundsCheck(new Rectangle2D.Double(pose.getX(), pose.getY(), 1, 1), true);
         pose.setX(placement.x);
@@ -132,7 +131,7 @@ public class BaseEnemy {
         width = placement.width;
         height = placement.height;
     }
-
+    //check if enemy should be on screen
     public boolean onScreenCheck() {
         return cameraInstance.isOnCamera((int) pose.getX(), (int) pose.getY());
     }
@@ -142,16 +141,6 @@ public class BaseEnemy {
         if (health <= 0) {
             alive = false;
         }
-    }
-
-    public void setPosition(double x, double y) {
-        pose.setX(x);
-        pose.setY(y);
-
-    }
-
-    public Rectangle2D.Double getMapPlacement() {
-        return new Rectangle2D.Double(pose.getX(), pose.getY(), width, height);
     }
 
     public Pose getPose() {

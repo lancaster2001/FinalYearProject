@@ -1,15 +1,16 @@
 import java.awt.*;
 
-public class gameSettings {
+public final class GameSettings {
+    //todo: save & load this data to and from a .txt file
     //singleton------------------------------------------------------------------------
-    private static gameSettings instance = new gameSettings();
-    public static gameSettings getInstance() {
+    private static GameSettings instance = new GameSettings();
+    public static GameSettings getInstance() {
         if (instance == null) {
-            instance = new gameSettings();
+            instance = new GameSettings();
         }
         return instance;
     }
-    private gameSettings() {
+    private GameSettings() {
     }
     //----------------------------------------------------------------------------------
     private boolean debugging = true;
@@ -34,7 +35,7 @@ public class gameSettings {
     final String savesPath= "src/Saves/";
     final String saveSlotFileLocation = "src/Settings/menuSettings.json";
     //FRAME-------------------------------------------------------------------------------------------------
-    GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+    private GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
     private int screenWidth = gd.getDisplayMode().getWidth();
     private int screenHeight = gd.getDisplayMode().getHeight();
     public int getScreenWidth() {
@@ -53,8 +54,8 @@ public class gameSettings {
     final char debugKey = ';';
     //CAMERA-------------------------------------------------------------------------------------------------
     final int defaultZoom = 5;
-    final int[] defaultCameraCoordinates = {2, 2};
     //MAP-------------------------------------------------------------------------------------------------------
+    //todo: implement a menu for map creation so that default map values are not needed in this section
     private int mapWidth = 200;
     private int mapHeight = 200;
 

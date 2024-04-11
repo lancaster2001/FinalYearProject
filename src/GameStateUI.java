@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public class GameStateUI {
+public final class GameStateUI {
     //singleton-------------------------------------------------------------------------
     private static GameStateUI instance = new GameStateUI();
 

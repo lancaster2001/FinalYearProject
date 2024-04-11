@@ -1,4 +1,4 @@
-public class StateManager {
+public final class StateManager {
     //singleton------------------------------------------------------------------------
     private static StateManager instance = new StateManager();
 
@@ -14,24 +14,24 @@ public class StateManager {
     }
 
     //----------------------------------------------------------------------------------
-    gameSettings.STATE currentState;
+    GameSettings.STATE currentState;
     GameState gameStateInstance;
 
-    public void setCurrentState(gameSettings.STATE givenState) {
+    public void setCurrentState(GameSettings.STATE givenState) {
         currentState = givenState;
-        if (currentState.equals(gameSettings.STATE.GAME)) {
+        if (currentState.equals(GameSettings.STATE.GAME)) {
             gameStateInstance = GameState.getInstance();
             gameStateInstance.startup();
-        } else if (currentState.equals(gameSettings.STATE.STARTMENU)) {
+        } else if (currentState.equals(GameSettings.STATE.STARTMENU)) {
             MenuState.getInstance().startup();
 
-        } else if (currentState.equals(gameSettings.STATE.GAMEOVER)) {
+        } else if (currentState.equals(GameSettings.STATE.GAMEOVER)) {
             MenuState.getInstance().showErrorMessage("Game Over");
-            currentState = gameSettings.STATE.STARTMENU;
+            currentState = GameSettings.STATE.STARTMENU;
         }
     }
 
-    public gameSettings.STATE getCurrentState() {
+    public GameSettings.STATE getCurrentState() {
         return currentState;
     }
 }

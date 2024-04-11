@@ -1,4 +1,4 @@
-public class Launcher {
+public final class Launcher {
     //singleton------------------------------------------------------------------------
     private static Launcher instance = new Launcher();
 
@@ -11,8 +11,8 @@ public class Launcher {
 
     private Launcher() {
         System.setProperty("sun.java2d.uiScale", "1.0");
-        gameSettings.getInstance();
-        StateManager.getInstance().setCurrentState(gameSettings.STATE.STARTMENU);
+        GameSettings.getInstance();
+        StateManager.getInstance().setCurrentState(GameSettings.STATE.STARTMENU);
     }
 
     //----------------------------------------------------------------------------------
@@ -21,6 +21,4 @@ public class Launcher {
     public static void main(String[] args) {
         Launcher theLauncher = Launcher.getInstance();
     }
-
-
 }

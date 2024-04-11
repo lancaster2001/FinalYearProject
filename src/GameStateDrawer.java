@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public class GameStateDrawer {
+public final class GameStateDrawer {
     //singleton-------------------------------------------------------------------------
     private static GameStateDrawer instance = new GameStateDrawer();
 
@@ -27,6 +27,5 @@ public class GameStateDrawer {
         enemyManagerInstance.drawEnemies(g);
         projectileManagerInstance.draw(g, cameraInstance, assetManagerInstance);
         gameStateUIInstance.drawUI(g);
-
     }
 }

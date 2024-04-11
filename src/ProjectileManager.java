@@ -1,7 +1,7 @@
 import java.awt.*;
 import java.util.ArrayList;
 
-public class ProjectileManager {
+public final class ProjectileManager {
     //singleton------------------------------------------------------------------------
     private static ProjectileManager instance = new ProjectileManager();
 

@@ -1,7 +1,7 @@
 import java.awt.*;
 import java.util.ArrayList;
 
-public class GameUIResourceMenu {
+public final class GameUIResourceMenu {
     //singleton-------------------------------------------------------------------------
     private static GameUIResourceMenu instance = new GameUIResourceMenu();
 
@@ -19,11 +19,11 @@ public class GameUIResourceMenu {
     //----------------------------------------------------------------------------------------
     private final AssetManager assetManagerInstance = AssetManager.getInstance();
     private boolean resourceMenuState = true;
-    private int menuWidth = gameSettings.getInstance().getScreenWidth() / 9;
-    private int menuHeight = gameSettings.getInstance().getScreenHeight() / 4;
+    private int menuWidth = GameSettings.getInstance().getScreenWidth() / 9;
+    private int menuHeight = GameSettings.getInstance().getScreenHeight() / 4;
     private int sizeOfTitle = 20;
     private int sizeOfResourceName = 30;
-    private int menuX = gameSettings.getInstance().getScreenWidth() - menuWidth;
+    private int menuX = GameSettings.getInstance().getScreenWidth() - menuWidth;
     private int menuY = 0;
     private Color BackgroundColour = Color.WHITE;
     private Color TitleColour = Color.black;

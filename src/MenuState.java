@@ -4,7 +4,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.*;
 
-public class MenuState {
+public final class MenuState {
     //singleton-------------------------------------------------------------------------
     private static MenuState instance = new MenuState();
 
@@ -22,8 +22,8 @@ public class MenuState {
     }
 
     //----------------------------------------------------------------------------------------
-    private int screenWidth = gameSettings.getInstance().getScreenWidth();
-    private int screenHeight = gameSettings.getInstance().getScreenHeight();
+    private int screenWidth = GameSettings.getInstance().getScreenWidth();
+    private int screenHeight = GameSettings.getInstance().getScreenHeight();
     Color BackgroundColor = Color.white;
     Color titleColor = Color.BLACK;
     private final StateManager stateManagerInstance = StateManager.getInstance();
@@ -52,7 +52,7 @@ public class MenuState {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                if(stateManagerInstance.currentState== gameSettings.STATE.STARTMENU) {
+                if(stateManagerInstance.currentState== GameSettings.STATE.STARTMENU) {
                     screenRefresher();
                 }
             }
@@ -170,11 +170,11 @@ public class MenuState {
     private boolean selectedMenuCheck() {
         if (getSelectedMenu().equalsIgnoreCase("Play Game")) {
             SaveHandler.getInstance().loadSave();
-            stateManagerInstance.setCurrentState(gameSettings.STATE.GAME);
+            stateManagerInstance.setCurrentState(GameSettings.STATE.GAME);
             return true;
         }else if(getSelectedMenu().equalsIgnoreCase("New Game")) {
             SaveHandler.getInstance().newSave();
-            stateManagerInstance.setCurrentState(gameSettings.STATE.GAME);
+            stateManagerInstance.setCurrentState(GameSettings.STATE.GAME);
             return true;
         }else if(Objects.equals(getSelectedMenu(), "Saves")){
             if (!menues.containsKey("Saves")){
@@ -182,7 +182,7 @@ public class MenuState {
             }
         }else if (menuPath.contains("Saves") && !Objects.equals(getSelectedMenu(), "Saves")){
             SaveHandler.getInstance().setSaveSlot(getSelectedMenu().replace(".json",""));
-            stateManagerInstance.setCurrentState(gameSettings.STATE.GAME);
+            stateManagerInstance.setCurrentState(GameSettings.STATE.GAME);
         }else{
             goToPreviousMenu();
         }

@@ -2,7 +2,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 
-public class InputHandler {
+public final class InputHandler {
     //singleton------------------------------------------------------------------------
     private static InputHandler instance = new InputHandler();
 
@@ -22,39 +22,39 @@ public class InputHandler {
     private final MenuState menuStateInstance = MenuState.getInstance();
 
     public void userInput(KeyEvent e) {
-        if (stateManagerInstance.getCurrentState().equals(gameSettings.STATE.GAME)) {
+        if (stateManagerInstance.getCurrentState().equals(GameSettings.STATE.GAME)) {
             gameStateInputHandlerInstance.userInput(e);
-        } else if (stateManagerInstance.getCurrentState().equals(gameSettings.STATE.STARTMENU)) {
+        } else if (stateManagerInstance.getCurrentState().equals(GameSettings.STATE.STARTMENU)) {
             menuStateInstance.userInput(e);
         }
     }
 
     public void userInput(MouseWheelEvent e) {
-        if (stateManagerInstance.getCurrentState().equals(gameSettings.STATE.GAME)) {
+        if (stateManagerInstance.getCurrentState().equals(GameSettings.STATE.GAME)) {
             gameStateInputHandlerInstance.userInput(e);
-        } else if (stateManagerInstance.getCurrentState().equals(gameSettings.STATE.STARTMENU)) {
+        } else if (stateManagerInstance.getCurrentState().equals(GameSettings.STATE.STARTMENU)) {
             menuStateInstance.userInput(e);
         }
     }
     public void mouseReleased(MouseEvent e){
-        if (stateManagerInstance.getCurrentState().equals(gameSettings.STATE.GAME)) {
+        if (stateManagerInstance.getCurrentState().equals(GameSettings.STATE.GAME)) {
             gameStateInputHandlerInstance.mouseReleased(e);
-        } else if (stateManagerInstance.getCurrentState().equals(gameSettings.STATE.STARTMENU)) {
+        } else if (stateManagerInstance.getCurrentState().equals(GameSettings.STATE.STARTMENU)) {
             menuStateInstance.userInput(e);
         }
     }
     public void mousePressed(MouseEvent e) {
-        if (stateManagerInstance.getCurrentState().equals(gameSettings.STATE.GAME)) {
+        if (stateManagerInstance.getCurrentState().equals(GameSettings.STATE.GAME)) {
             gameStateInputHandlerInstance.mousePressed(e);
         }
     }
     public void mouseMoved(MouseEvent e) {
-        if (stateManagerInstance.getCurrentState().equals(gameSettings.STATE.GAME)) {
+        if (stateManagerInstance.getCurrentState().equals(GameSettings.STATE.GAME)) {
            gameStateInputHandlerInstance.mouseMoved(e);
         }
     }
     public void mouseDragged(MouseEvent e) {
-        if (stateManagerInstance.getCurrentState().equals(gameSettings.STATE.GAME)) {
+        if (stateManagerInstance.getCurrentState().equals(GameSettings.STATE.GAME)) {
             gameStateInputHandlerInstance.mouseDragged(e);
         }
     }

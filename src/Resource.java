@@ -3,7 +3,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
-public class Resource {
+public final class Resource {
     String id = String.valueOf(Math.random());
     private int quantity = 0;
     double width = 0.5;

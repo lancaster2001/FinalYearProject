@@ -4,7 +4,10 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 
-public class AssetManager {
+/*this class's purpose is to load, manage and provide images for other classes and objects*/
+//todo: have a separate folder for custom assets so that an untampered folder with default assets can always be called back to
+//todo: have an api that can be called upon if there are any missing assets in the default folder
+public final class AssetManager {
     //singleton-------------------------------------------------------------------------
     private static AssetManager instance = new AssetManager();
 
@@ -22,15 +25,20 @@ public class AssetManager {
 
     //----------------------------------------------------------------------------------------
 
+    /*this could and probably should have been done as one variable
+    imageLinksArray hold in order the list of directory paths for the images
+    held on ImagesArray which hold all the buffered images in the same order*/
     private final ArrayList<String> ImageLinksArray = new ArrayList<String>();
     private final ArrayList<BufferedImage> ImagesArray = new ArrayList<BufferedImage>();
-    private final String assetsPath = gameSettings.getInstance().assetsPath;
-    private final String errorImagePath = gameSettings.getInstance().errorImagePath;
+    private final String assetsPath = GameSettings.getInstance().assetsPath;
+    /*a separate variable for an error image was made so that assets could be easily swapped in and out
+    in the form of texture packs, and so any images that were not included in the pack or were failed to load
+    from the pack could be replaced with a default error image that is always available
+    */
+    private final String errorImagePath = GameSettings.getInstance().errorImagePath;
 
-    public BufferedImage getImage(String type, String image) {
-        return getImage(assetsPath + type + "/" + image);
-    }
-
+    //checks for variants of an image in a folder and returns an ArrayList of all the variant's image links if there are any
+    //else returns a list with just the provided link
     public ArrayList<String> checkForVariants(String type, String givenImageLink) {
         boolean check = false;
         ArrayList<String> returnList = new ArrayList<>();
@@ -47,7 +55,7 @@ public class AssetManager {
             return returnList;
         }
     }
-
+    //gets all variants of an image within its folder
     private ArrayList<String> getVariants(String givenImageLink) {
         ArrayList<String> returnList = new ArrayList<>();
         boolean check = true;
@@ -65,7 +73,14 @@ public class AssetManager {
         }
         return returnList;
     }
+    //allows for specification of image types to get image to help prevent duplicate image names interfering with each other
+    public BufferedImage getImage(String type, String image) {
+        return getImage(assetsPath + type + "/" + image);
+    }
 
+    /*goes through the list of image links to find a matching image if a match is found, the corresponding image
+    * is returned, if no match is found, then an attempt to load the image from the assets folder will be made however
+    * failing this the error image will be returned*/
     private BufferedImage getImage(String imageLink) {
         BufferedImage desiredImage = null;
         String add = "";
@@ -106,6 +121,7 @@ public class AssetManager {
         return desiredImage;
     }
 
+    //method to load all the images from each folder in the assets folder and stores them and their paths the image arrayLists
     private void loadAllImages(String dirLink) {
         File file = new File(dirLink);
         String[] directories = file.list(new FilenameFilter() {
@@ -125,6 +141,7 @@ public class AssetManager {
         }
     }
 
+    //returns a list of directory paths for all the png's in a provided directory
     public String[] getImagesInFolder(String theLink) {
         File dir = new File(theLink);
         String[] files = dir.list(new FilenameFilter() {
@@ -134,16 +151,4 @@ public class AssetManager {
         });
         return files;
     }
-
-    public String[] getJsonsInFolder(String theLink) {
-        File dir = new File(theLink);
-        String[] files = dir.list(new FilenameFilter() {
-            public boolean accept(File dir, String name) {
-                return new File(dir, name).getName().endsWith(".json");
-            }
-        });
-        return files;
-    }
-
-
 }

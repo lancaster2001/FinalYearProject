@@ -87,7 +87,7 @@ public final class Map {
         MapSlot holder = getSlotFromCoord(x, y);
         if (holder != null) {
             if (holder.getTower() instanceof BaseBaseTower) {
-                StateManager.getInstance().setCurrentState(gameSettings.STATE.GAMEOVER);
+                StateManager.getInstance().setCurrentState(GameSettings.STATE.GAMEOVER);
                 return;
             }
             holder.clearTower();

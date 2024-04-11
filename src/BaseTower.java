@@ -6,7 +6,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-public abstract class BaseTower {
+public abstract class BaseTower{
 
     protected Pose pose = new Pose();
     protected String name;
@@ -23,7 +23,7 @@ public abstract class BaseTower {
     protected ArrayList<Resource> inventory = new ArrayList<>();
     protected ArrayList<Double> outputDirections = new ArrayList<>();
     protected ArrayList<Double> inputDirections = new ArrayList<>();
-    private final TowerTemplate tempalate;
+    private final TowerTemplate template;
     double outputAccumulator = 0;
     double outputAccumulatorLimit = 0.25;
 
@@ -45,22 +45,24 @@ public abstract class BaseTower {
         this.imageLink = template.getImageLink();
         this.maxHealth = template.getMaxHealth();
         this.speed = template.getSpeed();
-        health = maxHealth;
-        this.tempalate = template;
+        this.health = maxHealth;
+        this.template = template;
+        this.width = template.getWidth();
+        this.height = template.getHeight();
     }
 
     public void takeDamage(double damage) {
         health -= damage;
     }
 
-    protected String getImageLink() {
-        return imageLink;
-    }
-
     public Pose getPose() {
         return pose;
     }
-   protected void draw(Graphics g, int x, int y, int slotWidth, int slotHeight, AssetManager assetManagerInstance) {
+   public void draw(Graphics g, Rectangle rectangle, AssetManager assetManagerInstance) {
+       int x = rectangle.x;
+       int y = rectangle.y;
+       int slotWidth = rectangle.width;
+       int slotHeight = rectangle.height;
        int width = (int) (this.width * slotWidth);
        int height = (int) (this.height * slotHeight);
 
@@ -102,25 +104,17 @@ public abstract class BaseTower {
         j.put("X", pose.getX());
         j.put("Y", pose.getY());
         j.put("Theta", pose.getTheta());
-        j.put("Name", tempalate.getName());
-        j.put("Type", tempalate.getType());
+        j.put("Name", template.getName());
+        j.put("Type", template.getType());
         return j;
-    }
-
-    protected String getCostResource() {
-        return costResource;
-    }
-
-    protected int getCostQuantity() {
-        return costQuantity;
     }
 
     public double getHealth() {
         return health;
     }
 
-    public TowerTemplate getTempalate() {
-        return tempalate;
+    public TowerTemplate getTemplate() {
+        return template;
     }
 
     protected Double getDirectionOfInput(int x, int y) {
@@ -174,9 +168,8 @@ public abstract class BaseTower {
             }
             index += 1;
         }
-        //todo make this applicable for individual output directions
+        //todo make this applicable for individual output directions instead of just all at once
         //sets direction to check to be every direction
-        //todo bug with touters outputting to the left
         if ((!inventory.isEmpty())&&(outputAccumulator>=outputAccumulatorLimit)) {
             outputAccumulator-=outputAccumulatorLimit;
             ArrayList<Double> directionCheckOrder = new ArrayList<>();

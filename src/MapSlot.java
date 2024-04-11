@@ -2,7 +2,7 @@ import org.json.JSONObject;
 
 import java.awt.*;
 
-public class MapSlot {
+public final class MapSlot {
     private int x = -1;
     private int y = -1;
     private BaseTower tower;
@@ -37,10 +37,6 @@ public class MapSlot {
             }
         }
     }
-    public void setTowerFromTempTower(){
-        setTower(tempTower);
-        tempTower = null;
-    }
 
     public void tick(double tickMultiplier) {
         if(tower != null) {
@@ -53,6 +49,7 @@ public class MapSlot {
         }
     }
 
+    //method to damage the slots tower and remove it without returning resources if its health reaches 0
     public void damageTower(double damage) {
         if (tower != null) {
             tower.takeDamage(damage);
@@ -64,19 +61,19 @@ public class MapSlot {
 
     protected void draw(Graphics g, int x, int y, int slotWidth, int slotHeight, AssetManager assetManagerInstance) {
         if (tile != null) {
-            tile.draw(g, x, y, slotWidth, slotHeight, assetManagerInstance);
+            tile.draw(g, new Rectangle(x, y, slotWidth, slotHeight), assetManagerInstance);
         }
         if (tower != null) {
-            tower.draw(g, x, y, slotWidth, slotHeight, assetManagerInstance);
+            tower.draw(g, new Rectangle(x, y, slotWidth, slotHeight), assetManagerInstance);
         }
         if (tempTower != null) {
-            tempTower.draw(g, x, y, slotWidth, slotHeight, assetManagerInstance);
+            tempTower.draw(g, new Rectangle(x, y, slotWidth, slotHeight), assetManagerInstance);
         }
-        if(gameSettings.getInstance().isOutlineSlots()) {
+        if(GameSettings.getInstance().isOutlineSlots()) {
             g.setColor(Color.BLACK);
             g.drawRect(x, y, slotWidth, slotHeight);
         }
-        if(gameSettings.getInstance().isDebugging()) {
+        if(GameSettings.getInstance().isDebugging()) {
             g.setColor(Color.red);
             g.setFont(new Font("Arial", Font.BOLD, 10));
             g.drawString(this.x + ", " + this.y, x, y + 10);
@@ -87,9 +84,10 @@ public class MapSlot {
         return cameraInstance.isOnCamera(x, y);
     }
 
+    //method to clear delete the slots tower and return the cost of the build to the plpayer inventory
     public void clearTower() {
         if(tower!=null){
-            ResourceManager.getInstance().queryInventory(tower.getTempalate().getCostResource()).add(tower.getTempalate().getCostQuantity());
+            ResourceManager.getInstance().queryInventory(tower.getTemplate().getCostResource()).add(tower.getTemplate().getCostQuantity());
         }
         tower = null;
     }
@@ -124,7 +122,7 @@ public class MapSlot {
         } else if (newTower.getType().equalsIgnoreCase("Drill")) {
             returnTower = new BaseDrillTower(new Pose(x, y, theta), newTower, tile.getResource());
         } else if (newTower.getType().equalsIgnoreCase("Conveyors")) {
-            returnTower = new conveyor(new Pose(x, y, theta), newTower);
+            returnTower = new Conveyor(new Pose(x, y, theta), newTower);
         } else if (newTower.getType().equalsIgnoreCase("Router")) {
             returnTower = new Router(new Pose(x, y, theta), newTower);
         }else if (newTower.getType().equalsIgnoreCase("NonPlayer")){
@@ -136,6 +134,13 @@ public class MapSlot {
         }
         return returnTower;
     }
+
+    //SETTERS
+    public void setTowerFromTempTower(){
+        setTower(tempTower);
+        tempTower = null;
+    }
+    //set tower and its other input formats
     public void setTower(TowerTemplate newTower, double theta){
         setTower(newTower,theta,true);
     }
@@ -148,7 +153,7 @@ public class MapSlot {
     public void setTower(BaseTower newTower,boolean charge) {
 
         if(charge){
-            if(ResourceManager.getInstance().queryInventory(newTower.getTempalate().getCostResource()).remove(newTower.getTempalate().getCostQuantity())){
+            if(ResourceManager.getInstance().queryInventory(newTower.getTemplate().getCostResource()).remove(newTower.getTemplate().getCostQuantity())){
                 clearTower();
                 tower = newTower;
             }
@@ -158,6 +163,7 @@ public class MapSlot {
         }
     }
 
+    //GETTERS
     public int getX() {
         return x;
     }

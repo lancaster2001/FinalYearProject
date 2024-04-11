@@ -1,8 +1,7 @@
-public class EnemyTemplate {
+public final class EnemyTemplate {
     private String name;
     private double width;//relative to size of slot
     private double height;//relative to size of slot
-    private double damage;
     private double maxHealth;
     private double moveSpeed;
     private String imageLink;
@@ -11,11 +10,10 @@ public class EnemyTemplate {
     private BulletTemplate bullet;
 
 
-    EnemyTemplate(String name, double width, double height, double damage, double maxHealth, double moveSpeed, String imageLink, double range, double cooldown, BulletTemplate bullet) {
+    EnemyTemplate(String name, double width, double height, double maxHealth, double moveSpeed, String imageLink, double range, double cooldown, BulletTemplate bullet) {
         this.name = name;
         this.width = width;
         this.height = height;
-        this.damage = damage;
         this.maxHealth = maxHealth;
         this.moveSpeed = moveSpeed;
         this.imageLink = imageLink;
@@ -32,9 +30,6 @@ public class EnemyTemplate {
         return imageLink;
     }
 
-    public double getDamage() {
-        return damage;
-    }
 
     public double getMoveSpeed() {
         return moveSpeed;
