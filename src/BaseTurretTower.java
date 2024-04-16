@@ -59,7 +59,7 @@ public class BaseTurretTower extends BaseTower {
                     }
                 }
                 //face target
-                calculateDirectionToTarget(x, y);
+                pose.setTheta(calculateDirectionToTarget(x, y));
                 //shoot at target
                 shoot();
                 //set last know target location for the next enemy location prediction
@@ -73,12 +73,12 @@ public class BaseTurretTower extends BaseTower {
         return false;
     }
 
-    //return angle a point is to something on the map
-    private void calculateDirectionToTarget(double x, double y) {
+    //return the angle that a point is to something on the map
+    private double calculateDirectionToTarget(double x, double y) {
         double atan2_x = x - pose.getX();
         double atan2_y = y - pose.getY();
         double rot1 = Math.atan2(atan2_y, atan2_x);
-        pose.setTheta(rot1 + (Math.PI / 2));
+        return (rot1 + (Math.PI / 2));
     }
 
     //calculate distant from turret to a point
