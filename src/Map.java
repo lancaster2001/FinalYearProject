@@ -107,27 +107,23 @@ public final class Map {
             Objects.requireNonNull(getSlotFromCoord((int) pose.getX(), (int) pose.getY())).setTower(newTower, pose.getTheta(), charge);
         }
     }
+    public void setTower(BaseTower newTower, int x, int y) {
+        setTower(newTower, x, y, true);
+    }
+    public void setTower(BaseTower newTower, int x, int y, boolean charge) {
+        Objects.requireNonNull(getSlotFromCoord(x, y)).setTower(newTower, charge);
+    }
 
     public void setTempTower(TowerTemplate newTower, Pose pose) {
         if (newTower != null && pose != null) {
             Objects.requireNonNull(getSlotFromCoord((int) pose.getX(), (int) pose.getY())).setTempTower(newTower, pose.getTheta());
         }
     }
-
-    public void clearTempTower(int x, int y) {
-        Objects.requireNonNull(getSlotFromCoord(x, y)).clearTempTower();
-    }
-
-    public void setTower(BaseTower newTower, int x, int y) {
-        setTower(newTower, x, y, true);
-    }
-
-    public void setTower(BaseTower newTower, int x, int y, boolean charge) {
-        Objects.requireNonNull(getSlotFromCoord(x, y)).setTower(newTower, charge);
-    }
-
     public void setTowerFromTempTower(int x, int y) {
         Objects.requireNonNull(getSlotFromCoord(x, y)).setTowerFromTempTower();
+    }
+    public void clearTempTower(int x, int y) {
+        Objects.requireNonNull(getSlotFromCoord(x, y)).clearTempTower();
     }
 
     public int getMapHeight() {

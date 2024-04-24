@@ -145,10 +145,14 @@ public final class MenuState {
         }
     }
     private void loadMenu() {
+        //check for any special conditions the users selected option has
         selectedMenuCheck();
+        //get the dimensions and position of the menu on the screen
         Rectangle placement = menu;
         int index = 0;
+        //get the options from the current selected menu
         String[] buttons = menues.get(getSelectedMenu());
+        //create the buttons and dynamically set their proportions
         if(buttons != null) {
             int spaceBetweenButtonsHorizontal = (int) (placement.width * 0.2);
             int spaceBetweenButtonsVertical = (int) ((placement.height / buttons.length) * 0.2);

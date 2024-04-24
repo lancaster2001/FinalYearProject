@@ -34,12 +34,15 @@ public final class MapGenerator {
         boolean check = true;
         ArrayList<MapSlot> mapArray = new ArrayList<>();
         Random rnd = new Random();
+
+        //create base map slots
         for (int slotNumber = 0; slotNumber < (mapWidth * mapHeight); slotNumber++) {
             int x = (slotNumber % mapWidth) + 1;
             int y = (slotNumber / mapWidth) + 1;
             mapArray.add(new MapSlot(x, y, tileManagerInstance.creatNewTileTemplate("basalt", null)));
 
         }
+        //add some water in randomly with some sand at the edges
         for(int counter = 3; counter<=4;counter++){
             int thisX = rnd.nextInt(1, mapWidth);
             int thisY = rnd.nextInt(1, mapHeight);
@@ -47,6 +50,7 @@ public final class MapGenerator {
             createPatch(thisX, thisY, counter-1, mapArray, mapWidth,"water" , null);
         }
 
+        //add resources
         for(int counter = 2; counter<=3;counter++){
             createPatch(rnd.nextInt(1, mapWidth), rnd.nextInt(1, mapHeight), counter, mapArray, mapWidth,null , "iron");
         }
@@ -60,13 +64,17 @@ public final class MapGenerator {
                 createPatch(rnd.nextInt(1, mapWidth), rnd.nextInt(1, mapHeight), counter, mapArray, mapWidth, null, "titanium");
             }
         }
-
+        //create the map using the array of map slots
         latestMap = new Map(mapArray, mapWidth, mapHeight);
+        //set the player basse
         latestMap.setTower(TowerManager.getInstance().getTemplate("BasicBase"),new Pose(mapWidth / 2, mapHeight / 2, 0), false);
+        //return map
         return latestMap;
     }
 
 
+    //creates a patch made of a resource and/or a tile
+    //if there is no tile specified then the base tile the slot already has will be used and a resource will be added to it
     private ArrayList<MapSlot> createPatch(int x, int y, int radius, ArrayList<MapSlot> mapArray, int width,String tile, String resource) {
         if (radius > 0) {
             radius=Math.abs(radius);
@@ -77,7 +85,6 @@ public final class MapGenerator {
                         if (circlex >= 0) {
                             int currentSlot = ((circley * width) + circlex);
                             if ((currentSlot>0)&&(currentSlot<=mapArray.size())) {
-                                //mapArray.add(currentSlot, new MapSlot(circlex, circley, tileManagerInstance.creatNewTileTemplate(mapArray.get(currentSlot).getTile().getImageLink(), resource)));
                                 if (tile != null) {
                                     String holderResource = mapArray.get(currentSlot).getTile().getResource();
                                     mapArray.set(currentSlot, new MapSlot(circlex+1, circley+1, tileManagerInstance.creatNewTileTemplate(tile, null)));

@@ -13,7 +13,6 @@ public final class AssetManager {
 
     private AssetManager() {
         loadAllImages("src/Assets/");
-
     }
 
     public static AssetManager getInstance() {
@@ -33,8 +32,8 @@ public final class AssetManager {
     private final String assetsPath = GameSettings.getInstance().assetsPath;
     /*a separate variable for an error image was made so that assets could be easily swapped in and out
     in the form of texture packs, and so any images that were not included in the pack or were failed to load
-    from the pack could be replaced with a default error image that is always available
-    */
+    from the pack could be replaced with a default error image that is always available*/
+
     private final String errorImagePath = GameSettings.getInstance().errorImagePath;
 
     //checks for variants of an image in a folder and returns an ArrayList of all the variant's image links if there are any

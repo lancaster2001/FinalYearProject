@@ -56,7 +56,7 @@ public final class TowerManager {
     private TowerTemplate readTowerTemplate(String link) {
         String filePath = link;
         try (FileReader reader = new FileReader(filePath)) {
-            // Using JSONTokener to parse the JSON file
+            //break down the directory address to dynamically get the tower's name and then load the data into a template
             JSONTokener tokener = new JSONTokener(reader);
             JSONObject jsonObject = new JSONObject(tokener);
             String holder = link.substring(0, link.lastIndexOf("/"));
@@ -70,7 +70,7 @@ public final class TowerManager {
         return null;
     }
 
-    public TowerTemplate loadTemplateFromJsonObject(JSONObject jsonObject,String giventype, String givenname) {
+    private TowerTemplate loadTemplateFromJsonObject(JSONObject jsonObject,String giventype, String givenname) {
         TowerTemplate template = new TowerTemplate();
         String type;
         String name;
@@ -125,12 +125,12 @@ public final class TowerManager {
         Iterator<Object> iterator = bullet.iterator();
         while (iterator.hasNext()) {
             JSONObject object = (JSONObject) iterator.next();
-            double movespeed = object.getDouble("MoveSpeed");
+            double moveSpeed = object.getDouble("MoveSpeed");
             double damage = object.getDouble("Damage");
             double width = object.getDouble("Width");
             double height = object.getDouble("Height");
             String imageLink = object.getString("ImageLink");
-            template = new BulletTemplate(movespeed, damage, width, height, imageLink);
+            template = new BulletTemplate(moveSpeed, damage, width, height, imageLink);
 
         }
         return template;
@@ -151,7 +151,7 @@ public final class TowerManager {
     public TowerTemplate getDeletionTower(){
         return getTemplate("deletion");
     }
-    public String[] getJsonsInFolder(String theLink) {
+    private String[] getJsonsInFolder(String theLink) {
         File dir = new File(theLink);
         String[] files = dir.list((dir1, name) -> new File(dir1, name).getName().endsWith(".json"));
         return files;
