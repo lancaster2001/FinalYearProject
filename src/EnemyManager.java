@@ -46,16 +46,15 @@ public final class EnemyManager {
             //todo: remove this method and replace with remove collection
             removeListOfIndexes(enemiesToRemove);
         }
-        countdown-=tickMultiplier;
-        if(spawnerCounter>= difficulty-1) {
-            spawnerCounter = 0;
-            spawnerOn = false;
-            difficulty += 5;
-        }
-        if(countdown<=0){
-            countdown = waveCountdown;
-            spawnerOn = true;
-            spawner();
+
+        if(!spawnerOn) {
+            countdown -= tickMultiplier;
+
+            if (countdown <= 0) {
+                countdown = waveCountdown;
+                spawnerOn = true;
+                spawner();
+            }
         }
     }
 
@@ -170,7 +169,7 @@ public final class EnemyManager {
 
             @Override
             public void run() {
-                ++spawnerCounter;
+                //spawn an enemy
                 Random rnd = new Random();
                 int chance = rnd.nextInt(1, 3);
                 if (chance == 1) {
@@ -178,6 +177,17 @@ public final class EnemyManager {
                 }else{
                     createEnemy(1, 1, "soldier");
                 }
+                ++spawnerCounter;
+
+                //check if all enemies have been spawned
+                if(spawnerCounter>= difficulty-1) {
+                    //reset spawn counter, turn off the spawner and increase the difficulty for next round
+                    spawnerCounter = 0;
+                    spawnerOn = false;
+                    difficulty += 5;
+                }
+
+                //check if spawner should stay on
                 if(spawnerOn) {
                     spawner();
                 }
