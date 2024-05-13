@@ -28,6 +28,7 @@ public final class EnemyManager {
     private final String enemyTemplatesPath = "src/Enemies/";
     private static int spawnerCounter = 0;
     private static boolean spawnerOn = false;
+    private int TimeBetweenEnemiesSpawnInWave = 1000;
     private double waveCountdown = 10;
     private double countdown = waveCountdown;
     private double difficulty = 0;
@@ -50,7 +51,7 @@ public final class EnemyManager {
         if(!spawnerOn) {
             countdown -= tickMultiplier;
 
-            if (countdown <= 0) {
+            if (countdown-TimeBetweenEnemiesSpawnInWave <= 0) {
                 countdown = waveCountdown;
                 spawnerOn = true;
                 spawner();
@@ -169,6 +170,15 @@ public final class EnemyManager {
 
             @Override
             public void run() {
+                //check if all enemies have been spawned
+                if(spawnerCounter>= difficulty) {
+                    //reset spawn counter, turn off the spawner and increase the difficulty for next round
+                    spawnerCounter = 0;
+                    spawnerOn = false;
+                    difficulty += 5;
+                    return;
+                }
+
                 //spawn an enemy
                 Random rnd = new Random();
                 int chance = rnd.nextInt(1, 3);
@@ -179,14 +189,6 @@ public final class EnemyManager {
                 }
                 ++spawnerCounter;
 
-                //check if all enemies have been spawned
-                if(spawnerCounter>= difficulty-1) {
-                    //reset spawn counter, turn off the spawner and increase the difficulty for next round
-                    spawnerCounter = 0;
-                    spawnerOn = false;
-                    difficulty += 5;
-                }
-
                 //check if spawner should stay on
                 if(spawnerOn) {
                     spawner();
@@ -194,7 +196,7 @@ public final class EnemyManager {
             }
         };
 
-        actTimer.schedule(task, 1000);
+        actTimer.schedule(task, TimeBetweenEnemiesSpawnInWave);
 
     }
     //returns a list of all the directory paths for jsons in a provided directory
